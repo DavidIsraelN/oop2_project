@@ -1,0 +1,6 @@
+#pragma once
+
+enum class Action
+{
+  LEVEL1, LEVEL2, LEVEL3, EXIT, BACK_TO_GAME, HELP, MUTE,  MENU, BACK, RECORDS, NOTHING
+};
