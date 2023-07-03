@@ -37,9 +37,8 @@ void StatusBar::setTime()
 
 void StatusBar::draw(sf::RenderWindow& window) const
 {
-  window.setView(window.getDefaultView());
   window.draw(m_rectangle);
-  window.draw(m_timer);
   window.draw(m_level);
   window.draw(m_score);
+  window.draw(m_timer);
 }

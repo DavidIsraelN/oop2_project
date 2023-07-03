@@ -53,8 +53,8 @@ public:
     auto seconds = remaining_time % 60;
 
     std::stringstream ss;
-    //ss << std::setfill('0') << std::setw(2) << minutes << ":"
-    //   << std::setfill('0') << std::setw(2) << seconds;
+    ss << std::setfill('0') << std::setw(2) << minutes << ":"
+       << std::setfill('0') << std::setw(2) << seconds;
 
     return ss.str();
   };

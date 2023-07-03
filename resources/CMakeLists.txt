@@ -6,4 +6,6 @@ configure_file ("Background_1.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Background_2.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Background_3.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Level_1.txt"  ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Wall.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Door.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)
 

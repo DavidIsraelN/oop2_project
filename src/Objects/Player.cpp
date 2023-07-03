@@ -8,7 +8,7 @@ Player::Player(const sf::Vector2f& position, float width, float height)
   const auto bounds = m_sprite.getLocalBounds();
   m_sprite.setScale(width*2 / bounds.width, height*2 / bounds.height);
   m_sprite.setPosition(position);
-  m_sprite.setOrigin(bounds.width / 2, bounds.height);
+  m_sprite.setOrigin(bounds.width / 2, bounds.height / 1.3f);
 }
 
 

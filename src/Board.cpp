@@ -5,7 +5,7 @@
 #include "Menu.h"
 
 Board::Board(float win_width, float win_height, float info_height) :
-    m_status_bar(win_width, win_height, info_height), m_current_level(win_width, win_height)
+    m_status_bar(win_width, win_height, info_height), m_current_level(win_width, win_height, info_height)
 {
 //  m_action_map[Action::LEVEL1] = std::bind(&Level::load_1, &m_current_level);
 //  m_action_map[Action::LEVEL2] = std::bind(&Level::load_2, &m_current_level);

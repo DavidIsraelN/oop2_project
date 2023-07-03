@@ -31,7 +31,7 @@ public:
     std::string line;
     std::getline(m_level_board, line);
     auto size = std::istringstream(line);
-    size >> m_level_rows >> m_level_cols;
+    size >> m_rows >> m_window_cols >> m_world_cols;
   }
 
   //-------------------------------------------------------------------
@@ -51,10 +51,11 @@ public:
   }
 
   //-------------------------------------------------------------------
-  size_t getRows() const { return m_level_rows; }
-  size_t getCols() const { return m_level_cols; }
+  size_t getRows() const { return m_rows; }
+  size_t getWindowCols() const { return m_window_cols; }
+  size_t getWorldCols() const { return m_world_cols; }
 
 private:
   std::ifstream& m_level_board;
-  size_t m_level_rows = 0, m_level_cols = 0;
+  size_t m_rows = 0, m_window_cols = 0, m_world_cols = 0;
 };

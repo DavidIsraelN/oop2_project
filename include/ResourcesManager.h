@@ -10,7 +10,7 @@
  */
 
 //-------------------------------------------------------------------
-const size_t OBJECTS = 3;
+const size_t OBJECTS = 5;
 const size_t FILES = 4;
 //const size_t SOUND = 7;
 const size_t FONTS = 3;
@@ -19,8 +19,8 @@ const size_t BACKGROUNDS = 3;
 //-------------------------------------------------------------------
 enum class ObjIndex
 {
-  RED_BALL, PLAYER, BULLET,  TIMER,
-  LIFE, WALL, PACMAN_OPEN, PACMAN_CLOSE
+  RED_BALL, PLAYER, BULLET,  WALL, DOOR,
+  LIFE, PACMAN_OPEN, PACMAN_CLOSE
 };
 
 enum class TxtIndex
@@ -91,7 +91,7 @@ private:
 
   //-------------------------------------------------------------------
   std::string m_textures_name[OBJECTS] =
-      { "RedBall.png", "Player.png","Bullet.png"};
+      { "RedBall.png", "Player.png","Bullet.png", "Wall.jpg", "Door.jpg"};
   sf::Texture m_objects_texture[OBJECTS];
   std::string m_backgrounds_name[BACKGROUNDS] = {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
   sf::Texture m_backgrounds_texture[BACKGROUNDS];
