@@ -1,74 +1,103 @@
 #include "Objects/Ball.h"
+#include "Objects/Door.h"
+#include "Objects/Wall.h"
+#include "Objects/Player.h"
 #include "TimerManager.h"
+#include "Colors.h"
 #include <iostream>
 
-Ball::Ball(size_t ratio, float base_size, const sf::Vector2f& position)
+Ball::Ball(size_t ratio, float base_size, const sf::Vector2f& position, float floor, int x_direction) : m_ratio(ratio), m_floor(floor)
 {
+  m_velocity_x *= x_direction;
   auto size =  (ratio * 0.5f + 0.5f) * base_size;
-  m_ceiling = (-int(ratio) * 0.5f + 7.f) * size;
-  std::cout << m_ceiling << std::endl;
-//  m_velocity_Y = size * 10;
-  m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::RED_BALL));
+  m_ceiling = m_floor - (-int(ratio) * 0.5f + 5.5f) * size;
+  m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BALL));
+  m_sprite.setColor(getColor(ratio - 1));
   auto bounds = m_sprite.getLocalBounds();
   m_sprite.setScale(size / bounds.width, size / bounds.height);
   m_sprite.setPosition(position);
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
-  m_begin_ceiling = m_sprite.getGlobalBounds().top;
+  m_begin_ceiling = std::min(m_sprite.getGlobalBounds().top, m_ceiling);
 }
 
-void Ball::moveObject(const sf::Vector2f& window_size)
+void Ball::moveObject(/*const sf::Vector2f& window_size*/)
 {
   auto delta_time = TimerManager::Timer().Timer().getDeltaTime();
-
-  auto distance_top = (m_active_ceiling ? m_ceiling : window_size.y - m_begin_ceiling) - (window_size.y - m_sprite.getGlobalBounds().top);
-  auto distance_bottom = window_size.y - (m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height);
+  auto distance_top = m_sprite.getGlobalBounds().top - (m_active_ceiling ? m_ceiling : /*m_floor -*/ m_begin_ceiling) /*- (*//*m_floor - *//*)*/;
+  auto distance_bottom = m_floor - (m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height);
 
   auto ratio = (distance_top <= distance_bottom) ? (distance_top / distance_bottom )  : 1 - (distance_bottom / distance_top / 2);
-//  if (ratio < 0.01) m_velocity_Y = m_velocity_Y > 0 ? m_velocity_Y : -m_velocity_Y;
-  //  auto calculate_y = ratio * (m_world_width - m_win_width) + m_win_width / 2;
-//  auto calculate_y = ratio * (window_size.y - m_jump_height) + m_jump_height / 2;
-
-  //if (ratio < 0) ratio = 0.2f;
-
   if (ratio < 0.01) ratio = 0.01;
   else if (ratio < 0.02) ratio = 0.02;
-//  else if (ratio < 0.3) ratio = 0.3;
-//  else if (ratio < 0.4) ratio = 0.4;
-//  else if (ratio < 0.5) ratio = 0.5;
-//  else if (ratio < 0.6) ratio = 0.6;
-//  else if (ratio < 0.7) ratio = 0.7;
-//  else if (ratio < 0.8) ratio = 0.8;
-//  else if (ratio < 0.9) ratio = 0.9;
-//  else if (ratio < 0.1) ratio = 1;
 
-
-  if (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width > window_size.x)
-    m_velocity_x = m_velocity_x > 0 ? -m_velocity_x : m_velocity_x;
-
-  if (m_sprite.getGlobalBounds().left < 0)
-    m_velocity_x = m_velocity_x > 0 ? m_velocity_x : -m_velocity_x;
-
-  if (m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height > window_size.y)
-  {
-    m_velocity_y = m_velocity_y > 0 ? -m_velocity_y : m_velocity_y;
-    m_active_ceiling = true;
-  }
-  if (m_sprite.getGlobalBounds().top < 0 || m_sprite.getGlobalBounds().top < window_size.y - m_ceiling)
-    m_velocity_y = m_velocity_y > 0 ? m_velocity_y : -m_velocity_y;
+  if (m_sprite.getGlobalBounds().top < m_ceiling)
+    m_velocity_y *= m_velocity_y > 0 ? 1 : -1;
 
   m_sprite.move(m_velocity_x * delta_time, m_velocity_y * delta_time * ratio +
                                                m_velocity_y * delta_time / 15);
-
 }
 
 bool Ball::isDel() const
 {
- return m_deleted;
+  return m_deleted;
+}
+
+void Ball::setDel()
+{
+  m_deleted = true;
+}
+
+size_t Ball::getRatio() const
+{
+  return m_ratio;
 }
 
 //-------------------------------------------------------------------
-bool Ball::collidesWith(const Object& other_obj) const
+bool Ball::collidesWith(Object& other_obj) const
 {
+  return collidesWith(other_obj);
 //  if (!other_obj.collidesWith(*this)) return false;
 //  auto distance = sqrt(pow(other_obj - a, 2) + pow(y - b, 2));
+}
+
+//-------------------------------------------------------------------
+void Ball::collide(Door& door)
+{
+  setDirection(door.getGlobalBounds());
+}
+
+//-------------------------------------------------------------------
+void Ball::collide(Wall& wall)
+{
+  setDirection(wall.getGlobalBounds());
+}
+
+//-------------------------------------------------------------------
+void Ball::collide(Weapon&)
+{
+
+  setDel();
+  // random gift
+}
+
+//-------------------------------------------------------------------
+void Ball::collide(Player& player)
+{
+ player.collide(*this);
+}
+
+void Ball::setDirection(const sf::FloatRect& bounds)
+{
+
+  if (m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height > m_floor)
+  {
+    m_velocity_y *= m_velocity_y > 0 ? -1 : 1;
+    m_active_ceiling = true;
+  }
+  else if (bounds.top + bounds.height - m_sprite.getGlobalBounds().top > 0 &&
+             bounds.top + bounds.height - m_sprite.getGlobalBounds().top < bounds.height / 10)
+    m_velocity_y *= m_velocity_y > 0 ? 1 : -1;
+  else if (m_sprite.getGlobalBounds().left < bounds.left)
+     m_velocity_x *= m_velocity_x > 0 ? -1 : 1;
+  else m_velocity_x *= m_velocity_x > 0 ? 1 : -1;
 }

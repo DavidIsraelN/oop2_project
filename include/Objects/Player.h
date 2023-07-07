@@ -6,9 +6,9 @@ class Player : public MovingObject
 public:
   Player() { }
   Player(const sf::Vector2f&, float, float);
-  void moveObject(const sf::Vector2f&) override;
+  void moveObject(/*const sf::Vector2f&*/) override;
   void setDirection(int);
-  sf::FloatRect getGlobalBounds() const;
+  void collide(Ball&) override;
 
 
 private:

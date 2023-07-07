@@ -22,7 +22,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
 
   while (window.isOpen())
   {
-    window.clear(sf::Color::Yellow);
+    window.clear();
     m_current_level.draw(window);
     m_status_bar.draw(window);
     window.display();
@@ -45,13 +45,16 @@ void Board::run(Action& action, sf::RenderWindow& window)
         if (event.key.code == sf::Keyboard::Space)
           m_current_level.createBullet();
       }
+
     m_current_level.movePlayer();
     m_current_level.moveBalls();
     m_current_level.moveBullets();
-//  m_current_level.handleCollision();
+    m_current_level.handleCollision();
+    m_current_level.splitBall();
     m_current_level.erase();
     TimerManager::Timer().updateTimer();
     m_status_bar.setTime();
+
 //    levelAction(clock.restart());
 //    setLevel(window);
   }

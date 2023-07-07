@@ -22,9 +22,11 @@ public:
   void moveBalls();
   void erase();
   void pause();
-  void handleCollision() const;
+  void handleCollision();
+  void splitBall();
 
 private:
+  float getFirstDoor() const;
   void clearLevel();
   void setLevel(Action);
   void chooseLevel();

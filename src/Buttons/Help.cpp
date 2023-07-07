@@ -9,7 +9,7 @@ Help::Help(float width, float height)
 Action Help::action(sf::RenderWindow& window)
 {
   window.clear();
-  auto help = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::RED_BALL));
+  auto help = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BALL));
   window.draw(help);
   window.display();
   while (window.isOpen())
