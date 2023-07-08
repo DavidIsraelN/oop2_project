@@ -16,7 +16,8 @@ public:
   void setView(/* direction / pixels */);
 
 private:
-  void doAction(Action) ;
+  void update_status_bar();
+  void doAction(Action);
 
   Action m_action;
   sf::View m_view;

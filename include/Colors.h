@@ -1,4 +1,6 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+#include <array>
 
 sf::Color getColor(size_t index)
 {

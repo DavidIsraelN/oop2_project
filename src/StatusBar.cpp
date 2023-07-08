@@ -35,6 +35,10 @@ void StatusBar::setTime()
   m_timer.setString(TimerManager::Timer().getRemainingTime(m_level_time));
 }
 
+void StatusBar::setLevel(size_t)
+{
+}
+
 void StatusBar::draw(sf::RenderWindow& window) const
 {
   window.draw(m_rectangle);

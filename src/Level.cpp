@@ -30,7 +30,7 @@ void Level::draw(sf::RenderWindow& window) const
   if (m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2 - m_win_width / 2.0f < 0.0f)
     viewCenterX = m_win_width / 2.0f;
   else if (m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2 + m_win_width / 2.0f > getFirstDoor())
-    viewCenterX = getFirstDoor() - m_win_width  / 2.0f ;
+    viewCenterX = getFirstDoor() - m_win_width  / 2.0f;
   else
     viewCenterX = m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2;
 
@@ -66,6 +66,7 @@ void Level::clearLevel()
   TimerManager::Timer().resetClock();
 }
 
+
 //-------------------------------------------------------------------
 void Level::buildLevel()
 {
@@ -99,7 +100,8 @@ void Level::addObject(ObjectType type, size_t i, size_t j)
   case ObjectType::BALL_2:
   case ObjectType::BALL_3:
   case ObjectType::BALL_4:
-    m_balls.push_back(std::make_unique<Ball>((size_t(type) - '0'), m_obj_width, position, m_win_height - m_obj_height, 1)); break;
+    m_balls.push_back(std::make_unique<Ball>((size_t(type) - '0'), m_obj_width, position,
+                                              m_win_height - m_obj_height, 1)); break;
 
   case ObjectType::WALL:
     m_walls.push_back(std::make_unique<Wall>(position, m_obj_width, m_obj_height)); break;
@@ -111,15 +113,17 @@ void Level::addObject(ObjectType type, size_t i, size_t j)
 
 void Level::createBullet()
 {
-  auto middle_player_position = sf::Vector2f(m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2,
-                                             m_player->getGlobalBounds().top + m_player->getGlobalBounds().height / 2);
+  auto middle_player_position = sf::Vector2f(m_player->getGlobalBounds().left + 
+                                             m_player->getGlobalBounds().width / 2,
+                                             m_player->getGlobalBounds().top +
+                                             m_player->getGlobalBounds().height / 2);
   m_bullets.push_back(std::make_unique<GunWeapon>(50, middle_player_position));
 }
 
 void Level::movePlayer()
 {
   auto direction = sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ? -1
-                                                                  : sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ? 1 : 0;
+                 : sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ? 1 : 0;
 
   if (!direction) return;
 
@@ -155,8 +159,26 @@ void Level::moveBullets()
 
 void Level::erase()
 {
-  std::erase_if(m_bullets, [](const auto &bullet) {return bullet->isDel(); });
-  std::erase_if(m_balls, [&](const auto &ball) {/*if (ball->isDel()) {splitBall(*ball);}*/ return ball->isDel(); });
+  std::erase_if(m_bullets, [](const auto &bullet) { return bullet->isDel(); });
+  std::erase_if(m_balls, [](const auto &ball) { return ball->isDel(); });
+  openDoor();
+}
+
+void Level::openDoor()
+{
+  auto first_ball = std::min_element(m_balls.begin(), m_balls.end(),
+    [](const auto& ball1, const auto& ball2) -> bool {
+      return ball1->getGlobalBounds().left < ball2->getGlobalBounds().left; });
+
+  auto first_door_pos = getFirstDoor();
+
+  //std::cout << "first_door_pos - " << first_door_pos << "\n";
+
+  if (m_doors.empty() || (!m_balls.empty() && first_door_pos > first_ball->get()->getGlobalBounds().left))
+    return;
+  
+  std::erase_if(m_doors, [&first_door_pos](const auto& door) { 
+    return door->getGlobalBounds().left + door->getGlobalBounds().width == first_door_pos; });
 }
 
 void Level::splitBall()
@@ -165,13 +187,13 @@ void Level::splitBall()
     if (m_balls[i]->isDel() && m_balls[i]->getRatio() > 1)
     {
       m_balls.push_back(std::make_unique<Ball>(m_balls[i]->getRatio() - 1, m_obj_width,
-                        sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
-                                     m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-                        m_win_height - m_obj_height, 1));
+              sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
+                           m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
+                           m_win_height - m_obj_height, 1));
       m_balls.push_back(std::make_unique<Ball>(m_balls[i]->getRatio() - 1, m_obj_width,
-                        sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
-                                     m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-                        m_win_height - m_obj_height, -1));
+              sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
+                           m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
+                           m_win_height - m_obj_height, -1));
     }
 }
 
@@ -190,7 +212,7 @@ void Level::handleCollision()
                   [&ball](const auto& door){if (door->collidesWith(*ball)) door->collide(*ball); });
     std::for_each(m_bullets.begin(), m_bullets.end(),
                   [&ball](const auto& bullet){if (bullet->collidesWith(*ball)) bullet->collide(*ball);});
-//    if (m_player->collidesWith(*ball)) m_player->collide(*ball);
+    if (m_player->collidesWith(*ball)) m_player->collide(*ball);
   }
   for (auto &bullet : m_bullets)
     std::for_each(m_walls.begin(), m_walls.end(),
@@ -199,8 +221,10 @@ void Level::handleCollision()
 
 float Level::getFirstDoor() const
 {
-  auto min = std::min_element(m_doors.begin(), m_doors.end(),
-                              [](const auto& door1, const auto& door2) -> bool {
-                                return door1->getGlobalBounds().left < door2->getGlobalBounds().left; });
-  return min->get()->getGlobalBounds().left + min->get()->getGlobalBounds().width;
+  auto first_door = std::min_element(m_doors.begin(), m_doors.end(),
+                    [](const auto& door1, const auto& door2) -> bool {
+                    return door1->getGlobalBounds().left < door2->getGlobalBounds().left; });
+
+  return m_doors.empty()? 0 : 
+    first_door->get()->getGlobalBounds().left + first_door->get()->getGlobalBounds().width;
 }

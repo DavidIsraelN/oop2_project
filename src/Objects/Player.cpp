@@ -35,6 +35,6 @@ void Player::setDirection(int x_direction)
 //-------------------------------------------------------------------
 void Player::collide(Ball&)
 {
-  // do something
-  std::cout << "accident\n";
+  --m_life;
+  //std::cout << "life - " << m_life << "\n";
 }

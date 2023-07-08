@@ -30,8 +30,10 @@ private:
   void clearLevel();
   void setLevel(Action);
   void chooseLevel();
+  void openDoor();
   void buildLevel();
   void addObject(ObjectType, size_t, size_t);
+
   std::unique_ptr<LevelReader> m_current_board;
   size_t m_win_width, m_win_height, m_info_height, m_world_width;
   std::unique_ptr<Player> m_player;

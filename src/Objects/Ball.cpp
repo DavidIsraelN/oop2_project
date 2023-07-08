@@ -10,7 +10,7 @@ Ball::Ball(size_t ratio, float base_size, const sf::Vector2f& position, float fl
 {
   m_velocity_x *= x_direction;
   auto size =  (ratio * 0.5f + 0.5f) * base_size;
-  m_ceiling = m_floor - (-int(ratio) * 0.5f + 5.5f) * size;
+  m_ceiling = m_floor - (-int(ratio) * 0.5f + 6.5f) * size;
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BALL));
   m_sprite.setColor(getColor(ratio - 1));
   auto bounds = m_sprite.getLocalBounds();

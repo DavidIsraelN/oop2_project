@@ -20,6 +20,6 @@ public:
 private:
   void setDirection(const sf::FloatRect&);
 
-  float m_velocity_x = 350.f, m_velocity_y = -2000.f, m_ceiling, m_begin_ceiling, m_ratio, m_floor;
+  float m_velocity_x = 200.f, m_velocity_y = -700.f, m_ceiling, m_begin_ceiling, m_ratio, m_floor;
   bool m_deleted = false, m_active_ceiling = false;
 };

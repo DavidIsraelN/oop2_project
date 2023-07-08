@@ -52,17 +52,24 @@ void Board::run(Action& action, sf::RenderWindow& window)
     m_current_level.handleCollision();
     m_current_level.splitBall();
     m_current_level.erase();
-    TimerManager::Timer().updateTimer();
-    m_status_bar.setTime();
+    update_status_bar();
 
 //    levelAction(clock.restart());
 //    setLevel(window);
   }
 }
+
 void Board::doAction(Action action)
 {
   if (action > Action::LEVEL3)
     return;
 
   m_current_level.loadLevel(action);
+}
+
+void Board::update_status_bar()
+{
+  TimerManager::Timer().updateTimer();
+  m_status_bar.setTime();
+  m_status_bar.setLevel(m_current_level.);
 }
