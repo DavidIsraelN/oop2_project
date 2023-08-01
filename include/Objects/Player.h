@@ -18,5 +18,5 @@ private:
   size_t m_life = 3, m_score = 0;
   sf::Vector2f m_original_position;
 //  Records m_record;
-  float m_velocity_X = 1000;
+  float m_velocity_X = 500;
 };

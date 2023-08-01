@@ -5,8 +5,6 @@
 #include <memory>
 #include <vector>
 
-const size_t BULLET_SIZE = 25;
-
 //----------------------------------------------------------
 Level::Level(float win_width, float win_height, float info_height) :
        m_win_width(win_width), m_win_height(win_height), m_info_height(info_height), m_old_view_x(win_width / 2) { }
@@ -144,7 +142,7 @@ void Level::createBullet()
                                              m_player->getGlobalBounds().width / 2,
                                              m_player->getGlobalBounds().top +
                                              m_player->getGlobalBounds().height / 2);
-  m_bullets.push_back(std::make_unique<GunWeapon>(BULLET_SIZE, middle_player_position));
+  m_bullets.push_back(std::make_unique<GunWeapon>(middle_player_position));
   m_bullet_time = TimerManager::Timer().getElapsedTime();
 }
 
@@ -299,7 +297,7 @@ size_t Level::getLevelNum() const
   return m_level_num;
 }
 
-bool Level::isPlayerBallCollision() const
+bool Level::PlayerCollidedBall() const
 {
   return m_player_ball_collision;
 };

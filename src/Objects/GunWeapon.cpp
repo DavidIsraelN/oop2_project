@@ -2,11 +2,11 @@
 #include "TimerManager.h"
 #include <iostream>
 
-GunWeapon::GunWeapon(size_t size, const sf::Vector2f& position)
+GunWeapon::GunWeapon(const sf::Vector2f& position)
 {
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BULLET));
   const auto bounds = m_sprite.getLocalBounds();
-  m_sprite.setScale(size / bounds.width, size / bounds.height);
+  m_sprite.setScale(BULLET_SIZE / bounds.width, BULLET_SIZE / bounds.height);
   m_sprite.setPosition(position);
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }

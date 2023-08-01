@@ -9,7 +9,8 @@ public:
   Action run(sf::RenderWindow&) const;
 
 private:
-  void draw(sf::RenderWindow&) const;
+  void bulidGameOver(float, float);
+  void drawGameOver(sf::RenderWindow&) const;
   std::vector<std::unique_ptr<Button>> m_buttons;
 
 //  sf::RectangleShape m_rooms_rec;

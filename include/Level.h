@@ -30,7 +30,7 @@ public:
   void updateStatusBar(StatusBar&);
   bool levelOver() const;
   size_t getLevelNum() const;
-  bool isPlayerBallCollision() const;
+  bool PlayerCollidedBall() const;
 
 private:
   float getFirstDoor() const;

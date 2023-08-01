@@ -1,20 +1,21 @@
 #pragma once
 #include "Button.h"
 
-enum class Action;
+/*
+ * class for new game button and screen (inherited from button class).
+ */
 
 class NewGame : public Button
 {
 public:
-  NewGame(float, float);
+  NewGame(float, float, const sf::Vector2f&, const sf::Vector2f&);
   Action action(sf::RenderWindow&) override;
 
-  void drawLevels(sf::RenderWindow&) const;
-  //void action() override;
-  void createLevelButtons();
-
 private:
+  void drawLevels(sf::RenderWindow&) const;
+  void bulidLevels(float, float);
+
   sf::Text m_text_title;
-  std::vector<std::unique_ptr<Button>> m_levels;
+  std::vector<std::unique_ptr<Button>> m_buttons;
 };
 

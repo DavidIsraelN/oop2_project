@@ -1,11 +1,22 @@
 #include "Buttons/Records.h"
+#include "Buttons/Back.h"
 #include "EnumClassAction.h"
 #include "ResourcesManager.h"
-#include <iostream>
 #include <fstream>
 
-Records::Records(float width, float height)
-    : Button(sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 8.f * height / 12), "Records")
+#include <iostream>
+
+//----------------------------------------------------------
+Records::Records(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)
+  : Button(size, position, "Records"/*, Action::RECORDS*/),
+  m_back(std::make_unique<Back>(sf::Vector2f({ width / 10 , height / 15 }),
+    sf::Vector2f({ width / 13 , 1 * height / 12 }), Action::BACK_TO_MENU))
+{
+  loadRecords();
+}
+
+//----------------------------------------------------------
+void Records::loadRecords()
 {
   std::ifstream& inputFile(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD));
   if (inputFile.is_open())
@@ -20,17 +31,48 @@ Records::Records(float width, float height)
   updateRecord(7);
 }
 
-
+//----------------------------------------------------------
 Action Records::action(sf::RenderWindow& window)
 {
-  return Action::RECORDS;
+  window.clear();
+  draw(window);
+  window.display();
+
+  while (window.isOpen())
+  {
+    if (auto event = sf::Event{}; window.waitEvent(event))
+      switch (event.type)
+      {
+      case sf::Event::Closed:
+        window.close();
+        break;
+
+      case sf::Event::KeyPressed:
+        if (event.key.code == sf::Keyboard::Escape)
+          return m_back->action(window);
+
+      case sf::Event::MouseButtonReleased:
+        auto loc = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+        if (m_back->clickMe(loc))
+          return m_back->action(window);
+      }
+  }
+  return getAction(); // never got here.
 }
 
+//----------------------------------------------------------
+void Records::drawRecords(sf::RenderWindow& window) const
+{
+  m_back->draw(window);
+}
+
+//----------------------------------------------------------
 size_t Records::getRecord() const
 {
   return m_record;
 }
 
+//----------------------------------------------------------
 void Records::updateRecord(size_t new_record)
 {
 //  std::fstream& outputFile(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD));
