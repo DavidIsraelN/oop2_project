@@ -7,5 +7,6 @@ Exit::Exit(float width, float height)
 
 Action Exit::action(sf::RenderWindow& window)
 {
+  window.close();
   return Action::EXIT;
 }

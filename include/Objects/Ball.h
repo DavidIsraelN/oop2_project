@@ -3,6 +3,8 @@
 #include "Factory.h"
 #include <memory>
 
+const float SPEED_X = 350.f, SPEED_Y = -1500.f;
+
 class Ball : public MovingObject
 {
 public:
@@ -16,10 +18,13 @@ public:
   bool isDel() const;
   void setDel();
   size_t getRatio() const;
+  void setOriginalPosition();
 
 private:
   void setDirection(const sf::FloatRect&);
 
-  float m_velocity_x = 200.f, m_velocity_y = -700.f, m_ceiling, m_begin_ceiling, m_ratio, m_floor;
+  float m_speed_x = SPEED_X, m_speed_y = SPEED_Y, m_ceiling, m_begin_ceiling, m_floor;
+  size_t m_ratio;
   bool m_deleted = false, m_active_ceiling = false;
+  sf::Vector2f m_original_position;
 };

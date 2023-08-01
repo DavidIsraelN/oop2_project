@@ -15,7 +15,7 @@ void GunWeapon::moveObject(/*const sf::Vector2f& window_size*/)
 {
   auto delta_time = TimerManager::Timer().Timer().getDeltaTime();
 
-  m_sprite.move(0, m_velocity_Y * delta_time);
+  m_sprite.move(0, m_speed_y * delta_time);
 
   if (m_sprite.getGlobalBounds().top < 0)
     setDel();

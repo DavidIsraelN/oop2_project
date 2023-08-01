@@ -5,7 +5,7 @@
 #include "ResourcesManager.h"
 
 NewGame::NewGame(float width, float height)
-  : m_text_title(sf::Text("Choose Level", ResourceManager::Resource().getFont(FontIndex::ARIEL) , height / 8)),
+  : m_text_title(sf::Text("Choose Level", ResourceManager::Resource().getFont(FontIndex::TRY) , height / 8)),
       Button(sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 4 * height / 12), "New Game")
 {
   m_text_title.setFillColor(sf::Color::Black);
@@ -34,11 +34,12 @@ Action NewGame::action(sf::RenderWindow& window)
       case sf::Event::Closed:
         window.close();
         break;
+
       case sf::Event::MouseButtonReleased:
         auto loc = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
         for (auto &level : m_levels)
           if (level->clickMe(loc)) return level->action(window);
       }
   }
-  return Action::LEVEL1;
+  return Action::NOTHING;
 }

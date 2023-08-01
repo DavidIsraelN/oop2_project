@@ -67,10 +67,10 @@ public:
     m_elapsed_time = 0;
   }
 
-//  float getElapsedTime() const
-//  {
-//    return m_elapsed_time;
-//  }
+  float getElapsedTime() const
+  {
+    return m_elapsed_time;
+  }
 
 private:
   TimerManager()

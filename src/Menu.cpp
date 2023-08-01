@@ -8,10 +8,8 @@
 #include "ResourcesManager.h"
 #include <iostream>
 
-bool Menu::m_back_button = false;
-
 Menu::Menu(float win_width, float win_height)
-    : m_text_title(sf::Text("MENU", ResourceManager::Resource().getFont(FontIndex::ARIEL) , win_height / 8))
+    : m_text_title(sf::Text("MENU", ResourceManager::Resource().getFont(FontIndex::TRY) , win_height / 8))
 {
   m_text_title.setFillColor(sf::Color::Black);
   m_text_title.setPosition(win_width / 2, win_height / 10);
@@ -60,11 +58,16 @@ Action Menu::run(sf::RenderWindow& window)
             action = button->action(window);
             if (action != Action::BACK)
             {
-              m_back_button = true;
+              setBackButton(true);
               return action;
             }
           }
       }
   }
   return Action::MENU;
+}
+
+void Menu::setBackButton(bool back)
+{
+  m_back_button = back;
 }

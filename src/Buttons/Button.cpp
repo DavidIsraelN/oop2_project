@@ -2,7 +2,7 @@
 #include "ResourcesManager.h"
 
 Button::Button(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& text)
-  : m_text(sf::Text(text, ResourceManager::Resource().getFont(FontIndex::ARIEL), size.y / 2))
+  : m_text(sf::Text(text, ResourceManager::Resource().getFont(FontIndex::TRY), size.y / 2))
 {
   m_rectangle.setSize(size);
   m_rectangle.setPosition(position);

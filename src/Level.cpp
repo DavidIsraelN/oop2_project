@@ -5,70 +5,93 @@
 #include <memory>
 #include <vector>
 
-Level::Level(float win_width, float win_height, float info_height) : m_win_width(win_width), m_win_height(win_height), m_info_height(info_height) { }
+const size_t BULLET_SIZE = 25;
 
+//----------------------------------------------------------
+Level::Level(float win_width, float win_height, float info_height) :
+       m_win_width(win_width), m_win_height(win_height), m_info_height(info_height), m_old_view_x(win_width / 2) { }
+
+//----------------------------------------------------------
 void Level::loadLevel(Action level)
 {
+  TimerManager::Timer().resetClock();
   clearLevel();
   setLevel(level);
 }
 
+//----------------------------------------------------------
 void Level::setLevel(Action level)
 {
+  m_level_num = size_t(level) + 1;
   m_current_board = std::make_unique<LevelReader>(ResourceManager::Resource().getTxtFile(TxtIndex(level)));
   m_current_board->setDimensions();
   m_background = sf::Sprite(ResourceManager::Resource().getBackgroundTexture(BackgroundIndex(level)));
   buildLevel();
   m_current_board->backToStart();
-
+  m_original_balls = m_balls;
 }
 
-void Level::draw(sf::RenderWindow& window) const
+//----------------------------------------------------------
+sf::View Level::currentView()
 {
+  auto player_position = m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2;
   auto viewSize = sf::Vector2f (m_win_width, m_win_height + m_info_height);
   float viewCenterX;
-  if (m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2 - m_win_width / 2.0f < 0.0f)
-    viewCenterX = m_win_width / 2.0f;
-  else if (m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2 + m_win_width / 2.0f > getFirstDoor())
-    viewCenterX = getFirstDoor() - m_win_width  / 2.0f;
+
+  if (player_position - m_win_width / 2.f < 0)
+    viewCenterX = m_win_width / 2.f;
+  else if (player_position + m_win_width / 2.f > getFirstDoor())
+    viewCenterX = getFirstDoor() - m_win_width / 2.f;
+   else if (player_position - m_old_view_x > 20.f)
+    viewCenterX = m_old_view_x + 1.f;
   else
-    viewCenterX = m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2;
+    viewCenterX = player_position;
 
+  m_old_view_x = viewCenterX;
   sf::Vector2f viewPosition(viewCenterX, (m_win_height + m_info_height) / 2);
+  return sf::View(viewPosition, viewSize);
+}
 
-  sf::View view(viewPosition, viewSize);
-
-  //window.clear();
-  window.setView(view);
+//----------------------------------------------------------
+void Level::draw(sf::RenderWindow& window)
+{
+  window.setView(currentView());
   window.draw(m_background);
 
-  for (auto &ball : m_balls)
-    ball->draw(window);
-
-  for (auto &bullet : m_bullets)
-    bullet->draw(window);
-
-  for (auto &wall : m_walls)
-    wall->draw(window);
-
-  for (auto &door : m_doors)
-    door->draw(window);
-
+  std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
+  std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
+  std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
+  std::for_each(m_bullets.begin(), m_bullets.end(), [&window] (auto &bullet) {bullet->draw(window);});
   m_player->draw(window);
 
   window.setView(window.getDefaultView());
 }
 
+//----------------------------------------------------------
 void Level::clearLevel()
 {
+  m_bullet_time = -1.f;
+  m_old_view_x =  m_win_width / 2;
   m_balls.clear();
   m_bullets.clear();
-  TimerManager::Timer().resetClock();
+  m_walls.clear();
+  m_doors.clear();
+  m_gifts.clear();
+  m_player.release();
 }
 
+//----------------------------------------------------------
+void Level::resetLevel()
+{
+  m_player->setOriginalPosition();
+  m_bullets.clear();
+  m_balls.clear();
+  m_balls = m_original_balls;
+  std::for_each(m_balls.begin(), m_balls.end(), [](auto &ball){ball->setOriginalPosition();});
+}
 
 //-------------------------------------------------------------------
-void Level::buildLevel()
+void Level::buildLevel() // exaptions !!!!
 {
   m_obj_height = float(m_win_height) / m_current_board->getRows();
   m_obj_width = float(m_win_width) / m_current_board->getWindowCols();
@@ -100,7 +123,7 @@ void Level::addObject(ObjectType type, size_t i, size_t j)
   case ObjectType::BALL_2:
   case ObjectType::BALL_3:
   case ObjectType::BALL_4:
-    m_balls.push_back(std::make_unique<Ball>((size_t(type) - '0'), m_obj_width, position,
+    m_balls.push_back(std::make_shared<Ball>((size_t(type) - '0'), m_obj_width, position,
                                               m_win_height - m_obj_height, 1)); break;
 
   case ObjectType::WALL:
@@ -111,15 +134,21 @@ void Level::addObject(ObjectType type, size_t i, size_t j)
   }
 }
 
+//----------------------------------------------------------
 void Level::createBullet()
 {
+  if (TimerManager::Timer().getElapsedTime() - m_bullet_time < BULLET_DELAY)
+    return;
+
   auto middle_player_position = sf::Vector2f(m_player->getGlobalBounds().left + 
                                              m_player->getGlobalBounds().width / 2,
                                              m_player->getGlobalBounds().top +
                                              m_player->getGlobalBounds().height / 2);
-  m_bullets.push_back(std::make_unique<GunWeapon>(50, middle_player_position));
+  m_bullets.push_back(std::make_unique<GunWeapon>(BULLET_SIZE, middle_player_position));
+  m_bullet_time = TimerManager::Timer().getElapsedTime();
 }
 
+//----------------------------------------------------------
 void Level::movePlayer()
 {
   auto direction = sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ? -1
@@ -145,26 +174,30 @@ void Level::movePlayer()
   }
 }
 
+//----------------------------------------------------------
 void Level::moveBalls()
 {
   for (auto &ball : m_balls)
     ball->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
 }
 
+//----------------------------------------------------------
 void Level::moveBullets()
 {
   for (auto &bullet : m_bullets)
     bullet->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
 }
 
-void Level::erase()
+//----------------------------------------------------------
+void Level::erase(bool& door_opened)
 {
   std::erase_if(m_bullets, [](const auto &bullet) { return bullet->isDel(); });
   std::erase_if(m_balls, [](const auto &ball) { return ball->isDel(); });
-  openDoor();
+  openDoor(door_opened);
 }
 
-void Level::openDoor()
+//----------------------------------------------------------
+void Level::openDoor(bool& door_opened)
 {
   auto first_ball = std::min_element(m_balls.begin(), m_balls.end(),
     [](const auto& ball1, const auto& ball2) -> bool {
@@ -172,15 +205,18 @@ void Level::openDoor()
 
   auto first_door_pos = getFirstDoor();
 
-  //std::cout << "first_door_pos - " << first_door_pos << "\n";
-
   if (m_doors.empty() || (!m_balls.empty() && first_door_pos > first_ball->get()->getGlobalBounds().left))
     return;
-  
-  std::erase_if(m_doors, [&first_door_pos](const auto& door) { 
+
+  auto old_size = m_doors.size();
+
+  std::erase_if(m_doors, [&first_door_pos](const auto& door) {
     return door->getGlobalBounds().left + door->getGlobalBounds().width == first_door_pos; });
+
+  door_opened = m_doors.size() && old_size - m_doors.size();
 }
 
+//----------------------------------------------------------
 void Level::splitBall()
 {
   for (auto i = size_t(0); i < m_balls.size(); ++i)
@@ -197,13 +233,16 @@ void Level::splitBall()
     }
 }
 
+//----------------------------------------------------------
 void Level::pause()
 {
   TimerManager::Timer().startPause();
 }
 
+//----------------------------------------------------------
 void Level::handleCollision()
 {
+  m_player_ball_collision = false;
   for (auto &ball : m_balls)
   {
     std::for_each(m_walls.begin(), m_walls.end(),
@@ -212,19 +251,55 @@ void Level::handleCollision()
                   [&ball](const auto& door){if (door->collidesWith(*ball)) door->collide(*ball); });
     std::for_each(m_bullets.begin(), m_bullets.end(),
                   [&ball](const auto& bullet){if (bullet->collidesWith(*ball)) bullet->collide(*ball);});
-    if (m_player->collidesWith(*ball)) m_player->collide(*ball);
+    if (m_player->collidesWith(*ball))
+    {
+      m_player->collide(*ball);
+      resetLevel();
+      m_player_ball_collision = true;
+//      clearLevel();
+//      buildLevel();
+      return;
+    }
   }
   for (auto &bullet : m_bullets)
     std::for_each(m_walls.begin(), m_walls.end(),
-                  [&bullet](const auto& wall){if (wall->collidesWith(*bullet)) wall->collide(*bullet); });
+                  [&bullet](const auto& wall) {if (wall->collidesWith(*bullet)) wall->collide(*bullet); });
 }
 
+//----------------------------------------------------------
 float Level::getFirstDoor() const
 {
   auto first_door = std::min_element(m_doors.begin(), m_doors.end(),
                     [](const auto& door1, const auto& door2) -> bool {
                     return door1->getGlobalBounds().left < door2->getGlobalBounds().left; });
 
-  return m_doors.empty()? 0 : 
+  return m_doors.empty() ? m_world_width :
     first_door->get()->getGlobalBounds().left + first_door->get()->getGlobalBounds().width;
 }
+
+//----------------------------------------------------------
+void Level::updateStatusBar(StatusBar& status_bar)
+{
+  TimerManager::Timer().updateTimer();
+  status_bar.setTime();
+  status_bar.setScore(m_player->getScore());
+  status_bar.setLevel(m_level_num);
+//  status_bar.setLife(m_player->getLife());
+}
+
+//----------------------------------------------------------
+bool Level::levelOver() const
+{
+  return m_player->getGlobalBounds().left > m_world_width;
+}
+
+//----------------------------------------------------------
+size_t Level::getLevelNum() const
+{
+  return m_level_num;
+}
+
+bool Level::isPlayerBallCollision() const
+{
+  return m_player_ball_collision;
+};

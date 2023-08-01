@@ -10,11 +10,12 @@ public:
   Action run(sf::RenderWindow&);
   void handleKey();
   void handleClick();
+  void setBackButton(bool);
 
 private:
   void draw(sf::RenderWindow&) const;
   sf::Text m_text_title;
   std::vector<std::unique_ptr<Button>> m_buttons;
-  static bool m_back_button;
+  bool m_back_button = false;
 };
 

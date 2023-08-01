@@ -1,6 +1,8 @@
 #pragma once
 #include "Weapon.h"
 
+const float BULLET_SPEED_Y = -1000.f;
+
 class GunWeapon : public Weapon
 {
 public:
@@ -8,6 +10,6 @@ public:
   void moveObject(/*const sf::Vector2f&*/) override;
 
 private:
-  float m_velocity_Y = -1000.f;
+  float m_speed_y = BULLET_SPEED_Y;
 };
 

@@ -5,9 +5,9 @@
 
 StatusBar::StatusBar(float bar_width, float bar_y, float bar_height)
     : m_width(bar_width), m_height(bar_height), m_rectangle(sf::Vector2f(m_width, m_height)),
-      m_timer("00:00", ResourceManager::Resource().getFont(FontIndex::ARIEL),bar_height / 2),
-      m_level("LEVEL  ", ResourceManager::Resource().getFont(FontIndex::ARIEL),bar_height / 2),
-      m_score("SCORE  ", ResourceManager::Resource().getFont(FontIndex::ARIEL),bar_height / 2)
+      m_timer("00:00",   ResourceManager::Resource().getFont(FontIndex::TRY),bar_height / 2),
+      m_level("LEVEL  ", ResourceManager::Resource().getFont(FontIndex::TRY),bar_height / 2),
+      m_score("SCORE  ", ResourceManager::Resource().getFont(FontIndex::TRY),bar_height / 2)
 {
   setStatusBar(bar_y);
 }
@@ -35,8 +35,14 @@ void StatusBar::setTime()
   m_timer.setString(TimerManager::Timer().getRemainingTime(m_level_time));
 }
 
-void StatusBar::setLevel(size_t)
+void StatusBar::setLevel(size_t level)
 {
+  m_level.setString("LEVEL " + std::to_string(level));
+}
+
+void StatusBar::setScore(size_t score)
+{
+  m_score.setString("SCORE " + std::to_string(score));
 }
 
 void StatusBar::draw(sf::RenderWindow& window) const
