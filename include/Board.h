@@ -21,7 +21,7 @@ public:
 
 private:
   void doStep();
-  bool doAction(Action, sf::RenderWindow&);
+  bool doAction(Action&, sf::RenderWindow&);
   void checkMsgs(sf::RenderWindow&);
   void drawMsg(sf::RenderWindow&, std::string, bool&);
   bool handleEvent(sf::RenderWindow&, const sf::Event&, Action&);

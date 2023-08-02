@@ -51,7 +51,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
 }
 
 //----------------------------------------------------------
-bool Board::doAction(Action action, sf::RenderWindow& window)
+bool Board::doAction(Action& action, sf::RenderWindow& window)
 {
   switch (action)
   {
