@@ -2,8 +2,8 @@
 #include "EnumClassAction.h"
 
 //----------------------------------------------------------
-Mute::Mute(const sf::Vector2f& size, const sf::Vector2f& position)
-  : Button(size, position, "Mute"/*, Action::MUTE*/)
+Mute::Mute(const sf::Vector2f& size, const sf::Vector2f& position, Action back_to)
+  : Button(size, position, "Mute", back_to)
 { }
 
 //-------------------------------------------------------------------

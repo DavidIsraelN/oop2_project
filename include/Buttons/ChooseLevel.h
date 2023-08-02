@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-/*
+/* ----------------------------------------------------------
  * class for choose level button (inherited from button class).
  */
 

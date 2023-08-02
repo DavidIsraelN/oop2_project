@@ -29,7 +29,7 @@ void Menu::bulidMenu(float width, float height)
     sf::Vector2f(width / 13 , height / 12), Action::BACK_TO_GAME));
 
   m_buttons.emplace_back(std::make_unique<Mute>(sf::Vector2f(width / 10, height / 15),
-    sf::Vector2f(width - width / 13, height / 12)));
+    sf::Vector2f(width - width / 13, height / 12), Action::BACK_TO_MENU));
 
   m_buttons.emplace_back(std::make_unique<NewGame>(width, height,
     sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 4 * height / 12)));
@@ -71,10 +71,10 @@ Action Menu::run(sf::RenderWindow& window)
       case sf::Event::MouseButtonReleased:
         Action action;
         auto loc = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
-        for (auto &button : m_buttons)
-          if (button->clickMe(loc))
+        for (auto i = size_t(m_back_button ? 0 : 1); i < m_buttons.size(); ++i)
+          if (m_buttons[i]->clickMe(loc))
           {
-            action = button->action(window);
+            action = m_buttons[i]->action(window);
             if (action != Action::BACK_TO_MENU)
             {
               setBackButton(true);

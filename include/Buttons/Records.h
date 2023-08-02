@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-/*
+/* ----------------------------------------------------------
  * class for records button and screen (inherited from button class).
  */
 

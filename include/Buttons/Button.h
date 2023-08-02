@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "EnumClassAction.h"
 
-/*
+/* ----------------------------------------------------------
  * an abstract class that is responsible for all the buttons.
  */
 

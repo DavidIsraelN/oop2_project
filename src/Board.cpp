@@ -45,13 +45,13 @@ void Board::run(Action& action, sf::RenderWindow& window)
       action = Action(m_current_level.getLevelNum()); // index of next level is current level num
       return;
     }
-    
+
     doStep();
   }
 }
 
 //----------------------------------------------------------
-bool Board::doAction(Action& action, sf::RenderWindow& window)
+bool Board::doAction(Action action, sf::RenderWindow& window)
 {
   switch (action)
   {

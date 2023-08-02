@@ -1,7 +1,7 @@
 #pragma once
 
-/* 
- * the order of the firsts elements (until BACK_TO_GAME) 
+/* ----------------------------------------------------------
+ * the order of the firsts elements (levels)
  * is very important for the operation of the game!
  */
 

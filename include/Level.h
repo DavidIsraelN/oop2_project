@@ -44,15 +44,17 @@ private:
   sf::View currentView();
 
   std::unique_ptr<LevelReader> m_current_board;
-  size_t m_level_num, m_win_width, m_win_height, m_info_height, m_world_width;
-  std::unique_ptr<Player> m_player;
-  std::vector<std::shared_ptr<Ball>> m_balls, m_original_balls;
+  size_t m_level_num/*, m_info_height, m_win_width, m_win_height, m_world_width*/;
+
+  std::shared_ptr<Player> m_player;
+  std::shared_ptr<std::vector<std::shared_ptr<Ball>>> m_balls;
+  std::shared_ptr<std::vector<std::shared_ptr<Wall>>> m_walls;
+  std::shared_ptr<std::vector<std::shared_ptr<Door>>> m_doors;
+
   std::vector<std::unique_ptr<Weapon>> m_bullets;
-  std::vector<std::unique_ptr<Wall>> m_walls;
-  std::vector<std::unique_ptr<Door>> m_doors;
   std::vector<std::unique_ptr<Gift>> m_gifts;
   sf::Sprite m_background;
-  float m_obj_width = 0, m_obj_height = 0, m_old_view_x, m_bullet_time = -1.f;
+
+  float m_win_width, m_win_height, m_info_height, m_old_view_x, m_bullet_time = -1.f;
   bool m_player_ball_collision = false;
 };
-

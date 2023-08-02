@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-/*
+/* ----------------------------------------------------------
  * class for exit button (inherited from button class).
  */
 

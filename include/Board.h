@@ -20,13 +20,13 @@ public:
   void run(Action&, sf::RenderWindow&);
 
 private:
-  bool handleEvent(sf::RenderWindow&, const sf::Event&, Action&);
-  bool doAction(Action&, sf::RenderWindow&);
   void doStep();
+  bool doAction(Action, sf::RenderWindow&);
   void checkMsgs(sf::RenderWindow&);
   void drawMsg(sf::RenderWindow&, std::string, bool&);
+  bool handleEvent(sf::RenderWindow&, const sf::Event&, Action&);
 
-  Action m_action = Action::NOTHING;
+  //Action m_action = Action::NOTHING;
   sf::View m_view;
   Level m_current_level;
   StatusBar m_status_bar;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-/*
+/* ----------------------------------------------------------
  * class for help button and screen (inherited from button class).
  */
 
@@ -18,4 +18,3 @@ private:
   sf::Text m_text_title;
   std::unique_ptr<Button> m_back;
 };
-
