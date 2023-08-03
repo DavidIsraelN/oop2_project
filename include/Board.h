@@ -33,6 +33,7 @@ private:
   sf::RectangleShape m_msg_rec;
   sf::Text m_msg_txt;
   float m_msg_timer = MSG_DELAY;
-  bool m_next_room = false, m_start_level , m_player_ball_collision = false;
+  bool m_next_room = false, m_start_level = true, m_player_ball_collision = false;
+  size_t m_temp_score = 0;
   GameOver m_game_over;
 };

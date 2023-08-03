@@ -13,7 +13,7 @@ public:
 
 private:
   void drawLevels(sf::RenderWindow&) const;
-  void bulidLevels(float, float);
+  void buildLevels(float, float);
 
   sf::Text m_text_title;
   std::vector<std::unique_ptr<Button>> m_buttons;

@@ -6,11 +6,11 @@ class GameOver
 {
 public:
   GameOver(float, float, float);
-  Action run(sf::RenderWindow&) const;
+  Action run(sf::RenderWindow&, size_t) const;
 
 private:
-  void bulidGameOver(float, float);
-  void drawGameOver(sf::RenderWindow&) const;
+  void buildGameOver(float, float);
+  void drawGameOver(sf::RenderWindow&, size_t) const;
   std::vector<std::unique_ptr<Button>> m_buttons;
 
 //  sf::RectangleShape m_rooms_rec;

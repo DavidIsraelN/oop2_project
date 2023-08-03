@@ -15,7 +15,7 @@ public:
   void setBackButton(bool);
 
 private:
-  void bulidMenu(float, float);
+  void buildMenu(float, float);
   void drawMenu(sf::RenderWindow&) const;
 
   sf::Text m_text_title;

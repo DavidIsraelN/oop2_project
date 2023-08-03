@@ -17,7 +17,7 @@ class Level
 {
 public:
   Level(float, float, float);
-  void loadLevel(Action);
+  void loadLevel(Action, size_t);
   void draw(sf::RenderWindow&);
   void movePlayer();
   void createBullet();
@@ -28,13 +28,14 @@ public:
   void handleCollision();
   void splitBall();
   void updateStatusBar(StatusBar&);
-  bool levelOver() const;
+  bool levelOver();
   size_t getLevelNum() const;
   bool PlayerCollidedBall() const;
+  size_t getScore() const;
 
 private:
   float getFirstDoor() const;
-  void clearLevel();
+  void clearLevel(size_t);
   void resetLevel();
   void setLevel(Action);
   void chooseLevel();
@@ -44,7 +45,7 @@ private:
   sf::View currentView();
 
   std::unique_ptr<LevelReader> m_current_board;
-  size_t m_level_num = 0;
+  size_t m_level_num = 0, m_temp_score = 0;
 
   std::unique_ptr<Player> m_player;
   std::vector<std::shared_ptr<Ball>> m_balls, m_original_balls;
@@ -56,5 +57,5 @@ private:
 
   float m_win_width, m_win_height, m_info_height, m_world_width, 
     m_old_view_x, m_obj_height, m_obj_width, m_bullet_time = -1.f;
-  bool m_player_ball_collision = false;                                               
+  bool m_player_ball_collision = false;
 };

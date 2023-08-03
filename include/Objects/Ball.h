@@ -3,8 +3,8 @@
 #include "Factory.h"
 #include <memory>
 
-//const float SPEED_X = 350.f, SPEED_Y = -1500.f;
-const float SPEED_X = 200.f, SPEED_Y = -700.f;
+const float SPEED_X = 350.f, SPEED_Y = -1500.f;
+//const float SPEED_X = 200.f, SPEED_Y = -700.f;
 
 class Ball : public MovingObject
 {

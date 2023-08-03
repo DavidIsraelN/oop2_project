@@ -104,7 +104,7 @@ private:
   std::string m_files_name[FILES] = { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
   std::ifstream m_files[FILES];
 
-  std::string m_fonts_name[FONTS] = { "DragonHunter-9Ynxj.otf" /*"Vanderick.otf"*/, "Arial.ttf"};
+  std::string m_fonts_name[FONTS] = { "balloudefont.regular.otf" /*"Vanderick.otf"*/, "Arial.ttf"};
   sf::Font m_fonts[FONTS];
 
   sf::Image m_icon;

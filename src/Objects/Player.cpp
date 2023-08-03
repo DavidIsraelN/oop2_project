@@ -2,6 +2,8 @@
 #include "TimerManager.h"
 #include <iostream>
 
+const int BALL_COLLIDE_SCORE = -15;
+
 Player::Player(const sf::Vector2f& position, float width, float height) : m_original_position(position)
 {
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::PLAYER));
@@ -27,7 +29,7 @@ void Player::moveObject(/*const sf::Vector2f& window_size*/)
 //    if (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width + m_velocity_X * delta_time <= window_size.x)
 //      m_sprite.move(m_velocity_X * delta_time, 0);
 
-  m_sprite.move(m_x_direction * m_velocity_X * delta_time, 0);
+  m_sprite.move(m_x_direction * m_speed * delta_time, 0);
 }
 
 void Player::setDirection(int x_direction)
@@ -39,6 +41,7 @@ void Player::setDirection(int x_direction)
 void Player::collide(Ball&)
 {
   --m_life;
+  incOrDecScore(BALL_COLLIDE_SCORE);
 //  std::cout << "life - " << m_life << "\n";
 }
 
@@ -47,8 +50,12 @@ size_t Player::getScore() const
   return m_score;
 }
 
-void Player::increaseScore()
+void Player::incOrDecScore(int inc_or_dec)
 {
-  m_score++;
-
+  if (int(m_score) + inc_or_dec < 0)
+  {
+    m_score = 0;
+    return;
+  }
+  m_score += inc_or_dec;
 }

@@ -4,7 +4,7 @@
 //----------------------------------------------------------
 Button::Button(const sf::Vector2f& size, const sf::Vector2f& position,
                const std::string& text, Action action)
-  : m_text(sf::Text(text, ResourceManager::Resource().getFont(FontIndex::TRY), size.y / 2)),
+  : m_text(sf::Text(text, ResourceManager::Resource().getFont(FontIndex::TRY), size.y / 1.5f)),
   m_rectangle(size), m_action(action)
 {
   setButton(size, position);
@@ -19,7 +19,7 @@ void Button::setButton(const sf::Vector2f& size, const sf::Vector2f& position)
                                      m_rectangle.getGlobalBounds().height / 2));
   m_rectangle.setFillColor(sf::Color(0, 0, 255, 100));
   m_text.setPosition(m_rectangle.getPosition());
-  m_text.setOrigin(m_text.getGlobalBounds().width / 2, m_rectangle.getOrigin().y / 1.5f);
+  m_text.setOrigin(m_text.getGlobalBounds().width / 2, m_rectangle.getOrigin().y / 1.2f);
   m_text.setFillColor(sf::Color::Cyan);
 }
 

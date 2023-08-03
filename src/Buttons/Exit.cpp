@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------
 Exit::Exit(const sf::Vector2f& size, const sf::Vector2f& position)
-  : Button(size, position,"Exit"/*, Action::EXIT*/)
+  : Button(size, position,"EXIT"/*, Action::EXIT*/)
 { }
 
 //----------------------------------------------------------

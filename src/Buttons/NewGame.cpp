@@ -7,10 +7,10 @@
 
 //----------------------------------------------------------
 NewGame::NewGame(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)
-  :Button(size, position, "New Game"),
-  m_text_title(sf::Text("Choose Level", ResourceManager::Resource().getFont(FontIndex::TRY) , height / 8))
+  :Button(size, position, "NEW GAME"),
+  m_text_title(sf::Text("CHOOSE LEVEL", ResourceManager::Resource().getFont(FontIndex::TRY) , height / 7))
 {
-  bulidLevels(width, height);
+  buildLevels(width, height);
 }
 
 //----------------------------------------------------------
@@ -46,7 +46,7 @@ Action NewGame::action(sf::RenderWindow& window)
 }
 
 //----------------------------------------------------------
-void NewGame::bulidLevels(float width, float height)
+void NewGame::buildLevels(float width, float height)
 {
   m_text_title.setFillColor(sf::Color::Black);
   m_text_title.setPosition(width / 2, height / 10);
@@ -60,6 +60,6 @@ void NewGame::bulidLevels(float width, float height)
     sf::Vector2f(width / 2 , 7 * height / 12), Action::LEVEL2));
   m_buttons.emplace_back(std::make_unique<ChooseLevel>(sf::Vector2f(width / 3.f , height / 7.f),
     sf::Vector2f(width / 2 , 9.5f * height / 12), Action::LEVEL3));
-  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 10 , height / 15),
-    sf::Vector2f(width / 13 , 1 * height / 12), Action::BACK_TO_MENU));
+  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 7 , height / 15),
+    sf::Vector2f(width / 10 , height / 12), Action::BACK_TO_MENU));
 }

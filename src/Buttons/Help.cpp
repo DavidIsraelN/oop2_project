@@ -5,7 +5,7 @@
 
 //----------------------------------------------------------
 Help::Help(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)
-  : Button(size, position, "Help"/*, Action::HELP*/),
+  : Button(size, position, "HELP"/*, Action::HELP*/),
   m_back(std::make_unique<Back>(sf::Vector2f({ width / 10 , height / 15 }),
     sf::Vector2f({ width / 13 , 1 * height / 12 }), Action::BACK_TO_MENU))
 {

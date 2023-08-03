@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------
 Back::Back(const sf::Vector2f& size, const sf::Vector2f& position, Action back)
-  : Button(size, position, "BACK >", back)
+  : Button(size, position, "BACK", back)
 { }
 
 //----------------------------------------------------------

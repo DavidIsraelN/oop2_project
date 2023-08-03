@@ -43,9 +43,9 @@ void Board::run(Action& action, sf::RenderWindow& window)
     if (m_current_level.levelOver())
     {
       action = Action(m_current_level.getLevelNum()); // index of next level is current level num
+      m_temp_score = m_current_level.getScore();
       return;
     }
-
     doStep();
   }
 }
@@ -62,14 +62,17 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
     return true;
 
   case Action::GAME_OVER:
-    action = m_game_over.run(window);
+    action = m_game_over.run(window, m_current_level.getScore());
     return false;
 
   case Action::LEVEL1:
   case Action::LEVEL2:
   case Action::LEVEL3:
-    m_current_level.loadLevel(action);
-    m_start_level = true;
+//    if (m_current_level.levelOver())
+//      std::cout << "hhh\n";
+    m_current_level.loadLevel(action, m_temp_score);
+    m_temp_score = 0;
+    m_start_level = !(m_next_room = false);
     return true;
   }
   return false; // never got here.

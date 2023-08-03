@@ -4,7 +4,7 @@
 
 //----------------------------------------------------------
 ChooseLevel::ChooseLevel(const sf::Vector2f& size, const sf::Vector2f& position, Action level)
-  : Button(size, position, "Level " + std::to_string(int(level) + 1), level)
+  : Button(size, position, "LEVEL " + std::to_string(int(level) + 1), level)
 { }
 
 //----------------------------------------------------------

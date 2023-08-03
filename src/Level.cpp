@@ -6,6 +6,9 @@
 #include <memory>
 #include <vector>
 
+const size_t NEXT_LEVEL_SCORE = 20;
+const size_t BALLS_KIND = 4;
+
 //----------------------------------------------------------
 Level::Level(float win_width, float win_height, float info_height) 
   : m_win_width(win_width), m_win_height(win_height),
@@ -13,16 +16,17 @@ Level::Level(float win_width, float win_height, float info_height)
 { }
 
 //----------------------------------------------------------
-void Level::loadLevel(Action level)
+void Level::loadLevel(Action level, size_t score)
 {
-  clearLevel();
+  clearLevel(score);
   setLevel(level);
   TimerManager::Timer().resetClock();
 }
 
 //----------------------------------------------------------
-void Level::clearLevel()
+void Level::clearLevel(size_t score)
 {
+  m_temp_score = score;
   m_bullet_time = -1.f;
   m_old_view_x = m_win_width / 2;
   m_balls.clear();
@@ -41,6 +45,7 @@ void Level::setLevel(Action level)
   m_current_board->setDimensions();
   m_background = sf::Sprite(ResourceManager::Resource().getBackgroundTexture(BackgroundIndex(level)));
   buildLevel();
+  m_player->incOrDecScore(m_temp_score);
   m_current_board->backToStart();
   m_original_balls = m_balls;
 }
@@ -102,6 +107,7 @@ void Level::resetLevel()
   m_balls.clear();
   m_balls = m_original_balls;
   std::for_each(m_balls.begin(), m_balls.end(), [](auto &ball){ball->setOriginalPosition();});
+  m_player_ball_collision = false;
 }
 
 //----------------------------------------------------------
@@ -257,8 +263,8 @@ void Level::handleCollision()
                   [&ball](const auto& wall){if (wall->collidesWith(*ball)) wall->collide(*ball); });
     std::for_each(m_doors.begin(), m_doors.end(),
                   [&ball](const auto& door){if (door->collidesWith(*ball)) door->collide(*ball); });
-    std::for_each(m_bullets.begin(), m_bullets.end(),
-                  [&ball](const auto& bullet){if (bullet->collidesWith(*ball)) bullet->collide(*ball);});
+    std::for_each(m_bullets.begin(), m_bullets.end(), [&] (const auto& bullet) {if (bullet->collidesWith(*ball)){
+                  m_player->incOrDecScore(BALLS_KIND + 1 - ball->getRatio()); bullet->collide(*ball);} });
     if (m_player->collidesWith(*ball))
     {
       m_player->collide(*ball);
@@ -296,9 +302,11 @@ void Level::updateStatusBar(StatusBar& status_bar)
 }
 
 //----------------------------------------------------------
-bool Level::levelOver() const
+bool Level::levelOver()
 {
-  return m_player->getGlobalBounds().left > /*m_current_board->getWorldWidth()*/m_world_width;
+  auto over = m_player->getGlobalBounds().left > m_world_width;
+  if (over) m_player->incOrDecScore(NEXT_LEVEL_SCORE);
+  return over;
 }
 
 //----------------------------------------------------------
@@ -307,7 +315,14 @@ size_t Level::getLevelNum() const
   return m_level_num;
 }
 
+//----------------------------------------------------------
 bool Level::PlayerCollidedBall() const
 {
   return m_player_ball_collision;
 };
+
+//----------------------------------------------------------
+size_t Level::getScore() const
+{
+  return m_player->getScore();
+}
