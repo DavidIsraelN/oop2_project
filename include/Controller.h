@@ -7,10 +7,10 @@
  * This class is responsible for starting and ending the game.
  */
 
-const size_t SCREEN_4K = 2; // Parameter for 4K screen. 1 - no. 2 - yes.
-const size_t WIN_WIDTH = 900* SCREEN_4K;
-const size_t WIN_HEIGHT = 550* SCREEN_4K;
-const size_t INFO_HEIGHT = 50* SCREEN_4K;
+const size_t SCREEN_4K = 1; // Parameter for 4K screen. 1 - no. 2 - yes.
+const size_t WIN_WIDTH = 900 * SCREEN_4K;
+const size_t WIN_HEIGHT = 600 * SCREEN_4K;
+//const size_t INFO_HEIGHT = 50* SCREEN_4K;
 
 class Controller
 {
@@ -19,6 +19,8 @@ public:
   void run();
 
 private:
+  void runException();
+
   sf::RenderWindow m_window;
   Board m_board;
   Menu m_menu;

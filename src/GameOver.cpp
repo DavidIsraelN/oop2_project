@@ -5,10 +5,10 @@
 #include "EnumClassAction.h"
 
 //----------------------------------------------------------
-GameOver::GameOver(float win_width, float win_height, float info_height) :
-  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 9)
+GameOver::GameOver(float win_width, float win_height) :
+  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7)
 {
-  buildGameOver(win_width, win_height + info_height);
+  buildGameOver(win_width, win_height);
 }
 
 //----------------------------------------------------------
@@ -34,7 +34,7 @@ void GameOver::buildGameOver(float width, float height)
 void GameOver::drawGameOver(sf::RenderWindow& window, size_t final_score) const
 {
   auto score = sf::Text("your score is : " + std::to_string(final_score),
-                        ResourceManager::Resource().getFont(FontIndex::TRY), window.getSize().x / 15);
+                        ResourceManager::Resource().getFont(FontIndex::TRY), window.getSize().x / 13);
   score.setPosition({ float(window.getSize().x) / 2, float(window.getSize().y) / 2 });
   score.setOrigin({ score.getGlobalBounds().width / 2, score.getGlobalBounds().height / 2 });
   score.setFillColor(sf::Color::Black);

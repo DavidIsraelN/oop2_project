@@ -10,23 +10,25 @@ const size_t NEXT_LEVEL_SCORE = 20;
 const size_t BALLS_KIND = 4;
 
 //----------------------------------------------------------
-Level::Level(float win_width, float win_height, float info_height) 
+Level::Level(float win_width, float win_height/*, float info_height*/) 
   : m_win_width(win_width), m_win_height(win_height),
-  m_info_height(info_height), m_old_view_x(win_width / 2)
+  /*m_info_height(info_height),*/ m_old_view_x(win_width / 2)
 { }
 
 //----------------------------------------------------------
-void Level::loadLevel(Action level, size_t score)
+void Level::loadLevel(Action level, bool new_game)
 {
-  clearLevel(score);
-  setLevel(level);
+  clearLevel(new_game);
+  setLevel(level, new_game);
   TimerManager::Timer().resetClock();
 }
 
 //----------------------------------------------------------
-void Level::clearLevel(size_t score)
+void Level::clearLevel(bool new_game)
 {
-  m_temp_score = score;
+  m_player_ball_collision = false;
+  //m_temp_score = score;
+  //m_temp_life = life;
   m_bullet_time = -1.f;
   m_old_view_x = m_win_width / 2;
   m_balls.clear();
@@ -34,24 +36,24 @@ void Level::clearLevel(size_t score)
   m_walls.clear();
   m_doors.clear();
   m_gifts.clear();
-  m_player.release();
+  if (new_game) m_player.release();
 }
 
 //----------------------------------------------------------
-void Level::setLevel(Action level)
+void Level::setLevel(Action level, bool new_game)
 {
   m_level_num = size_t(level) + 1;
   m_current_board = std::make_unique<LevelReader>(ResourceManager::Resource().getTxtFile(TxtIndex(level)));
   m_current_board->setDimensions();
   m_background = sf::Sprite(ResourceManager::Resource().getBackgroundTexture(BackgroundIndex(level)));
-  buildLevel();
+  buildLevel(new_game);
   m_player->incOrDecScore(m_temp_score);
   m_current_board->backToStart();
   m_original_balls = m_balls;
 }
 
 //-------------------------------------------------------------------
-void Level::buildLevel()
+void Level::buildLevel(bool new_game)
 {
   m_obj_height = float(m_win_height) / m_current_board->getRows();
   m_obj_width = float(m_win_width) / m_current_board->getWindowCols();
@@ -64,12 +66,12 @@ void Level::buildLevel()
     {
       char c = m_current_board->getChar();
       if (c == char(ObjectType::SPACE)) continue;
-      addObject(ObjectType(c), i, j);
+      addObject(ObjectType(c), i, j, new_game);
     }
 }
 
 //-------------------------------------------------------------------
-void Level::addObject(ObjectType type, size_t i, size_t j)
+void Level::addObject(ObjectType type, size_t i, size_t j, bool new_game)
 {
   auto x_pos = m_obj_width * j + m_obj_width / 2;
   auto y_pos = m_obj_height * i + m_obj_height / 2;
@@ -78,14 +80,18 @@ void Level::addObject(ObjectType type, size_t i, size_t j)
   switch (type)
   {
   case ObjectType::PLAYER:
-    m_player = std::make_unique<Player>(position, m_obj_width, m_obj_height); break;
+    if (new_game)
+      m_player = std::make_unique<Player>(position, m_obj_width, m_obj_height);
+    else
+      m_player->setPosition(position);
+  break;
 
   case ObjectType::BALL_1:
   case ObjectType::BALL_2:
   case ObjectType::BALL_3:
   case ObjectType::BALL_4:
     m_balls.push_back(std::make_shared<Ball>((size_t(type) - '0'), m_obj_width, position,
-                                              m_win_height - m_obj_height, 1)); break;
+                                              m_win_height - 2 * m_obj_height, 1)); break;
 
   case ObjectType::WALL:
     m_walls.push_back(std::make_unique<Wall>(position, m_obj_width, m_obj_height)); break;
@@ -114,7 +120,7 @@ void Level::resetLevel()
 sf::View Level::currentView()
 {
   auto player_position = m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2;
-  auto viewSize = sf::Vector2f(m_win_width, m_win_height + m_info_height);
+  auto viewSize = sf::Vector2f(m_win_width, m_win_height /*+ m_info_height*/);
   float viewCenterX;
 
   if (player_position - m_win_width / 2.f < 0)
@@ -127,7 +133,7 @@ sf::View Level::currentView()
     viewCenterX = player_position;
 
   m_old_view_x = viewCenterX;
-  sf::Vector2f viewPosition(viewCenterX, (m_win_height + m_info_height) / 2);
+  sf::Vector2f viewPosition(viewCenterX, (m_win_height /*+ m_info_height*/) / 2);
   return sf::View(viewPosition, viewSize);
 }
 
@@ -238,12 +244,12 @@ void Level::splitBall()
         /*m_current_board->getObjWidth(),*/m_obj_width,
         sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
                      m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-        m_win_height - /*m_current_board->getObjHeight()*/m_obj_height, 1));
+        m_win_height - /*m_current_board->getObjHeight()*/2 * m_obj_height, 1));
       m_balls.emplace_back(std::make_shared<Ball>(m_balls[i]->getRatio() - 1,
         /*m_current_board->getObjWidth(),*/m_obj_width,
         sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
                      m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-        m_win_height - /*m_current_board->getObjHeight()*/m_obj_height, -1));
+        m_win_height - /*m_current_board->getObjHeight()*/2 * m_obj_height, -1));
     }
 }
 
@@ -298,7 +304,7 @@ void Level::updateStatusBar(StatusBar& status_bar)
   status_bar.setTime();
   status_bar.setScore(m_player->getScore());
   status_bar.setLevel(m_level_num);
-//  status_bar.setLife(m_player->getLife());
+  status_bar.setLife(m_player->getLife());
 }
 
 //----------------------------------------------------------
@@ -307,6 +313,12 @@ bool Level::levelOver()
   auto over = m_player->getGlobalBounds().left > m_world_width;
   if (over) m_player->incOrDecScore(NEXT_LEVEL_SCORE);
   return over;
+}
+
+//----------------------------------------------------------
+bool Level::lifeEnd() const
+{
+  return m_player->getLife() <= 0;
 }
 
 //----------------------------------------------------------
@@ -325,4 +337,10 @@ bool Level::PlayerCollidedBall() const
 size_t Level::getScore() const
 {
   return m_player->getScore();
+}
+
+//----------------------------------------------------------
+float Level::getObjHeight() const
+{
+  return m_obj_height;
 }

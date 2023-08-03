@@ -18,6 +18,12 @@ void Player::setOriginalPosition()
   m_sprite.setPosition(m_original_position);
 }
 
+void Player::setPosition(const sf::Vector2f& position)
+{
+  m_sprite.setPosition(position);
+  m_original_position = position;
+}
+
 void Player::moveObject(/*const sf::Vector2f& window_size*/)
 {
   auto delta_time = TimerManager::Timer().Timer().getDeltaTime();
@@ -48,6 +54,11 @@ void Player::collide(Ball&)
 size_t Player::getScore() const
 {
   return m_score;
+}
+
+size_t Player::getLife() const
+{
+  return m_life;
 }
 
 void Player::incOrDecScore(int inc_or_dec)

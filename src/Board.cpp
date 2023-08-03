@@ -6,18 +6,18 @@
 #include "Colors.h"
 
 //----------------------------------------------------------
-Board::Board(float win_width, float win_height, float info_height) :
-  m_status_bar(win_width, win_height, info_height),
-  m_current_level(win_width, win_height, info_height),
+Board::Board(float win_width, float win_height/*, float info_height*/) :
+  m_status_bar(win_width, win_height/*, info_height*/),
+  m_current_level(win_width, win_height/*, info_height*/),
   m_msg_rec({win_width, win_height}), 
-  m_game_over(win_width, win_height, info_height),
-  m_msg_txt("", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 10)
+  m_game_over(win_width, win_height/*, info_height*/),
+  m_msg_txt("", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7)
 {
   m_msg_rec.setFillColor(semi_transparent);
   m_msg_txt.setFillColor(sf::Color::White);
   m_msg_txt.setOutlineThickness(10);
   m_msg_txt.setOutlineColor(sf::Color::Black);
-  m_msg_txt.setPosition({win_width / 2, win_height / 2});
+  m_msg_txt.setPosition({win_width / 2, win_height / 2.5f});
 }
 
 //----------------------------------------------------------
@@ -40,12 +40,21 @@ void Board::run(Action& action, sf::RenderWindow& window)
     m_current_level.updateStatusBar(m_status_bar);
     if (m_next_room || m_start_level || m_player_ball_collision) continue;
 
+    if (m_current_level.lifeEnd())
+    {
+      action = Action::GAME_OVER;
+      return;
+    }
+
     if (m_current_level.levelOver())
     {
       action = Action(m_current_level.getLevelNum()); // index of next level is current level num
-      m_temp_score = m_current_level.getScore();
+      //m_temp_score = m_current_level.getScore();
+      //m_temp_life = m_current_level.getLife();
+      m_new_game = false;
       return;
     }
+    
     doStep();
   }
 }
@@ -70,9 +79,11 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
   case Action::LEVEL3:
 //    if (m_current_level.levelOver())
 //      std::cout << "hhh\n";
-    m_current_level.loadLevel(action, m_temp_score);
-    m_temp_score = 0;
-    m_start_level = !(m_next_room = false);
+    m_current_level.loadLevel(action, m_new_game);
+    m_status_bar.setStatusBar(m_current_level.getObjHeight());
+    //m_temp_score = 0;
+    m_player_ball_collision = m_next_room = false;
+    m_start_level = m_new_game = true;
     return true;
   }
   return false; // never got here.

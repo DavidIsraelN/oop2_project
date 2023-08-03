@@ -5,7 +5,7 @@
 class GameOver
 {
 public:
-  GameOver(float, float, float);
+  GameOver(float, float/*, float*/);
   Action run(sf::RenderWindow&, size_t) const;
 
 private:

@@ -21,7 +21,7 @@ Menu::Menu(float win_width, float win_height) :
 void Menu::buildMenu(float width, float height)
 {
   m_text_title.setFillColor(sf::Color::Black);
-  m_text_title.setPosition(width / 2, height / 8);
+  m_text_title.setPosition(width / 2, height / 4);
   m_text_title.setOrigin(m_text_title.getGlobalBounds().width / 2,
                          m_text_title.getGlobalBounds().height / 2);
   m_text_title.setStyle(sf::Text::Underlined);
@@ -33,16 +33,16 @@ void Menu::buildMenu(float width, float height)
     sf::Vector2f(width - width / 10, height / 12), Action::BACK_TO_MENU));
 
   m_buttons.emplace_back(std::make_unique<NewGame>(width, height,
-    sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 4 * height / 12)));
+    sf::Vector2f(width / 3, height / 7), sf::Vector2f(2 * width / 7, 7 * height / 12)));
 
   m_buttons.emplace_back(std::make_unique<Help>(width, height, 
-    sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 6.f * height / 12)));
+    sf::Vector2f(width / 3, height / 7), sf::Vector2f(5 * width / 7, 7 * height / 12)));
 
   m_buttons.emplace_back(std::make_unique<Records>(width, height,
-    sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 8.f * height / 12)));
+    sf::Vector2f(width / 3, height / 7), sf::Vector2f(5 * width / 7, 9.5 * height / 12)));
 
   m_buttons.emplace_back(std::make_unique<Exit>(
-    sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(width / 2, 10.f * height / 12)));
+    sf::Vector2f(width / 3, height / 7), sf::Vector2f(2 * width / 7, 9.5 * height / 12)));
 }
 
 //----------------------------------------------------------

@@ -16,7 +16,7 @@ const float MSG_DELAY = 1.f;
 class Board
 {
 public:
-  Board(float, float, float);
+  Board(float, float/*, float*/);
   void run(Action&, sf::RenderWindow&);
 
 private:
@@ -33,7 +33,7 @@ private:
   sf::RectangleShape m_msg_rec;
   sf::Text m_msg_txt;
   float m_msg_timer = MSG_DELAY;
-  bool m_next_room = false, m_start_level = true, m_player_ball_collision = false;
-  size_t m_temp_score = 0;
+  bool m_next_room = false, m_start_level = true, m_new_game = true, m_player_ball_collision = false;
+  //size_t m_temp_score = 0;
   GameOver m_game_over;
 };
