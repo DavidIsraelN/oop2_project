@@ -10,57 +10,18 @@
 class Sound
 {
 public:
-  static Sound& Sounds()
-  {
-    static auto m_sound = Sound();
-    return m_sound;
-  }
-
-  //-------------------------------------------------------------------
+  static Sound& Sounds();
   Sound(const Sound&) = delete;
   void operator=(const Sound&) = delete;
-
-  //-------------------------------------------------------------------
-  void Play(SoundIndex type)
-  {
-    if (m_muted) return;
-    m_sounds[size_t(type)].play();
-  }
-
-  //-------------------------------------------------------------------
-  sf::SoundSource::Status GetStatus(SoundIndex type)
-  {
-    return m_sounds[size_t(type)].getStatus();
-  };
-
-  //-------------------------------------------------------------------
-  void Stop(SoundIndex type)
-  {
-    m_sounds[size_t(type)].stop();
-  }
-
-  //-------------------------------------------------------------------
-  void Mute()
-  {
-    m_muted = !m_muted;
-    if(!m_muted) return;
-    for (auto i = size_t(0); i < SOUND; ++i)
-      Stop(SoundIndex(i));
-  }
-
-  //-------------------------------------------------------------------
-  bool isMute() const { return m_muted;}
+  void Play(SoundIndex type);
+  sf::SoundSource::Status GetStatus(SoundIndex type);
+  void Stop(SoundIndex type);
+  void Mute();
+  bool isMute() const;
 
 private:
-  Sound()
-  {
-    for (auto i = size_t(0); i < SOUND; ++i)
-      m_sounds[i].setBuffer(ResourceManager::Resource().getSound(SoundIndex(i)));
+  Sound();
 
-//    m_sounds[size_t(SoundIndex::START)].setLoop(true);
-  }
-
-  //-------------------------------------------------------------------
   sf::Sound m_sounds[SOUND];
   bool m_muted = false;
 };
