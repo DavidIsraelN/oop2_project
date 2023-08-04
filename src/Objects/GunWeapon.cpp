@@ -11,7 +11,7 @@ GunWeapon::GunWeapon(const sf::Vector2f& position)
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
-void GunWeapon::moveObject(/*const sf::Vector2f& window_size*/)
+void GunWeapon::moveObject()
 {
   auto delta_time = TimerManager::Timer().Timer().getDeltaTime();
 
