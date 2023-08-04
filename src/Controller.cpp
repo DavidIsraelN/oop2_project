@@ -1,20 +1,24 @@
 #include "Controller.h"
 #include "EnumClassAction.h"
 #include "ResourcesManager.h"
-#include <exception>
+#include "Sound.h"
 #include <chrono>
+#include <exception>
 #include <thread>
 
 //----------------------------------------------------------
 Controller::Controller() :
-  m_window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT/* + INFO_HEIGHT*/), "Bubble Trouble"),
-  m_board(WIN_WIDTH, WIN_HEIGHT/*, INFO_HEIGHT*/), 
-  m_menu(WIN_WIDTH, WIN_HEIGHT/* + INFO_HEIGHT*/)
-{ }
+  m_window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Bubble Trouble"),
+  m_board(WIN_WIDTH, WIN_HEIGHT), m_menu(WIN_WIDTH, WIN_HEIGHT)
+{
+  auto icon = ResourceManager::Resource().getIcon();
+  m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+}
 
 //----------------------------------------------------------
 void Controller::run()
 {
+  Sound::Sounds().Play(SoundIndex::START);
   auto action = Action::MENU;
   try {
     while (m_window.isOpen())
@@ -36,10 +40,9 @@ void Controller::run()
 //----------------------------------------------------------
 void Controller::runException()
 {
-  auto e_msg = sf::Text("We've run into a broblem\n\t\tTurns off. . .",
+  auto e_msg = sf::Text("We've run into a problem\n\t\tTurns off...",
     ResourceManager::Resource().getFont(FontIndex::TRY),
     m_window.getSize().x / 20);
-  auto d = m_window.getSize();
   e_msg.setFillColor(sf::Color::Black);
   e_msg.setPosition({ float(m_window.getSize().x) / 2, float(m_window.getSize().y) / 2 });
   e_msg.setOrigin({ e_msg.getGlobalBounds().width / 2,
@@ -48,6 +51,6 @@ void Controller::runException()
   m_window.clear(sf::Color::Cyan);
   m_window.draw(e_msg);
   m_window.display();
-  std::this_thread::sleep_for(std::chrono::seconds(3));
+  std::this_thread::sleep_for(std::chrono::seconds(5));
   m_window.close();
 }

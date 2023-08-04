@@ -5,7 +5,7 @@
 #include "Colors.h"
 
 StatusBar::StatusBar(float bar_width, float win_height)
-    : m_width(bar_width), m_height(win_height),/*, m_rectangle(sf::Vector2f(m_width, m_height)), */
+    : m_width(bar_width), m_height(win_height),
       m_timer("00:00",   ResourceManager::Resource().getFont(FontIndex::TRY)),
       m_level("LEVEL  ", ResourceManager::Resource().getFont(FontIndex::TRY)),
       m_score("SCORE:   ", ResourceManager::Resource().getFont(FontIndex::TRY)),
@@ -20,6 +20,11 @@ void StatusBar::setStatusBar(float obj_height)
   m_score.setFillColor(sf::Color::White);
   m_level.setFillColor(sf::Color::White);
   m_life.setFillColor(sf::Color::White);
+
+  m_timer.setOutlineThickness(2);
+  m_score.setOutlineThickness(2);
+  m_level.setOutlineThickness(2);
+  m_life.setOutlineThickness(2);
 
   m_timer.setCharacterSize(bar_height / 2);
   m_score.setCharacterSize(bar_height / 2);
@@ -40,6 +45,8 @@ void StatusBar::setStatusBar(float obj_height)
 void StatusBar::setTime()
 {
   m_timer.setString(TimerManager::Timer().getRemainingTime(m_level_time));
+  if (getRemainingTime() <= 30)
+    m_timer.setFillColor(sf::Color(181, 49, 60));
 }
 
 void StatusBar::setLevel(size_t level)
@@ -64,4 +71,14 @@ void StatusBar::draw(sf::RenderWindow& window) const
   window.draw(m_score);
   window.draw(m_life);
   window.draw(m_timer);
+}
+
+float StatusBar::getRemainingTime() const
+{
+  return m_level_time - TimerManager::Timer().getElapsedTime();
+}
+
+bool StatusBar::timeOver() const
+{
+  return getRemainingTime() <= 0;
 }

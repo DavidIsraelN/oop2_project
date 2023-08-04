@@ -1,9 +1,10 @@
 #include "Objects/Ball.h"
-#include "Objects/Door.h"
-#include "Objects/Wall.h"
-#include "Objects/Player.h"
-#include "TimerManager.h"
 #include "Colors.h"
+#include "Objects/Door.h"
+#include "Objects/Player.h"
+#include "Objects/Wall.h"
+#include "Sound.h"
+#include "TimerManager.h"
 #include <iostream>
 
 Ball::Ball(size_t ratio, float base_size, const sf::Vector2f& position, float floor, int x_direction)
@@ -75,8 +76,8 @@ void Ball::collide(Wall& wall)
 //-------------------------------------------------------------------
 void Ball::collide(Weapon&)
 {
-
   setDel();
+  Sound::Sounds().Play(SoundIndex::HIT);
   // random gift
 }
 

@@ -9,7 +9,7 @@ class Player : public MovingObject
 {
 public:
   Player(const sf::Vector2f&, float, float);
-  void moveObject(/*const sf::Vector2f&*/) override;
+  void moveObject() override;
   void setDirection(int);
   void collide(Ball&) override;
   size_t getScore() const;
@@ -17,6 +17,7 @@ public:
   void incOrDecScore(int);
   void setOriginalPosition();
   void setPosition(const sf::Vector2f&);
+  void decreaseLife();
 
 private:
   int m_x_direction;

@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Objects/GunWeapon.h"
+#include "Sound.h"
 #include "TimerManager.h"
 #include <algorithm>
 #include <exception>
@@ -10,9 +11,9 @@ const size_t NEXT_LEVEL_SCORE = 20;
 const size_t BALLS_KIND = 4;
 
 //----------------------------------------------------------
-Level::Level(float win_width, float win_height/*, float info_height*/) 
+Level::Level(float win_width, float win_height)
   : m_win_width(win_width), m_win_height(win_height),
-  /*m_info_height(info_height),*/ m_old_view_x(win_width / 2)
+   m_old_view_x(win_width / 2)
 { }
 
 //----------------------------------------------------------
@@ -26,9 +27,7 @@ void Level::loadLevel(Action level, bool new_game)
 //----------------------------------------------------------
 void Level::clearLevel(bool new_game)
 {
-  m_player_ball_collision = false;
-  //m_temp_score = score;
-  //m_temp_life = life;
+  disqualification = false;
   m_bullet_time = -1.f;
   m_old_view_x = m_win_width / 2;
   m_balls.clear();
@@ -47,7 +46,6 @@ void Level::setLevel(Action level, bool new_game)
   m_current_board->setDimensions();
   m_background = sf::Sprite(ResourceManager::Resource().getBackgroundTexture(BackgroundIndex(level)));
   buildLevel(new_game);
-  m_player->incOrDecScore(m_temp_score);
   m_current_board->backToStart();
   m_original_balls = m_balls;
 }
@@ -113,14 +111,14 @@ void Level::resetLevel()
   m_balls.clear();
   m_balls = m_original_balls;
   std::for_each(m_balls.begin(), m_balls.end(), [](auto &ball){ball->setOriginalPosition();});
-  m_player_ball_collision = false;
+  disqualification = false;
 }
 
 //----------------------------------------------------------
 sf::View Level::currentView()
 {
   auto player_position = m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2;
-  auto viewSize = sf::Vector2f(m_win_width, m_win_height /*+ m_info_height*/);
+  auto viewSize = sf::Vector2f(m_win_width, m_win_height);
   float viewCenterX;
 
   if (player_position - m_win_width / 2.f < 0)
@@ -133,7 +131,7 @@ sf::View Level::currentView()
     viewCenterX = player_position;
 
   m_old_view_x = viewCenterX;
-  sf::Vector2f viewPosition(viewCenterX, (m_win_height /*+ m_info_height*/) / 2);
+  sf::Vector2f viewPosition(viewCenterX, (m_win_height) / 2);
   return sf::View(viewPosition, viewSize);
 }
 
@@ -164,6 +162,7 @@ void Level::createBullet()
                                              m_player->getGlobalBounds().height / 2);
   m_bullets.push_back(std::make_unique<GunWeapon>(middle_player_position));
   m_bullet_time = TimerManager::Timer().getElapsedTime();
+  Sound::Sounds().Play(SoundIndex::SHUT);
 }
 
 //----------------------------------------------------------
@@ -176,7 +175,7 @@ void Level::movePlayer()
 
   m_player->setDirection(direction);
 
-  m_player->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
+  m_player->moveObject();
   //  for (auto &wall : m_walls)
   //    if (wall->collidesWith(*m_player))
   bool go_back = false;
@@ -188,7 +187,7 @@ void Level::movePlayer()
   if (go_back)
   {
     m_player->setDirection(direction * -1);
-    m_player->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
+    m_player->moveObject();
   }
 }
 
@@ -196,14 +195,14 @@ void Level::movePlayer()
 void Level::moveBalls()
 {
   for (auto &ball : m_balls)
-    ball->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
+    ball->moveObject();
 }
 
 //----------------------------------------------------------
 void Level::moveBullets()
 {
   for (auto &bullet : m_bullets)
-    bullet->moveObject(/*sf::Vector2f(m_world_width, m_win_height)*/);
+    bullet->moveObject();
 }
 
 //----------------------------------------------------------
@@ -262,7 +261,7 @@ void Level::pause()
 //----------------------------------------------------------
 void Level::handleCollision()
 {
-  m_player_ball_collision = false;
+  disqualification = false;
   for (auto &ball : m_balls)
   {
     std::for_each(m_walls.begin(), m_walls.end(),
@@ -275,9 +274,7 @@ void Level::handleCollision()
     {
       m_player->collide(*ball);
       resetLevel();
-      m_player_ball_collision = true;
-//      clearLevel();
-//      buildLevel();
+      disqualification = true;
       return;
     }
   }
@@ -305,6 +302,13 @@ void Level::updateStatusBar(StatusBar& status_bar)
   status_bar.setScore(m_player->getScore());
   status_bar.setLevel(m_level_num);
   status_bar.setLife(m_player->getLife());
+  if (status_bar.getRemainingTime() <= 0)
+  {
+    TimerManager::Timer().resetClock();
+    m_player->decreaseLife();
+    resetLevel();
+    disqualification = true;
+  }
 }
 
 //----------------------------------------------------------
@@ -328,9 +332,9 @@ size_t Level::getLevelNum() const
 }
 
 //----------------------------------------------------------
-bool Level::PlayerCollidedBall() const
+bool Level::isDisqualification() const
 {
-  return m_player_ball_collision;
+  return disqualification;
 };
 
 //----------------------------------------------------------

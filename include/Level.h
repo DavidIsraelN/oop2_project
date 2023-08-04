@@ -16,7 +16,7 @@ const float BULLET_DELAY = 0; // !!!!!!!!!!!!!!!!! 0.4f !!!!!!!!!!!!!!!!!
 class Level
 {
 public:
-  Level(float, float/*, float*/);
+  Level(float, float);
   void loadLevel(Action, bool);
   void draw(sf::RenderWindow&);
   void movePlayer();
@@ -32,7 +32,7 @@ public:
   bool lifeEnd() const;
   size_t getScore() const;
   size_t getLevelNum() const;
-  bool PlayerCollidedBall() const;
+  bool isDisqualification() const;
   float getObjHeight() const;
 
 private:
@@ -46,7 +46,7 @@ private:
   sf::View currentView();
 
   std::unique_ptr<LevelReader> m_current_board;
-  size_t m_level_num = 0, m_temp_score = 0, m_temp_life = STARTING_LIFE;
+  size_t m_level_num = 0;
 
   std::unique_ptr<Player> m_player;
   std::vector<std::shared_ptr<Ball>> m_balls, m_original_balls;
@@ -58,5 +58,5 @@ private:
 
   float m_win_width, m_win_height, m_info_height, m_world_width, 
     m_old_view_x, m_obj_height, m_obj_width, m_bullet_time = -1.f;
-  bool m_player_ball_collision = false;
+  bool disqualification = false;
 };

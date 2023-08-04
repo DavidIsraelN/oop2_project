@@ -1,16 +1,14 @@
 #include "Board.h"
-#include "Buttons/NewGame.h"
 #include "TimerManager.h"
 #include "EnumClassAction.h"
-#include "Menu.h"
 #include "Colors.h"
 
 //----------------------------------------------------------
-Board::Board(float win_width, float win_height/*, float info_height*/) :
-  m_status_bar(win_width, win_height/*, info_height*/),
-  m_current_level(win_width, win_height/*, info_height*/),
+Board::Board(float win_width, float win_height) :
+  m_status_bar(win_width, win_height),
+  m_current_level(win_width, win_height),
+  m_game_over(win_width, win_height),
   m_msg_rec({win_width, win_height}), 
-  m_game_over(win_width, win_height/*, info_height*/),
   m_msg_txt("", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7)
 {
   m_msg_rec.setFillColor(semi_transparent);
@@ -28,17 +26,16 @@ void Board::run(Action& action, sf::RenderWindow& window)
   while (window.isOpen())
   {
     window.clear();
-
     m_current_level.draw(window);
     m_status_bar.draw(window);
+    m_current_level.updateStatusBar(m_status_bar);
     checkMsgs(window);
     window.display();
 
     for (auto event = sf::Event{}; window.pollEvent(event); )
       if (!handleEvent(window, event, action)) return;
 
-    m_current_level.updateStatusBar(m_status_bar);
-    if (m_next_room || m_start_level || m_player_ball_collision) continue;
+    if (m_next_room || m_start_level || disqualification) continue;
 
     if (m_current_level.lifeEnd())
     {
@@ -49,12 +46,9 @@ void Board::run(Action& action, sf::RenderWindow& window)
     if (m_current_level.levelOver())
     {
       action = Action(m_current_level.getLevelNum()); // index of next level is current level num
-      //m_temp_score = m_current_level.getScore();
-      //m_temp_life = m_current_level.getLife();
       m_new_game = false;
       return;
     }
-    
     doStep();
   }
 }
@@ -77,12 +71,9 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
   case Action::LEVEL1:
   case Action::LEVEL2:
   case Action::LEVEL3:
-//    if (m_current_level.levelOver())
-//      std::cout << "hhh\n";
     m_current_level.loadLevel(action, m_new_game);
     m_status_bar.setStatusBar(m_current_level.getObjHeight());
-    //m_temp_score = 0;
-    m_player_ball_collision = m_next_room = false;
+    disqualification = m_next_room = false;
     m_start_level = m_new_game = true;
     return true;
   }
@@ -131,10 +122,10 @@ void Board::checkMsgs(sf::RenderWindow& window)
   if (m_next_room) 
     drawMsg(window, "NEXT ROOM", m_next_room);
 
-  if (m_current_level.PlayerCollidedBall())
+  if (m_current_level.isDisqualification() || m_status_bar.timeOver())
   {
-    m_player_ball_collision = true;
-    drawMsg(window, "OUCH", m_player_ball_collision);
+    disqualification = true;
+    drawMsg(window, "OUCH", disqualification);
   }
 }
 

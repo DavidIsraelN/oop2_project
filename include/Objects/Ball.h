@@ -3,14 +3,14 @@
 #include "Factory.h"
 #include <memory>
 
-//const float SPEED_X = 350.f, SPEED_Y = -1500.f;
-const float SPEED_X = 200.f, SPEED_Y = -700.f;
+const float SPEED_X = 350.f, SPEED_Y = -1500.f;
+//const float SPEED_X = 200.f, SPEED_Y = -700.f;
 
 class Ball : public MovingObject
 {
 public:
   Ball(size_t, float, const sf::Vector2f&, float, int);
-  void moveObject(/*const sf::Vector2f&*/) override;
+  void moveObject() override;
   bool collidesWith(Object&) const override;
   void collide(Door&) override;
   void collide(Wall&) override;

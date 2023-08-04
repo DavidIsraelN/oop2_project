@@ -12,7 +12,7 @@
 //-------------------------------------------------------------------
 const size_t OBJECTS = 5;
 const size_t FILES = 4;
-//const size_t SOUND = 7;
+const size_t SOUND = 4;
 const size_t FONTS = 2;
 const size_t BACKGROUNDS = 3;
 
@@ -33,10 +33,10 @@ enum class BackgroundIndex
   BACKGROUND_1, BACKGROUND_2, BACKGROUND_3
 };
 //
-//enum class SoundIndex
-//{
-//  START, LEVEL_RUN, COOKIE, GIFTS, S_PACMAN, DEATH, GHOST
-//};
+enum class SoundIndex
+{
+  SHUT, HIT, DEATH, START /*, LEVEL_RUN, COOKIE, GIFTS, S_PACMAN, DEATH, GHOST*/
+};
 
 enum class FontIndex
 {
@@ -61,21 +61,21 @@ public:
   sf::Image&       getIcon()                                  { return m_icon; }
   sf::Font&        getFont(FontIndex type)                    { return m_fonts[size_t(type)]; }
   sf::Texture&     getObjTexture(ObjIndex type)               { return m_objects_texture[size_t(type)]; }
-  //sf::SoundBuffer& getSound(SoundIndex type)                  { return m_sounds[size_t(type)]; }
+  sf::SoundBuffer& getSound(SoundIndex type)                  { return m_sounds[size_t(type)]; }
   std::ifstream&   getTxtFile(TxtIndex type)                  { return m_files[size_t(type)]; }
   sf::Texture&     getBackgroundTexture(BackgroundIndex type) { return m_backgrounds_texture[size_t(type)]; }
 
 private:
   ResourceManager()
   {
-//    m_icon.loadFromFile("pacman_open.png");
+    m_icon.loadFromFile("RedBall.png");
 
     for (auto i = size_t(0); i < FILES; ++i)
       m_files[i] = std::ifstream(m_files_name[i]);
 
-//    for (auto i = size_t(0); i < SOUND; ++i)
-//      m_sounds[i].loadFromFile(m_sounds_name[i]);
-//
+    for (auto i = size_t(0); i < SOUND; ++i)
+      m_sounds[i].loadFromFile(m_sounds_name[i]);
+
     for (auto i = size_t(0); i < FONTS; ++i)
       m_fonts[i].loadFromFile(m_fonts_name[i]);
 
@@ -84,9 +84,6 @@ private:
 
     for (auto i = size_t(0); i < BACKGROUNDS; ++i)
       m_backgrounds_texture[i].loadFromFile(m_backgrounds_name[i]);
-
-//    m_fonts[0].loadFromFile("Arial.ttf");
-//    m_files[0] = std::ifstream(m_files_name[0]);
   }
 
   //-------------------------------------------------------------------
@@ -96,15 +93,14 @@ private:
   std::string m_backgrounds_name[BACKGROUNDS] = {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
   sf::Texture m_backgrounds_texture[BACKGROUNDS];
 
-  //std::string m_sounds_name[SOUND] =
-  //    { "intermission.wav", "game_start.wav", "credit.wav", "eat_fruit.wav" ,
-  //     "retreating.wav", "death_1.wav", "eat_ghost.wav" };
-  //sf::SoundBuffer m_sounds[SOUND];
+  std::string m_sounds_name[SOUND] =
+      { "retro_laser_gun_shot-96367.wav", "hit-someting-6037.wav", "dead-8bit-41400.wav", "music_zapsplat_astro_race.wav" };
+  sf::SoundBuffer m_sounds[SOUND];
 
   std::string m_files_name[FILES] = { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
   std::ifstream m_files[FILES];
 
-  std::string m_fonts_name[FONTS] = { "balloudefont.regular.otf" /*"Vanderick.otf"*/, "Arial.ttf"};
+  std::string m_fonts_name[FONTS] = { "balloudefont.regular.otf", "Arial.ttf"};
   sf::Font m_fonts[FONTS];
 
   sf::Image m_icon;
