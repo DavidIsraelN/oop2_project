@@ -1,6 +1,5 @@
 #include "Objects/GunWeapon.h"
 #include "TimerManager.h"
-#include <iostream>
 
 GunWeapon::GunWeapon(const sf::Vector2f& position)
 {
