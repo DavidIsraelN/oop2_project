@@ -57,7 +57,7 @@ private:
     for (auto i = size_t(0); i < SOUND; ++i)
       m_sounds[i].setBuffer(ResourceManager::Resource().getSound(SoundIndex(i)));
 
-    m_sounds[size_t(SoundIndex::START)].setLoop(true);
+//    m_sounds[size_t(SoundIndex::START)].setLoop(true);
   }
 
   //-------------------------------------------------------------------

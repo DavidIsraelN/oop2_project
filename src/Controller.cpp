@@ -18,7 +18,7 @@ Controller::Controller() :
 //----------------------------------------------------------
 void Controller::run()
 {
-  Sound::Sounds().Play(SoundIndex::START);
+//  Sound::Sounds().Play(SoundIndex::START);
   auto action = Action::MENU;
   try {
     while (m_window.isOpen())

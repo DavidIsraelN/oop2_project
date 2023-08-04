@@ -12,7 +12,7 @@
 //-------------------------------------------------------------------
 const size_t OBJECTS = 5;
 const size_t FILES = 4;
-const size_t SOUND = 4;
+const size_t SOUND = 3;
 const size_t FONTS = 2;
 const size_t BACKGROUNDS = 3;
 
@@ -35,7 +35,7 @@ enum class BackgroundIndex
 //
 enum class SoundIndex
 {
-  SHUT, HIT, DEATH, START /*, LEVEL_RUN, COOKIE, GIFTS, S_PACMAN, DEATH, GHOST*/
+  SHUT, HIT, DEATH/*, START*/ /*, LEVEL_RUN, COOKIE, GIFTS, S_PACMAN, DEATH, GHOST*/
 };
 
 enum class FontIndex
@@ -94,7 +94,7 @@ private:
   sf::Texture m_backgrounds_texture[BACKGROUNDS];
 
   std::string m_sounds_name[SOUND] =
-      { "retro_laser_gun_shot-96367.wav", "hit-someting-6037.wav", "dead-8bit-41400.wav", "music_zapsplat_astro_race.wav" };
+      { "retro_laser_gun_shot-96367.wav", "hit-someting-6037.wav", "dead-8bit-41400.wav"/*, "music_zapsplat_astro_race.wav"*/ };
   sf::SoundBuffer m_sounds[SOUND];
 
   std::string m_files_name[FILES] = { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
