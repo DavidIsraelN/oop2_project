@@ -1,6 +1,7 @@
 #include "Objects/GunWeapon.h"
 #include "TimerManager.h"
 
+//-------------------------------------------------------------------
 GunWeapon::GunWeapon(const sf::Vector2f& position)
 {
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BULLET));
@@ -10,6 +11,7 @@ GunWeapon::GunWeapon(const sf::Vector2f& position)
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
+//-------------------------------------------------------------------
 void GunWeapon::moveObject()
 {
   auto delta_time = TimerManager::Timer().Timer().getDeltaTime();

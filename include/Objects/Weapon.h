@@ -1,6 +1,11 @@
 #pragma once
 #include "MovingObject.h"
 
+/* ----------------------------------------------------------
+ * class for Weapon object (inherited from MovingObject class).
+ * the game can be expanded to contain more types of weapons by gifts.
+ */
+
 class Weapon : public MovingObject
 {
 public:
@@ -12,4 +17,3 @@ public:
 private:
   bool m_deleted = false;
 };
-

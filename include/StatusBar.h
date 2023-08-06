@@ -1,6 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+/* ------------------------------------------------------------------
+ * This class is responsible for the status bar of the game.
+ * Presents level number, life, score and the time left to finish.
+ */
+
+const size_t BASE_TIME = 120; //seconds
+
 class StatusBar
 {
 public:
@@ -10,13 +17,12 @@ public:
   void setTime();
   void setLevel(size_t);
   void setScore(size_t);
-  void setStatusBar(float);
+  void setStatusBar(float, size_t);
   float getRemainingTime() const;
   bool timeOver() const;
 
 private:
-  float m_width, m_height, m_level_time = 180.f; // need to set time for level
+  float m_width, m_height, m_level_time = 0;
   sf::RectangleShape m_rectangle;
   sf::Text m_timer, m_level, m_score, m_life;
 };
-

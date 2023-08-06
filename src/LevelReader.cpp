@@ -8,8 +8,9 @@ void LevelReader::setDimensions()
 {
   std::string line;
   std::getline(m_level_board, line);
-  auto size = std::istringstream(line);
-  size >> m_rows >> m_window_cols >> m_world_cols;
+  auto sizes = std::istringstream(line);
+  sizes.exceptions(std::ios::failbit | std::ios::badbit);
+  sizes >> m_rows >> m_window_cols >> m_world_cols;
 }
 
 //-------------------------------------------------------------------

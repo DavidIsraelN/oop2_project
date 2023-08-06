@@ -1,7 +1,9 @@
 #pragma once
 #include "MovingObject.h"
-#include "Factory.h"
-#include <memory>
+
+/* ----------------------------------------------------------
+ * class for ball object (inherited from MovingObject class).
+ */
 
 const float SPEED_X = 350.f, SPEED_Y = -1500.f;
 //const float SPEED_X = 200.f, SPEED_Y = -700.f;
@@ -19,7 +21,7 @@ public:
   bool isDel() const;
   void setDel();
   size_t getRatio() const;
-  void setOriginalPosition();
+  void setOriginalState();
 
 private:
   void setDirection(const sf::FloatRect&);

@@ -1,6 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+/* ----------------------------------------------------------
+ * an abstract class that is responsible for all the object of the game.
+ */
+
 class Door;
 class Player;
 class Ball;
@@ -10,7 +14,7 @@ class Weapon;
 class Object
 {
 public:
-  virtual ~Object() { }
+  virtual ~Object() = 0 { }
   void draw(sf::RenderWindow&) const;
   virtual bool collidesWith(Object&) const;
   virtual void collide(Object&) { }
@@ -24,4 +28,3 @@ public:
 protected:
   sf::Sprite m_sprite;
 };
-

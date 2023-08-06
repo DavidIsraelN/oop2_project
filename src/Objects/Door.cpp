@@ -1,6 +1,7 @@
 #include "Objects/Door.h"
 #include "Objects/Ball.h"
 
+//-------------------------------------------------------------------
 Door::Door(const sf::Vector2f& position, float width, float height)
 {
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::DOOR));
@@ -10,6 +11,7 @@ Door::Door(const sf::Vector2f& position, float width, float height)
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
+//-------------------------------------------------------------------
 void Door::collide(Ball& ball)
 {
   ball.collide(*this);

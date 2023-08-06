@@ -8,16 +8,14 @@
 #include "EnumClassAction.h"
 #include "ResourcesManager.h"
 
-#include <iostream>
-
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 Menu::Menu(float win_width, float win_height) :
   m_text_title(sf::Text("MENU", ResourceManager::Resource().getFont(FontIndex::TRY), win_height / 5))
 {
   buildMenu(win_width, win_height);
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Menu::buildMenu(float width, float height)
 {
   m_text_title.setFillColor(sf::Color::Black);
@@ -45,7 +43,7 @@ void Menu::buildMenu(float width, float height)
     sf::Vector2f(width / 3, height / 7), sf::Vector2f(2 * width / 7, 9.5 * height / 12)));
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Menu::drawMenu(sf::RenderWindow& window) const
 {
   window.clear(sf::Color::Cyan);
@@ -55,7 +53,7 @@ void Menu::drawMenu(sf::RenderWindow& window) const
   window.display();
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 Action Menu::run(sf::RenderWindow& window)
 {
   while (window.isOpen())
@@ -87,7 +85,7 @@ Action Menu::run(sf::RenderWindow& window)
   return Action::MENU;
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Menu::setBackButton(bool back)
 {
   m_back_button = back;

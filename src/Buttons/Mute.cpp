@@ -1,4 +1,5 @@
 #include "Buttons/Mute.h"
+#include "Sound.h"
 #include "EnumClassAction.h"
 
 //----------------------------------------------------------
@@ -9,7 +10,8 @@ Mute::Mute(const sf::Vector2f& size, const sf::Vector2f& position, Action back_t
 //-------------------------------------------------------------------
 Action Mute::action(sf::RenderWindow& window)
 {
-  //Sound::Sounds().Mute();
-  //m_text.setString(Sound::Sounds().isMute() ? "UNMUTE" : "MUTE");
+  Sound::Sounds().Mute();
+  m_text.setStyle(Sound::Sounds().isMute() ? sf::Text::StrikeThrough : sf::Text::Regular);
+  if(!Sound::Sounds().isMute()) Sound::Sounds().Play(SoundIndex::BACKGROUND);
   return getAction();
 }

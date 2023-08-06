@@ -1,8 +1,8 @@
 #pragma once
 #include "Buttons/Button.h"
 
-/*
- * class for menu.
+/* ----------------------------------------------------------
+ * Class that is responsible for menu screen and all its operation.
  */
 
 enum class Action;

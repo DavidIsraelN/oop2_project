@@ -24,6 +24,7 @@ void Records::loadRecords()
     inputFile >> m_record;
     inputFile.close();
   }
+
   else
   {
     std::cout << "Unable to open file for reading!" << std::endl;

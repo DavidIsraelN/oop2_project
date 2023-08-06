@@ -1,7 +1,8 @@
 #pragma once
 
 /* ----------------------------------------------------------
- * the order of the firsts elements (levels)
+ * enum class for the game operation.
+ * the order of the firsts elements (levels and game over)
  * is very important for the operation of the game!
  */
 

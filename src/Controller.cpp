@@ -6,7 +6,7 @@
 #include <exception>
 #include <thread>
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 Controller::Controller() :
   m_window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Bubble Trouble"),
   m_board(WIN_WIDTH, WIN_HEIGHT), m_menu(WIN_WIDTH, WIN_HEIGHT)
@@ -15,10 +15,10 @@ Controller::Controller() :
   m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Controller::run()
 {
-//  Sound::Sounds().Play(SoundIndex::START);
+  Sound::Sounds().Play(SoundIndex::BACKGROUND);
   auto action = Action::MENU;
   try {
     while (m_window.isOpen())
@@ -33,16 +33,17 @@ void Controller::run()
     }
   }
   catch (std::exception& e) {
+    std::cout << "Erorr - " << e.what() << std::endl;
     runException();
   }
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Controller::runException()
 {
-  auto e_msg = sf::Text("We've run into a problem\n\t\tTurns off...",
+  auto e_msg = sf::Text("We've run into a problem\n\t\t\tTurns off...",
     ResourceManager::Resource().getFont(FontIndex::TRY),
-    m_window.getSize().x / 20);
+    m_window.getSize().x / 16);
   e_msg.setFillColor(sf::Color::Black);
   e_msg.setPosition({ float(m_window.getSize().x) / 2, float(m_window.getSize().y) / 2 });
   e_msg.setOrigin({ e_msg.getGlobalBounds().width / 2,

@@ -3,7 +3,7 @@
 #include "EnumClassAction.h"
 #include "Colors.h"
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 Board::Board(float win_width, float win_height) :
   m_status_bar(win_width, win_height),
   m_current_level(win_width, win_height),
@@ -18,7 +18,7 @@ Board::Board(float win_width, float win_height) :
   m_msg_txt.setPosition({win_width / 2, win_height / 2.5f});
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Board::run(Action& action, sf::RenderWindow& window)
 {
   if(!doAction(action, window)) return; // if level load, doAction == true.
@@ -32,10 +32,10 @@ void Board::run(Action& action, sf::RenderWindow& window)
     checkMsgs(window);
     window.display();
 
+    if (m_next_room || m_start_level || disqualification) continue;
+
     for (auto event = sf::Event{}; window.pollEvent(event); )
       if (!handleEvent(window, event, action)) return;
-
-    if (m_next_room || m_start_level || disqualification) continue;
 
     if (m_current_level.lifeEnd())
     {
@@ -53,7 +53,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
   }
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 bool Board::doAction(Action& action, sf::RenderWindow& window)
 {
   switch (action)
@@ -72,7 +72,7 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
   case Action::LEVEL2:
   case Action::LEVEL3:
     m_current_level.loadLevel(action, m_new_game);
-    m_status_bar.setStatusBar(m_current_level.getObjHeight());
+    m_status_bar.setStatusBar(m_current_level.getObjHeight(), m_current_level.getLevelNum());
     disqualification = m_next_room = false;
     m_start_level = m_new_game = true;
     return true;
@@ -80,7 +80,7 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
   return false; // never got here.
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 bool Board::handleEvent(sf::RenderWindow& window, const sf::Event& event, Action& action)
 {
   switch (event.type)
@@ -102,7 +102,7 @@ bool Board::handleEvent(sf::RenderWindow& window, const sf::Event& event, Action
   return true;
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Board::doStep()
 {
   m_current_level.movePlayer();
@@ -113,7 +113,7 @@ void Board::doStep()
   m_current_level.erase(m_next_room);
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Board::checkMsgs(sf::RenderWindow& window)
 {
   if (m_start_level) 
@@ -129,7 +129,7 @@ void Board::checkMsgs(sf::RenderWindow& window)
   }
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void Board::drawMsg(sf::RenderWindow& window, std::string msg, bool& show)
 {
   m_msg_timer -= TimerManager::Timer().getDeltaTime();

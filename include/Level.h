@@ -11,7 +11,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-const float BULLET_DELAY = 0; // !!!!!!!!!!!!!!!!! 0.4f !!!!!!!!!!!!!!!!!
+/* ------------------------------------------------------------------
+ * This class is responsible for the levels.
+ * loads the desired level, contains in vectors all the level objects, 
+ * responsible for performing the actions required in the current level
+ * according to the existing situation
+ */
+
+const float BULLET_DELAY = 0; // delay for shooting 0.4f
 
 class Level
 {
@@ -56,7 +63,7 @@ private:
   std::vector<std::unique_ptr<Gift>> m_gifts;
   sf::Sprite m_background;
 
-  float m_win_width, m_win_height, m_info_height, m_world_width, 
-    m_old_view_x, m_obj_height, m_obj_width, m_bullet_time = -1.f;
+  float m_win_width, m_win_height, m_old_view_x, m_world_width = 0,
+    m_obj_height = 0, m_obj_width = 0, m_bullet_time = -1.f;
   bool disqualification = false;
 };

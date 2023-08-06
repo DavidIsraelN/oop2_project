@@ -2,7 +2,7 @@
 #include <SFML/Audio.hpp>
 #include "ResourcesManager.h"
 
-/*
+/* ------------------------------------------------------------------
  * Singleton - Sound class for all program sounds.
  * Create the Sounds of the program once and play from anywhere in the program.
  */

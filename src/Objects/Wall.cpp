@@ -2,6 +2,7 @@
 #include "Objects/Ball.h"
 #include "Objects/Weapon.h"
 
+//-------------------------------------------------------------------
 Wall::Wall(const sf::Vector2f& position, float width, float height)
 {
   m_sprite = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::WALL));
@@ -11,11 +12,13 @@ Wall::Wall(const sf::Vector2f& position, float width, float height)
   m_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
+//-------------------------------------------------------------------
 void Wall::collide(Ball& ball)
 {
   ball.collide(*this);
 }
 
+//-------------------------------------------------------------------
 void Wall::collide(Weapon& weapon)
 {
   weapon.collide(*this);

@@ -4,20 +4,19 @@
 #include "ResourcesManager.h"
 #include "EnumClassAction.h"
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
+
 GameOver::GameOver(float win_width, float win_height) :
   m_game_over_txt("Game Over", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7)
 {
   buildGameOver(win_width, win_height);
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void GameOver::buildGameOver(float width, float height)
 {
-  // m_rooms_rec.setFillColor(semi_transparent);
   m_game_over_txt.setFillColor(sf::Color::White);
   m_game_over_txt.setOutlineThickness(10);
-  //m_rooms_txt.setStyle(2);
   m_game_over_txt.setOutlineColor(sf::Color::Black);
   m_game_over_txt.setPosition({ width / 2, height / 4 });
   m_game_over_txt.setOrigin({ m_game_over_txt.getGlobalBounds().width / 2,
@@ -30,7 +29,7 @@ void GameOver::buildGameOver(float width, float height)
     sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(5 * width / 7, 9.f * height / 12)));
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 void GameOver::drawGameOver(sf::RenderWindow& window, size_t final_score) const
 {
   auto score = sf::Text("your score is : " + std::to_string(final_score),
@@ -46,7 +45,7 @@ void GameOver::drawGameOver(sf::RenderWindow& window, size_t final_score) const
   window.display();
 }
 
-//----------------------------------------------------------
+//-------------------------------------------------------------------
 Action GameOver::run(sf::RenderWindow& window, size_t final_score) const
 {
   while (window.isOpen())
