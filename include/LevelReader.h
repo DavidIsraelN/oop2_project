@@ -1,5 +1,4 @@
 #pragma once
-#include <sstream>
 #include "ResourcesManager.h"
 
 /* ----------------------------------------------------------
@@ -24,7 +23,7 @@ enum class ObjectType
 class LevelReader
 {
 public:
-  LevelReader(std::ifstream&);
+  LevelReader(std::fstream&);
   void setDimensions();
   char getChar() const;
   size_t getRows() const;
@@ -36,7 +35,7 @@ public:
   //float getWorldWidth() const;
 
 private:
-  std::ifstream& m_level_board;
+  std::fstream& m_level_board;
   size_t m_rows = 0, m_window_cols = 0, m_world_cols = 0;
   //float m_win_width, m_win_height, m_obj_width, m_obj_height, m_world_width;
 };

@@ -1,7 +1,8 @@
 #include "LevelReader.h"
+#include <sstream>
 
 //-------------------------------------------------------------------
-LevelReader::LevelReader(std::ifstream& board) : m_level_board(board) { }
+LevelReader::LevelReader(std::fstream& board) : m_level_board(board) { }
 
 //-------------------------------------------------------------------
 void LevelReader::setDimensions()

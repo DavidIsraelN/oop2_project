@@ -50,8 +50,8 @@ void StatusBar::setStatusBar(float obj_height, size_t level_num)
 void StatusBar::setTime()
 {
   m_timer.setString(TimerManager::Timer().getRemainingTime(m_level_time));
-  if (getRemainingTime() <= 30)
-    m_timer.setFillColor(sf::Color(181, 49, 60));
+  m_timer.setFillColor(getRemainingTime() <= 30 ? 
+    sf::Color(181, 49, 60) : sf::Color::White);
 }
 
 //-------------------------------------------------------------------

@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include <map>
 
 /* ----------------------------------------------------------
  * class for records button and screen (inherited from button class).
@@ -10,14 +11,16 @@ class Records : public Button
 public:
   Records(float, float, const sf::Vector2f&, const sf::Vector2f&);
   Action action(sf::RenderWindow&) override;
-  size_t getRecord() const;
-  void updateRecord(size_t);
+  //size_t getRecord() const;
+  //void updateRecord(size_t);
 
 private:
-  void loadRecords();
+  void loadRecords(sf::RenderWindow&);
+  void backToStart();
   void drawRecords(sf::RenderWindow&) const;
 
-  size_t m_record;
-  sf::Text m_text_title;
+  std::fstream& m_file_records;
+  std::multimap<size_t, std::string> m_records;
+  sf::Text m_txt_title, m_txt_records;
   std::unique_ptr<Button> m_back;
 };

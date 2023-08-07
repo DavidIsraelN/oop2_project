@@ -6,7 +6,8 @@ ResourceManager::ResourceManager()
   m_icon.loadFromFile("RedBall.png");
   
   for (auto i = size_t(0); i < FILES; ++i)
-    m_files[i] = std::ifstream(m_files_name[i]);
+    m_files[i] = std::fstream(m_files_name[i], 
+      TxtIndex(i) == TxtIndex::RECORD ? std::ios_base::in | std::ios_base::out : std::ios_base::in);
   
   for (auto i = size_t(0); i < SOUND; ++i)
     m_sounds[i].loadFromFile(m_sounds_name[i]);
@@ -53,7 +54,7 @@ sf::SoundBuffer& ResourceManager::getSound(SoundIndex type)
 }
 
 //-------------------------------------------------------------------
-std::ifstream& ResourceManager::getTxtFile(TxtIndex type) 
+std::fstream& ResourceManager::getTxtFile(TxtIndex type) 
 {
   return m_files[size_t(type)];
 }

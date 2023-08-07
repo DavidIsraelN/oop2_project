@@ -54,7 +54,7 @@ public:
   sf::Font& getFont(FontIndex type);
   sf::Texture& getObjTexture(ObjIndex type);
   sf::SoundBuffer& getSound(SoundIndex type);
-  std::ifstream& getTxtFile(TxtIndex type);
+  std::fstream& getTxtFile(TxtIndex type);
   sf::Texture& getBackgroundTexture(BackgroundIndex type);
 
 private:
@@ -74,7 +74,7 @@ private:
 
   std::string m_files_name[FILES] = 
   { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
-  std::ifstream m_files[FILES];
+  std::fstream m_files[FILES];
 
   std::string m_fonts_name[FONTS] = 
   { "balloudefont.otf", "Arial.ttf"};

@@ -1,1 +1,7 @@
-0
+new.score 1348
+new.score 6348
+new.score 148
+new.score 1248
+new.score 9318
+new.score 18
+new.score 19
