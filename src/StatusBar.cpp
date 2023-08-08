@@ -7,10 +7,10 @@
 //-------------------------------------------------------------------
 StatusBar::StatusBar(float bar_width, float win_height)
   : m_width(bar_width), m_height(win_height),
-  m_timer("00:00",   ResourceManager::Resource().getFont(FontIndex::TRY)),
-  m_level("LEVEL  ", ResourceManager::Resource().getFont(FontIndex::TRY)),
-  m_score("SCORE:   ", ResourceManager::Resource().getFont(FontIndex::TRY)),
-  m_life("LIFE:  ", ResourceManager::Resource().getFont(FontIndex::TRY))
+  m_timer("00:00",   ResourceManager::Resource().getFont()),
+  m_level("LEVEL  ", ResourceManager::Resource().getFont()),
+  m_score("SCORE:   ", ResourceManager::Resource().getFont()),
+  m_life("LIFE:  ", ResourceManager::Resource().getFont())
 {
   m_timer.setFillColor(sf::Color::White);
   m_score.setFillColor(sf::Color::White);

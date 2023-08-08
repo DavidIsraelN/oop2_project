@@ -1,6 +1,5 @@
 #include "Board.h"
 #include "Colors.h"
-#include "EnumAndMacroes.h"
 #include "TimerManager.h"
 
 //-------------------------------------------------------------------
@@ -9,7 +8,7 @@ Board::Board(float win_width, float win_height) :
   m_current_level(win_width, win_height),
   m_game_over(win_width, win_height),
   m_msg_rec({win_width, win_height}), 
-  m_msg_txt("", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7)
+  m_msg_txt("", ResourceManager::Resource().getFont(), win_width / 7)
 {
   m_msg_rec.setFillColor(semi_transparent);
   m_msg_txt.setFillColor(sf::Color::White);

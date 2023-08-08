@@ -1,6 +1,5 @@
 #include "Buttons/Help.h"
 #include "Buttons/Back.h"
-#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 
 //----------------------------------------------------------

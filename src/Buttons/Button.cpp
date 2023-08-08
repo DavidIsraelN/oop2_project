@@ -4,7 +4,7 @@
 //----------------------------------------------------------
 Button::Button(const sf::Vector2f& size, const sf::Vector2f& position,
                const std::string& text, Action action)
-  : m_text(sf::Text(text, ResourceManager::Resource().getFont(FontIndex::TRY), size.y / 1.5f)),
+  : m_text(sf::Text(text, ResourceManager::Resource().getFont(), size.y / 1.5f)),
   m_rectangle(size), m_action(action)
 {
   setButton(size, position);

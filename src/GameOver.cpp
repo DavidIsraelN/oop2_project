@@ -8,10 +8,10 @@
 
 //-------------------------------------------------------------------
 GameOver::GameOver(float win_width, float win_height) :
-  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 7),
+  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(), win_width / 7),
   m_name_msg("Congratulations, achieving new record.\n\t\tInsert  name:",
-    ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 20),
-  m_name("", ResourceManager::Resource().getFont(FontIndex::TRY), win_width / 20),
+    ResourceManager::Resource().getFont(), win_width / 20),
+  m_name("", ResourceManager::Resource().getFont(), win_width / 20),
   m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD))
 {
   buildGameOver(win_width, win_height);
@@ -109,7 +109,7 @@ void GameOver::getSmallRecord()
 void GameOver::drawGameOver(sf::RenderWindow& window, size_t final_score)
 {
   auto score_msg = sf::Text("your score is: " + std::to_string(final_score),
-    ResourceManager::Resource().getFont(FontIndex::TRY), window.getSize().x / 13);
+    ResourceManager::Resource().getFont(), window.getSize().x / 13);
   score_msg.setPosition(window.getSize().x / 2, window.getSize().y / 2.7);
   score_msg.setOrigin(score_msg.getGlobalBounds().width / 2, score_msg.getGlobalBounds().height / 2);
   score_msg.setFillColor(sf::Color::Black);

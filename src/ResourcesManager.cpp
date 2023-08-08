@@ -15,7 +15,8 @@ ResourceManager::ResourceManager()
 
   m_static_rect[StaticObjIndex::WALL] = sf::IntRect(23, 128, 128, 128);
   m_static_rect[StaticObjIndex::BALL] = sf::IntRect(410, 142, 121, 121);
-  m_static_rect[StaticObjIndex::STAY_PLAYER] = sf::IntRect(802, 40, 39, 68);
+  m_static_rect[StaticObjIndex::STAND_PLAYER] = sf::IntRect(802, 40, 39, 68);
+  m_static_rect[StaticObjIndex::SHUT_PLAYER] = sf::IntRect(918, 8, 25, 100);
   m_static_rect[StaticObjIndex::BULLET] = sf::IntRect(355, 123, 24, 149);
   m_static_rect[StaticObjIndex::DOOR] = sf::IntRect(168, 128, 132, 132);
   m_static_rect[StaticObjIndex::GIFT] = sf::IntRect(766, 169, 60, 69);
@@ -30,11 +31,7 @@ ResourceManager::ResourceManager()
   for (auto i = size_t(0); i < SOUND; ++i)
     m_sounds[i].loadFromFile(m_sounds_name[i]);
   
-  for (auto i = size_t(0); i < FONTS; ++i)
-    m_fonts[i].loadFromFile(m_fonts_name[i]);
-  
-//  for (auto i = size_t(0); i < OBJECTS; ++i)
-//    m_objects_texture[i].loadFromFile(m_textures_name[i]);
+  m_font.loadFromFile(m_font_name);
   
   for (auto i = size_t(0); i < BACKGROUNDS; ++i)
     m_backgrounds_texture[i].loadFromFile(m_backgrounds_name[i]);
@@ -54,9 +51,9 @@ sf::Image& ResourceManager::getIcon()
 }
 
 //-------------------------------------------------------------------
-sf::Font& ResourceManager::getFont(FontIndex type)
+sf::Font& ResourceManager::getFont()
 { 
-  return m_fonts[size_t(type)]; 
+  return m_font;
 }
 
 sf::IntRect& ResourceManager::getTextureRect(StaticObjIndex type)
@@ -64,23 +61,20 @@ sf::IntRect& ResourceManager::getTextureRect(StaticObjIndex type)
   return m_static_rect[type];
 }
 
+sf::IntRect& ResourceManager::getWalkingTextureRect(size_t index)
+{
+  return m_player_animation[index % m_player_animation.size()];
+}
+
 void ResourceManager::setPlayerMap()
 {
-  const auto size = sf::Vector2i(40, 40);
-  const auto initSpace = sf::Vector2i(851, 2);
-  const auto middleSpace = sf::Vector2i(0, 10);
-
-//  auto pacman = AnimationData {};
-  auto currentStart = initSpace;
-
-  auto nextStart = [&]()
-  {
-    currentStart += middleSpace;
-    currentStart.y += size.y;
-    return currentStart;
-  };
-  m_player_animation[PlayerIndex::WALK];
-
+  m_player_animation.emplace_back(27, 41, 31, 67);
+  m_player_animation.emplace_back(135, 41, 32, 67);
+  m_player_animation.emplace_back(244, 42, 35, 66);
+  m_player_animation.emplace_back(356, 41, 35, 67);
+  m_player_animation.emplace_back(468, 40, 34, 68);
+  m_player_animation.emplace_back(579, 42, 35, 66);
+  m_player_animation.emplace_back(691, 42, 34, 66);
 }
 
 

@@ -1,5 +1,4 @@
 #include "Buttons/Exit.h"
-#include "EnumAndMacroes.h"
 
 //----------------------------------------------------------
 Exit::Exit(const sf::Vector2f& size, const sf::Vector2f& position)

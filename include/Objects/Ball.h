@@ -1,12 +1,10 @@
 #pragma once
 #include "MovingObject.h"
+#include "EnumAndMacroes.h"
 
 /* ----------------------------------------------------------
  * class for ball object (inherited from MovingObject class).
  */
-
-const float SPEED_X = 350.f, SPEED_Y = -1500.f;
-//const float SPEED_X = 200.f, SPEED_Y = -700.f;
 
 class Ball : public MovingObject
 {
@@ -26,7 +24,7 @@ public:
 private:
   void setDirection(const sf::FloatRect&);
 
-  float m_speed_x = SPEED_X, m_speed_y = SPEED_Y, m_ceiling, m_begin_ceiling, m_floor;
+  float m_speed_x = SPEED_BALL_X, m_speed_y = SPEED_BALL_Y, m_ceiling, m_begin_ceiling, m_floor;
   size_t m_ratio;
   bool m_deleted = false, m_active_ceiling = false;
   sf::Vector2f m_original_position;

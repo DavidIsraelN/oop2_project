@@ -5,12 +5,11 @@
 #include "Buttons/Mute.h"
 #include "Buttons/NewGame.h"
 #include "Buttons/Records.h"
-#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 
 //-------------------------------------------------------------------
 Menu::Menu(float win_width, float win_height) :
-  m_text_title(sf::Text("MENU", ResourceManager::Resource().getFont(FontIndex::TRY), win_height / 5))
+  m_text_title(sf::Text("MENU", ResourceManager::Resource().getFont(), win_height / 5))
 {
   buildMenu(win_width, win_height);
 }

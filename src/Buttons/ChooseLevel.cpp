@@ -1,5 +1,4 @@
 #include "Buttons/ChooseLevel.h"
-#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 
 //----------------------------------------------------------

@@ -42,8 +42,7 @@ void Controller::run()
 void Controller::runException()
 {
   auto e_msg = sf::Text("We've run into a problem\n\t\t\tTurns off...",
-    ResourceManager::Resource().getFont(FontIndex::TRY),
-    m_window.getSize().x / 16);
+    ResourceManager::Resource().getFont(), m_window.getSize().x / 16);
   e_msg.setFillColor(sf::Color::Black);
   e_msg.setPosition({ float(m_window.getSize().x) / 2, float(m_window.getSize().y) / 2 });
   e_msg.setOrigin({ e_msg.getGlobalBounds().width / 2,

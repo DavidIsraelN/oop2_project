@@ -1,5 +1,4 @@
 #pragma once
-#include "EnumAndMacroes.h"
 #include "LevelReader.h"
 #include "Objects/Ball.h"
 #include "Objects/Door.h"
@@ -8,7 +7,6 @@
 #include "Objects/Wall.h"
 #include "Objects/Weapon.h"
 #include "StatusBar.h"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 
 /* ------------------------------------------------------------------
@@ -17,8 +15,6 @@
  * responsible for performing the actions required in the current level
  * according to the existing situation
  */
-
-const float BULLET_DELAY = 0; // delay for shooting 0.4f
 
 class Level
 {

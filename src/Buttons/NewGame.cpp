@@ -1,7 +1,6 @@
 #include "Buttons/NewGame.h"
 #include "Buttons/Back.h"
 #include "Buttons/ChooseLevel.h"
-#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 #include <algorithm>
 
@@ -9,7 +8,7 @@
 NewGame::NewGame(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)
   :Button(size, position, "NEW GAME"),
   m_text_title(sf::Text("CHOOSE  LEVEL", 
-    ResourceManager::Resource().getFont(FontIndex::TRY) , height / 6))
+    ResourceManager::Resource().getFont() , height / 6))
 {
   buildLevels(width, height);
 }

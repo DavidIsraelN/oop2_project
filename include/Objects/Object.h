@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "EnumAndMacroes.h"
 
 /* ----------------------------------------------------------
  * an abstract class that is responsible for all the object of the game.

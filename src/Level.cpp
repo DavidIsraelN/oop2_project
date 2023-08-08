@@ -7,10 +7,12 @@
 #include <memory>
 #include <vector>
 
-const size_t NEXT_LEVEL_SCORE = 20;
-const size_t BALLS_KIND = 4;
+//const size_t NEXT_LEVEL_SCORE = 20;
+//const size_t BALLS_KIND = 4;
+
 const int LEFT_DIRECTION = -1;
 const int RIGHT_DIRECTION = 1;
+const int STAND = 0;
 
 //-------------------------------------------------------------------
 Level::Level(float win_width, float win_height)
@@ -142,11 +144,11 @@ void Level::draw(sf::RenderWindow& window)
   window.setView(currentView());
   window.draw(m_background);
 
+  m_player->draw(window);
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
   std::for_each(m_bullets.begin(), m_bullets.end(), [&window] (auto &bullet) {bullet->draw(window);});
-  m_player->draw(window);
 
   window.setView(window.getDefaultView());
 }
@@ -157,6 +159,7 @@ void Level::createBullet()
   if (TimerManager::Timer().getElapsedTime() - m_bullet_time < BULLET_DELAY)
     return;
 
+  m_player->setShut();
   auto middle_player_position = sf::Vector2f(
     m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2,
     m_player->getGlobalBounds().top + m_player->getGlobalBounds().height / 2);
@@ -170,13 +173,13 @@ void Level::createBullet()
 void Level::movePlayer()
 {
   auto direction = sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ? LEFT_DIRECTION
-    : sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ? RIGHT_DIRECTION : 0;
-
-  if (!direction) return;
+    : sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ? RIGHT_DIRECTION : STAND;
 
   m_player->setDirection(direction);
-  m_player->moveObject();
+  m_player->setAnimation();
+  if (!direction) return;
 
+  m_player->moveObject();
   bool go_back = false;
   std::for_each(m_walls.begin(), m_walls.end(), [&](auto& wall)
     { if (wall->collidesWith(*m_player)) go_back = true; });

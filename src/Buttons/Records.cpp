@@ -1,7 +1,6 @@
 #include "Buttons/Records.h"
 #include "Buttons/Back.h"
 #include "Colors.h"
-#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 #include <sstream>
 
@@ -11,7 +10,7 @@ Records::Records(float width, float height, const sf::Vector2f& size, const sf::
   m_back(std::make_unique<Back>(sf::Vector2f(width / 7, height / 15),
     sf::Vector2f(width / 10, height / 12))),
   m_txt_title(sf::Text("RECORDS",
-      ResourceManager::Resource().getFont(FontIndex::TRY), height / 6)),
+      ResourceManager::Resource().getFont(), height / 6)),
   m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD))
 {
   m_txt_title.setFillColor(sf::Color::Black);
@@ -91,7 +90,7 @@ void Records::loadRecords(sf::RenderWindow& window)
     records += (rec.second +  space + std::to_string(rec.first) + "\n"); });
 
   m_txt_records.setString(records);
-  m_txt_records.setFont(ResourceManager::Resource().getFont(FontIndex::TRY));
+  m_txt_records.setFont(ResourceManager::Resource().getFont());
   m_txt_records.setCharacterSize(window.getSize().y / 17);
   m_txt_records.setFillColor(sf::Color::Blue);
   m_txt_records.setPosition(window.getSize().x / 2, window.getSize().y / 1.5);

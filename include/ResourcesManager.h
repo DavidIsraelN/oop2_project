@@ -11,26 +11,15 @@
  */
 
 //-------------------------------------------------------------------
-const size_t OBJECTS = 5;
 const size_t FILES = 4;
 const size_t SOUND = 4;
-const size_t FONTS = 2;
 const size_t BACKGROUNDS = 3;
 
 ////-------------------------------------------------------------------
-//enum class ObjIndex
-//{
-//  BALL, PLAYER, BULLET, WALL, DOOR
-//};
-
-enum class PlayerIndex
-{
-  WALK, SHUT
-};
 
 enum class StaticObjIndex
 {
-  BALL, STAY_PLAYER, BULLET, WALL, DOOR, GIFT, BOOM
+  BALL, STAND_PLAYER, SHUT_PLAYER, BULLET, WALL, DOOR, GIFT, BOOM
 };
 
 enum class TxtIndex
@@ -61,20 +50,17 @@ public:
   ResourceManager(const ResourceManager&) = delete;
   void operator=(const ResourceManager&) = delete;
   sf::Image& getIcon();
-  sf::Font& getFont(FontIndex type);
-//  sf::Texture& getObjTexture(ObjIndex type);
+  sf::Font& getFont();
   sf::Texture& getTexture();
-  sf::IntRect& getTextureRect(StaticObjIndex type);
-  sf::SoundBuffer& getSound(SoundIndex type);
-  std::fstream& getTxtFile(TxtIndex type);
-  sf::Texture& getBackgroundTexture(BackgroundIndex type);
+  sf::IntRect& getTextureRect(StaticObjIndex);
+  sf::IntRect&getWalkingTextureRect(size_t);
+  sf::SoundBuffer& getSound(SoundIndex);
+  std::fstream& getTxtFile(TxtIndex);
+  sf::Texture& getBackgroundTexture(BackgroundIndex);
 
 private:
   ResourceManager();
   void setPlayerMap();
-//  std::string m_textures_name[OBJECTS] =
-//  { "Ball.png", "Player.png","Bullet.png", "Wall.jpg", "Door.jpg"};
-//  sf::Texture m_objects_texture[OBJECTS];
 
   std::string m_backgrounds_name[BACKGROUNDS] =
   {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
@@ -88,9 +74,8 @@ private:
   { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
   std::fstream m_files[FILES];
 
-  std::string m_fonts_name[FONTS] = 
-  { "balloudefont.otf", "Arial.ttf"};
-  sf::Font m_fonts[FONTS];
+  std::string m_font_name = "balloudefont.otf";
+  sf::Font m_font;
 
   sf::Image m_icon;
 
@@ -98,5 +83,5 @@ private:
   sf::Texture m_texture_resources;
 
   std::unordered_map<StaticObjIndex, sf::IntRect> m_static_rect;
-  std::unordered_map<PlayerIndex, std::vector<sf::IntRect>> m_player_animation;
+  std::vector<sf::IntRect> m_player_animation;
 };
