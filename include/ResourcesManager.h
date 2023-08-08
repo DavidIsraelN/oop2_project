@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
+#include <unordered_map>
 
 /* ------------------------------------------------------------------
  * Singleton - Source class for all program data.

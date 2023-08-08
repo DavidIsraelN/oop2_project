@@ -14,5 +14,10 @@ enum class Action
 };
 
 
-// the amount of records that can be saved
-const size_t MAX_NUM_OF_RECORDS = 7;
+const size_t SCREEN_4K = 1; // Parameter for 4K screen. 1 - no. 2 - yes.
+const size_t WIN_WIDTH = 900 * SCREEN_4K;
+const size_t WIN_HEIGHT = 600 * SCREEN_4K;
+
+const size_t MAX_NUM_OF_RECORDS = 7; // the amount of records that can be saved
+const size_t MAX_PLAYER_NAME = 10;
+const size_t MAX_SCORE_DIGIT = 4;

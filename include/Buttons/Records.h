@@ -15,8 +15,8 @@ public:
   //void updateRecord(size_t);
 
 private:
-  void loadRecords(sf::RenderWindow&);
   void backToStart();
+  void loadRecords(sf::RenderWindow&);
   void drawRecords(sf::RenderWindow&) const;
 
   std::fstream& m_file_records;

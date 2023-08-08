@@ -75,14 +75,20 @@ void Records::loadRecords(sf::RenderWindow& window)
     if (m_file_records.eof()) break;
 
     std::getline(m_file_records, line);
+    if (line == "" || line == "\n") break; // last line
+
     auto one_record = std::istringstream(line);
     one_record.exceptions(std::ios::failbit | std::ios::badbit);
     one_record >> name >> score;
+
+    if (name.size() < MAX_PLAYER_NAME) // fill the end of name with spaces
+      for (auto i = name.size(); i < MAX_PLAYER_NAME; ++i) name += "  ";
+
     m_records.emplace(score, name);
   }
 
   std::for_each(m_records.rbegin(), m_records.rend(), [&records, &space](auto& rec) {
-    records += (rec.second + space + std::to_string(rec.first) + "\n"); });
+    records += (rec.second +  space + std::to_string(rec.first) + "\n"); });
 
   m_txt_records.setString(records);
   m_txt_records.setFont(ResourceManager::Resource().getFont(FontIndex::TRY));
@@ -96,5 +102,6 @@ void Records::loadRecords(sf::RenderWindow& window)
 //-------------------------------------------------------------------
 void Records::backToStart()
 {
+  if (m_file_records.fail()) m_file_records.clear();
   m_file_records.seekg(0, m_file_records.beg);
 }
