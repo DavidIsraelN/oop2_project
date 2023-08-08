@@ -1,6 +1,6 @@
 #include "Buttons/Help.h"
 #include "Buttons/Back.h"
-#include "EnumClassAction.h"
+#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 
 //----------------------------------------------------------
@@ -21,8 +21,8 @@ void Help::loadHelp()
 //----------------------------------------------------------
 void Help::drawHelp(sf::RenderWindow& window) const
 {
-  auto help = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BALL));
-  window.draw(help);
+//  auto help = sf::Sprite(ResourceManager::Resource().getObjTexture(ObjIndex::BALL));
+//  window.draw(help);
   m_back->draw(window);
 }
 

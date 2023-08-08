@@ -1,11 +1,11 @@
 #include "Menu.h"
-#include "Buttons/NewGame.h"
-#include "Buttons/Help.h"
-#include "Buttons/Exit.h"
-#include "Buttons/Mute.h"
-#include "Buttons/Records.h"
 #include "Buttons/Back.h"
-#include "EnumClassAction.h"
+#include "Buttons/Exit.h"
+#include "Buttons/Help.h"
+#include "Buttons/Mute.h"
+#include "Buttons/NewGame.h"
+#include "Buttons/Records.h"
+#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
 
 //-------------------------------------------------------------------

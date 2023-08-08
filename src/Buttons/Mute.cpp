@@ -1,6 +1,6 @@
 #include "Buttons/Mute.h"
+#include "EnumAndMacroes.h"
 #include "Sound.h"
-#include "EnumClassAction.h"
 
 //----------------------------------------------------------
 Mute::Mute(const sf::Vector2f& size, const sf::Vector2f& position, Action back_to)

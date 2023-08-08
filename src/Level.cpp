@@ -90,14 +90,14 @@ void Level::addObject(ObjectType type, size_t i, size_t j, bool new_game)
   case ObjectType::BALL_2:
   case ObjectType::BALL_3:
   case ObjectType::BALL_4:
-    m_balls.push_back(std::make_shared<Ball>((size_t(type) - '0'), m_obj_width, position,
+    m_balls.emplace_back(std::make_shared<Ball>((size_t(type) - '0'), m_obj_width, position,
                                               m_win_height - 2 * m_obj_height, 1)); break;
 
   case ObjectType::WALL:
-    m_walls.push_back(std::make_unique<Wall>(position, m_obj_width, m_obj_height)); break;
+    m_walls.emplace_back(std::make_unique<Wall>(position, m_obj_width, m_obj_height)); break;
 
   case ObjectType::DOOR:
-    m_doors.push_back(std::make_unique<Door>(position, m_obj_width, m_obj_height)); break;
+    m_doors.emplace_back(std::make_unique<Door>(position, m_obj_width, m_obj_height)); break;
 
   default:
     throw std::invalid_argument("invalid character\n");

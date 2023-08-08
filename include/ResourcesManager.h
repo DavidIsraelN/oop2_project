@@ -16,11 +16,20 @@ const size_t SOUND = 4;
 const size_t FONTS = 2;
 const size_t BACKGROUNDS = 3;
 
-//-------------------------------------------------------------------
-enum class ObjIndex
+////-------------------------------------------------------------------
+//enum class ObjIndex
+//{
+//  BALL, PLAYER, BULLET, WALL, DOOR
+//};
+
+enum class PlayerIndex
 {
-  BALL, PLAYER, BULLET, WALL, DOOR,
-  LIFE
+  WALK, SHUT
+};
+
+enum class StaticObjIndex
+{
+  BALL, STAY_PLAYER, BULLET, WALL, DOOR, GIFT, BOOM
 };
 
 enum class TxtIndex
@@ -52,19 +61,21 @@ public:
   void operator=(const ResourceManager&) = delete;
   sf::Image& getIcon();
   sf::Font& getFont(FontIndex type);
-  sf::Texture& getObjTexture(ObjIndex type);
+//  sf::Texture& getObjTexture(ObjIndex type);
+  sf::Texture& getTexture();
+  sf::IntRect& getTextureRect(StaticObjIndex type);
   sf::SoundBuffer& getSound(SoundIndex type);
   std::fstream& getTxtFile(TxtIndex type);
   sf::Texture& getBackgroundTexture(BackgroundIndex type);
 
 private:
   ResourceManager();
+  void setPlayerMap();
+//  std::string m_textures_name[OBJECTS] =
+//  { "Ball.png", "Player.png","Bullet.png", "Wall.jpg", "Door.jpg"};
+//  sf::Texture m_objects_texture[OBJECTS];
 
-  std::string m_textures_name[OBJECTS] = 
-  { "Ball.png", "Player.png","Bullet.png", "Wall.jpg", "Door.jpg"};
-  sf::Texture m_objects_texture[OBJECTS];
-
-  std::string m_backgrounds_name[BACKGROUNDS] = 
+  std::string m_backgrounds_name[BACKGROUNDS] =
   {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
   sf::Texture m_backgrounds_texture[BACKGROUNDS];
 
@@ -81,4 +92,10 @@ private:
   sf::Font m_fonts[FONTS];
 
   sf::Image m_icon;
+
+  std::string m_texture_name = "SpriteSheet.png";
+  sf::Texture m_texture_resources;
+
+  std::unordered_map<StaticObjIndex, sf::IntRect> m_static_rect;
+  std::unordered_map<PlayerIndex, std::vector<sf::IntRect>> m_player_animation;
 };

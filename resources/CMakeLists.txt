@@ -1,4 +1,6 @@
-﻿configure_file ("objects/Ball.png"  ${CMAKE_BINARY_DIR} COPYONLY)
+﻿configure_file ("SpriteSheet.png"  ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("objects/Ball.png"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("objects/Player.png"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("objects/Bullet.png"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("objects/Wall.jpg"  ${CMAKE_BINARY_DIR} COPYONLY)

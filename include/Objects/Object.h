@@ -14,7 +14,7 @@ class Weapon;
 class Object
 {
 public:
-  virtual ~Object() = 0 { }
+  virtual ~Object() { };
   void draw(sf::RenderWindow&) const;
   virtual bool collidesWith(Object&) const;
   virtual void collide(Object&) { }

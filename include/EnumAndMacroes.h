@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 
 /* ----------------------------------------------------------
  * enum class for the game operation.

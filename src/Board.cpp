@@ -1,7 +1,7 @@
 #include "Board.h"
-#include "TimerManager.h"
-#include "EnumClassAction.h"
 #include "Colors.h"
+#include "EnumAndMacroes.h"
+#include "TimerManager.h"
 
 //-------------------------------------------------------------------
 Board::Board(float win_width, float win_height) :
@@ -23,7 +23,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
 {
   if(!doAction(action, window)) return; // if level load, doAction == true.
 
-  window.setFramerateLimit(60);  //--------------- ?? ----------------
+//  window.setFramerateLimit(60);  //--------------- ?? ----------------
 
   while (window.isOpen())
   {
@@ -67,6 +67,7 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
     return true;
 
   case Action::GAME_OVER:
+    m_new_game = true;
     action = m_game_over.run(window, m_current_level.getScore());
     return false;
 

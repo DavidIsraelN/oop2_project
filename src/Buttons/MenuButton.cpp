@@ -1,5 +1,5 @@
 #include "Buttons/MenuButton.h"
-#include "EnumClassAction.h"
+#include "EnumAndMacroes.h"
 
 //----------------------------------------------------------
 MenuButton::MenuButton(const sf::Vector2f& size, const sf::Vector2f& position)

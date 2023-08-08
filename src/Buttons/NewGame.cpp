@@ -1,9 +1,9 @@
 #include "Buttons/NewGame.h"
-#include <algorithm>
-#include "Buttons/ChooseLevel.h"
 #include "Buttons/Back.h"
-#include "EnumClassAction.h"
+#include "Buttons/ChooseLevel.h"
+#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
+#include <algorithm>
 
 //----------------------------------------------------------
 NewGame::NewGame(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)

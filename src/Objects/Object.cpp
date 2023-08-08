@@ -2,6 +2,9 @@
 #include <iostream>
 
 //-------------------------------------------------------------------
+//Object::~Object() { }
+
+//-------------------------------------------------------------------
 void Object::draw(sf::RenderWindow& window) const
 {
   window.draw(m_sprite);

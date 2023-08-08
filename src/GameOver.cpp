@@ -1,8 +1,8 @@
 #include "GameOver.h"
 #include "Buttons/Exit.h"
 #include "Buttons/MenuButton.h"
+#include "EnumAndMacroes.h"
 #include "ResourcesManager.h"
-#include "EnumClassAction.h"
 
 //-------------------------------------------------------------------
 

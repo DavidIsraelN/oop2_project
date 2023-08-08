@@ -1,8 +1,8 @@
 #include "Buttons/Records.h"
 #include "Buttons/Back.h"
-#include "EnumClassAction.h"
-#include "ResourcesManager.h"
 #include "Colors.h"
+#include "EnumAndMacroes.h"
+#include "ResourcesManager.h"
 #include <sstream>
 
 //----------------------------------------------------------
@@ -89,7 +89,7 @@ void Records::loadRecords(sf::RenderWindow& window)
   m_txt_records.setCharacterSize(window.getSize().y / 17);
   m_txt_records.setFillColor(sf::Color::Blue);
   m_txt_records.setPosition(window.getSize().x / 2, window.getSize().y / 1.5);
-  m_txt_records.setOrigin(m_txt_records.getGlobalBounds().width / 2, 
+  m_txt_records.setOrigin(m_txt_records.getGlobalBounds().width / 2,
     m_txt_records.getGlobalBounds().height / 2);
 }
 
