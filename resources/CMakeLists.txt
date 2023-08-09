@@ -1,5 +1,5 @@
 ﻿configure_file ("SpriteSheet.png"  ${CMAKE_BINARY_DIR} COPYONLY)
-
+configure_file ("Help.jpeg"  ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("RedBall.png"  ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("levels/Level_1.txt"  ${CMAKE_BINARY_DIR} COPYONLY)

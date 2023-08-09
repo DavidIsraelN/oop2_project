@@ -27,5 +27,5 @@ private:
   bool m_new_record = false;
   size_t m_small_score = 0;
   std::vector<std::unique_ptr<Button>> m_buttons;
-  sf::Text m_game_over_txt, m_name_msg, m_name;
+  sf::Text m_game_over_txt, m_name_msg, m_score_msg, m_name;
 };

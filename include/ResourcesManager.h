@@ -68,7 +68,7 @@ private:
   std::unordered_map<TextureIndex, sf::Texture> m_texture_resources;
 
   std::string m_files_name[size_t(TxtIndex::MAX)] =
-  { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
+  { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt" };
   std::unordered_map<TxtIndex, std::fstream> m_files;
 
   std::string m_sounds_name[size_t(SoundIndex::MAX)] =
@@ -76,7 +76,7 @@ private:
   std::unordered_map<SoundIndex, sf::SoundBuffer> m_sounds;
 
   std::string m_backgrounds_name[size_t(BackgroundIndex::MAX)] =
-  {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
+  { "Background_1.jpg", "Background_2.jpg", "Background_3.jpg" };
   std::unordered_map<BackgroundIndex, sf::Texture> m_backgrounds_texture;
 
   std::unordered_map<StaticObjIndex, sf::IntRect> m_static_rect;

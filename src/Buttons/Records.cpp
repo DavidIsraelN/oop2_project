@@ -7,17 +7,21 @@
 //----------------------------------------------------------
 Records::Records(float width, float height, const sf::Vector2f& size, const sf::Vector2f& position)
   : Button(size, position, "RECORDS"),
-  m_back(std::make_unique<Back>(sf::Vector2f(width / 7, height / 15),
+  m_back(std::make_unique<Back>(sf::Vector2f(width / 10, height / 15),
     sf::Vector2f(width / 10, height / 12))),
   m_txt_title(sf::Text("RECORDS",
       ResourceManager::Resource().getFont(), height / 6)),
-  m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD))
+  m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD)),
+  m_txt_records("", ResourceManager::Resource().getFont(), height / 17)
 {
   m_txt_title.setFillColor(sf::Color::Black);
   m_txt_title.setPosition(width / 2, height / 5);
   m_txt_title.setOrigin(m_txt_title.getGlobalBounds().width / 2,
     m_txt_title.getGlobalBounds().height / 2);
   m_txt_title.setStyle(sf::Text::Underlined);
+
+  m_txt_records.setPosition(width / 2, height / 1.5);
+  m_txt_records.setFillColor(sf::Color::Blue);
 }
 
 //----------------------------------------------------------
@@ -90,10 +94,6 @@ void Records::loadRecords(sf::RenderWindow& window)
     records += (rec.second +  space + std::to_string(rec.first) + "\n"); });
 
   m_txt_records.setString(records);
-  m_txt_records.setFont(ResourceManager::Resource().getFont());
-  m_txt_records.setCharacterSize(window.getSize().y / 17);
-  m_txt_records.setFillColor(sf::Color::Blue);
-  m_txt_records.setPosition(window.getSize().x / 2, window.getSize().y / 1.5);
   m_txt_records.setOrigin(m_txt_records.getGlobalBounds().width / 2,
     m_txt_records.getGlobalBounds().height / 2);
 }

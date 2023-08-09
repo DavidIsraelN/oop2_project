@@ -23,10 +23,10 @@ void Menu::buildMenu(float width, float height)
                          m_text_title.getGlobalBounds().height / 2);
   m_text_title.setStyle(sf::Text::Underlined);
 
-  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 7 , height / 15),
+  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 10, height / 15),
     sf::Vector2f(width / 10 , height / 12), Action::BACK_TO_GAME));
 
-  m_buttons.emplace_back(std::make_unique<Mute>(sf::Vector2f(width / 7, height / 15),
+  m_buttons.emplace_back(std::make_unique<Mute>(sf::Vector2f(width / 10, height / 15),
     sf::Vector2f(width - width / 10, height / 12), Action::BACK_TO_MENU));
 
   m_buttons.emplace_back(std::make_unique<NewGame>(width, height,

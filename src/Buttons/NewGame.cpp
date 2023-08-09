@@ -63,6 +63,6 @@ void NewGame::buildLevels(float width, float height)
   m_buttons.emplace_back(std::make_unique<ChooseLevel>(sf::Vector2f(width / 3 , height / 7),
     sf::Vector2f(width / 2 , 10 * height / 12), Action::LEVEL3));
 
-  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 7 , height / 15),
+  m_buttons.emplace_back(std::make_unique<Back>(sf::Vector2f(width / 10, height / 15),
     sf::Vector2f(width / 10 , height / 12)));
 }

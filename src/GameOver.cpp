@@ -8,11 +8,12 @@
 
 //-------------------------------------------------------------------
 GameOver::GameOver(float win_width, float win_height) :
-  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(), win_width / 7),
+  m_game_over_txt("Game Over", ResourceManager::Resource().getFont(), win_height / 5),
   m_name_msg("Congratulations, achieving new record.\n\t\tInsert  name:",
-    ResourceManager::Resource().getFont(), win_width / 20),
-  m_name("", ResourceManager::Resource().getFont(), win_width / 20),
-  m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD))
+    ResourceManager::Resource().getFont(), win_height / 15),
+  m_name("", ResourceManager::Resource().getFont(), win_height / 15),
+  m_file_records(ResourceManager::Resource().getTxtFile(TxtIndex::RECORD)),
+  m_score_msg("", ResourceManager::Resource().getFont(), win_height / 10)
 {
   buildGameOver(win_width, win_height);
 }
@@ -23,9 +24,9 @@ void GameOver::buildGameOver(float width, float height)
   m_game_over_txt.setFillColor(sf::Color::White);
   m_game_over_txt.setOutlineThickness(10);
   m_game_over_txt.setOutlineColor(sf::Color::Black);
-  m_game_over_txt.setPosition({ width / 2, height / 6 });
-  m_game_over_txt.setOrigin({ m_game_over_txt.getGlobalBounds().width / 2,
-                              m_game_over_txt.getGlobalBounds().height / 2 });
+  m_game_over_txt.setPosition(width / 2, height / 6);
+  m_game_over_txt.setOrigin(m_game_over_txt.getGlobalBounds().width / 2,
+                            m_game_over_txt.getGlobalBounds().height / 2);
 
   m_name_msg.setFillColor(sf::Color::Blue);
   m_name_msg.setPosition(width / 2, height / 1.8);
@@ -34,6 +35,9 @@ void GameOver::buildGameOver(float width, float height)
 
   m_name.setFillColor(sf::Color::Blue);
   m_name.setPosition(width / 2.1, height / 1.77);
+
+  m_score_msg.setFillColor(sf::Color::Black);
+  m_score_msg.setPosition(width / 2, height / 2.7);
 
   m_buttons.emplace_back(std::make_unique<MenuButton>(
     sf::Vector2f(width / 3.f, height / 7.f), sf::Vector2f(2 * width / 7, 9.5f * height / 12)));
@@ -108,17 +112,15 @@ void GameOver::getSmallRecord()
 //-------------------------------------------------------------------
 void GameOver::drawGameOver(sf::RenderWindow& window, size_t final_score)
 {
-  auto score_msg = sf::Text("your score is: " + std::to_string(final_score),
-    ResourceManager::Resource().getFont(), window.getSize().x / 13);
-  score_msg.setPosition(window.getSize().x / 2, window.getSize().y / 2.7);
-  score_msg.setOrigin(score_msg.getGlobalBounds().width / 2, score_msg.getGlobalBounds().height / 2);
-  score_msg.setFillColor(sf::Color::Black);
+  m_score_msg.setString("your score is: " + std::to_string(final_score));
+  m_score_msg.setOrigin(m_score_msg.getGlobalBounds().width / 2,
+    m_score_msg.getGlobalBounds().height / 2);
 
   m_name.setString(m_player_name);
 
   window.clear(sf::Color::Cyan);
   window.draw(m_game_over_txt);
-  window.draw(score_msg);
+  window.draw(m_score_msg);
   if (m_new_record) { window.draw(m_name_msg); window.draw(m_name); }
   std::for_each(m_buttons.begin(), m_buttons.end(), [&window](auto& button) {button->draw(window);});
   window.display();
