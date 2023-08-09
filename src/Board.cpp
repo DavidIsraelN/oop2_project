@@ -108,6 +108,7 @@ void Board::doStep()
   m_current_level.movePlayer();
   m_current_level.moveBalls();
   m_current_level.moveBullets();
+  m_current_level.moveGifts();
   m_current_level.handleCollision();
   m_current_level.splitBall();
   m_current_level.erase(m_next_room);

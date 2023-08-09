@@ -83,6 +83,21 @@ void Player::collide(Ball&)
   m_is_shut = false;
 }
 
+void Player::collide(LifeGift&)
+{
+  Sound::Sounds().Play(SoundIndex::GIFT);
+  ++m_life;
+  std::cout << "life gift\n";
+
+}
+void Player::collide(TimeGift&)
+{
+  Sound::Sounds().Play(SoundIndex::GIFT);
+  TimerManager::Timer().addTime(ADDITIONAL_TIME_GIFT);
+  std::cout << "time gift\n";
+
+}
+
 //-------------------------------------------------------------------
 size_t Player::getScore() const
 {

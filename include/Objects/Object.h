@@ -11,6 +11,8 @@ class Player;
 class Ball;
 class Wall;
 class Weapon;
+class LifeGift;
+class TimeGift;
 
 class Object
 {
@@ -24,6 +26,8 @@ public:
   virtual void collide(Ball&) { }
   virtual void collide(Wall&) { }
   virtual void collide(Weapon&) { }
+  virtual void collide(LifeGift&) { }
+  virtual void collide(TimeGift&) { }
   sf::FloatRect getGlobalBounds() const;
 
 protected:

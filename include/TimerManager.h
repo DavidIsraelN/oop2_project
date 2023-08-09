@@ -22,11 +22,12 @@ public:
   std::string getRemainingTime(float level_time);
   void resetClock();
   float getElapsedTime() const;
+  void addTime(float);
 
 private:
   TimerManager();
 
   sf::Clock m_clock;
-  float m_delta_time = 0, m_elapsed_time = 0;
+  float m_delta_time = 0, m_elapsed_time = 0, m_additional_time = 0;
   bool m_pause = false;
 };

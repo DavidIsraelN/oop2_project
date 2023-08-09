@@ -22,11 +22,17 @@ const size_t MAX_PLAYER_NAME = 10;
 const size_t MAX_SCORE_DIGIT = 4;
 
 //const float SPEED_BALL_X = 350.f, SPEED_BALL_Y = -1500.f; // for 4K screen
-const float SPEED_BALL_X = 200.f, SPEED_BALL_Y = -700.f; // for 1080p screen
+const float SPEED_BALL_X = 200.f * SCREEN_4K,
+            SPEED_BALL_Y = -700.f * SCREEN_4K;
+const float SPEED_GIFT_Y = 100 * SCREEN_4K;
 const size_t BALLS_KIND = 4;
 
-const float BULLET_SPEED_Y = -1000.f;
-const size_t BULLET_SIZE = 10;
+const size_t STARTING_LIFE = 3;
+const size_t PLAYER_SPEED = 400 * SCREEN_4K;
+
+const float BULLET_SPEED_Y = -1000.f * SCREEN_4K;
+const size_t BULLET_SIZE = 10 * SCREEN_4K;
+const size_t GIFT_SIZE = 30 * SCREEN_4K;
 
 const float ANIMATION_TIMER = 0.05f;
 const float SHUT_TIMER = 0.1f;
@@ -40,3 +46,5 @@ const int STAND = 0;
 
 const size_t NEXT_LEVEL_SCORE = 20;
 const int BALL_COLLIDE_SCORE = -15;
+
+const float ADDITIONAL_TIME_GIFT = 10;

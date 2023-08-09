@@ -40,7 +40,7 @@ void TimerManager::startPause()
 //-------------------------------------------------------------------
 std::string TimerManager::getRemainingTime(float level_time)
 {
-  size_t remaining_time = level_time - m_elapsed_time;
+  size_t remaining_time = level_time + m_additional_time - m_elapsed_time;
 
   auto minutes = remaining_time / 60 % 60;
   auto seconds = remaining_time % 60;
@@ -58,10 +58,16 @@ void TimerManager::resetClock()
   m_clock.restart();
   m_delta_time = 0;
   m_elapsed_time = 0;
+  m_additional_time = 0;
 }
 
 //-------------------------------------------------------------------
 float TimerManager::getElapsedTime() const
 {
   return m_elapsed_time;
+}
+
+void TimerManager::addTime(float additional_time)
+{
+  m_additional_time += additional_time;
 }

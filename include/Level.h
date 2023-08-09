@@ -24,7 +24,9 @@ public:
   void draw(sf::RenderWindow&);
   void movePlayer();
   void createBullet();
+  void createGift(sf::Vector2f);
   void moveBullets();
+  void moveGifts();
   void moveBalls();
   void erase(bool&);
   void pause();

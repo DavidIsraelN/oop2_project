@@ -1,6 +1,8 @@
 #include "Level.h"
-#include "Objects/GunWeapon.h"
 #include "EnumAndMacroes.h"
+#include "Objects/Gifts/LifeGift.h"
+#include "Objects/Gifts/TimeGift.h"
+#include "Objects/GunWeapon.h"
 #include "Sound.h"
 #include "TimerManager.h"
 #include <algorithm>
@@ -12,7 +14,9 @@
 Level::Level(float win_width, float win_height)
   : m_win_width(win_width), m_win_height(win_height),
    m_old_view_x(win_width / 2)
-{ }
+{
+  srand(time(0));
+}
 
 //-------------------------------------------------------------------
 void Level::loadLevel(Action level, bool new_game)
@@ -140,6 +144,7 @@ void Level::draw(sf::RenderWindow& window)
   window.draw(m_background);
 
   std::for_each(m_bullets.begin(), m_bullets.end(), [&window] (auto &bullet) {bullet->draw(window);});
+  std::for_each(m_gifts.begin(), m_gifts.end(), [&window] (auto &gift) {gift->draw(window);});
   m_player->draw(window);
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
@@ -162,10 +167,30 @@ void Level::createBullet()
   auto position_accuracy = sf::Vector2f(player_rifle_position.x + m_player->getGlobalBounds().width / 9.5f,
                                         player_rifle_position.y - m_player->getGlobalBounds().height / 2.5f);
 
-  m_bullets.push_back(std::make_unique<GunWeapon>(position_accuracy));
+  m_bullets.emplace_back(std::make_unique<GunWeapon>(position_accuracy));
   m_bullet_time = TimerManager::Timer().getElapsedTime();
   Sound::Sounds().Play(SoundIndex::SHUT);
 }
+
+//-------------------------------------------------------------------
+void Level::createGift(sf::Vector2f position)
+{
+  auto gift = rand() % 15;
+  switch (gift)
+  {
+  case 0:
+    m_gifts.emplace_back(std::make_unique<TimeGift>(position, m_win_height - 2 * m_obj_height));
+    break;
+
+  case 1:
+    m_gifts.emplace_back(std::make_unique<LifeGift>(position, m_win_height - 2 * m_obj_height));
+    break;
+
+  default:
+    return;
+  }
+}
+
 
 //-------------------------------------------------------------------
 void Level::movePlayer()
@@ -204,10 +229,17 @@ void Level::moveBullets()
 }
 
 //-------------------------------------------------------------------
+void Level::moveGifts()
+{
+  std::for_each(m_gifts.begin(), m_gifts.end(), [](auto& gift) {gift->moveObject();});
+}
+
+//-------------------------------------------------------------------
 void Level::erase(bool& door_opened)
 {
   std::erase_if(m_bullets, [](const auto &bullet) {return bullet->isDel();});
   std::erase_if(m_balls, [](const auto& ball) {return ball->isDel();});
+  std::erase_if(m_gifts, [](const auto& gift) {return gift->isDel();});
   openDoor(door_opened);
 }
 
@@ -250,7 +282,17 @@ void Level::splitBall()
       m_boom_timer = BOOM_TIMER;
       m_is_boom = true;
       break;
-    } // end create boom:
+    } // end create boom
+
+  // create gift
+  for (auto i = size_t(0); i < m_balls.size(); ++i)
+    if (m_balls[i]->isDel())
+    {
+      createGift(sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
+                              m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2));
+      break;
+    } // end create gift
+
 
   for (auto i = size_t(0); i < m_balls.size(); ++i)
     if (m_balls[i]->isDel() && m_balls[i]->getRatio() > 1)
@@ -301,6 +343,9 @@ void Level::handleCollision()
   for (auto &bullet : m_bullets)
     std::for_each(m_walls.begin(), m_walls.end(), [&bullet] (const auto& wall) {
       if (wall->collidesWith(*bullet)) wall->collide(*bullet); });
+
+  for (auto &gift : m_gifts)
+    if (m_player->collidesWith(*gift)) gift->collide(*m_player);
 }
 
 //-------------------------------------------------------------------
