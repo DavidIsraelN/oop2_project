@@ -11,12 +11,6 @@
  */
 
 //-------------------------------------------------------------------
-const size_t FILES = 4;
-const size_t SOUND = 4;
-const size_t BACKGROUNDS = 3;
-
-////-------------------------------------------------------------------
-
 enum class StaticObjIndex
 {
   BALL, STAND_PLAYER, SHUT_PLAYER, BULLET, WALL, DOOR, GIFT, BOOM
@@ -24,22 +18,22 @@ enum class StaticObjIndex
 
 enum class TxtIndex
 {
-  LEVEL1, LEVEL2, LEVEL3, RECORD
+  LEVEL1, LEVEL2, LEVEL3, RECORD, MAX
+};
+
+enum class TextureIndex
+{
+  SPRITE_SEET, HELP, MAX
 };
 
 enum class BackgroundIndex
 {
-  BACKGROUND_1, BACKGROUND_2, BACKGROUND_3
+  BACKGROUND_1, BACKGROUND_2, BACKGROUND_3, MAX
 };
 
 enum class SoundIndex
 {
-  SHUT, HIT, DEATH, BACKGROUND /*, LEVEL_RUN, GIFTS */
-};
-
-enum class FontIndex
-{
-  TRY, ARIEL
+  SHUT, HIT, DEATH, BACKGROUND, GIFT /*, LEVEL_RUN */, MAX
 };
 
 //-------------------------------------------------------------------
@@ -51,36 +45,39 @@ public:
   void operator=(const ResourceManager&) = delete;
   sf::Image& getIcon();
   sf::Font& getFont();
-  sf::Texture& getTexture();
+  sf::Texture& getTexture(TextureIndex);
   sf::IntRect& getTextureRect(StaticObjIndex);
-  sf::IntRect&getWalkingTextureRect(size_t);
+  sf::IntRect& getWalkingTextureRect(size_t);
   sf::SoundBuffer& getSound(SoundIndex);
   std::fstream& getTxtFile(TxtIndex);
   sf::Texture& getBackgroundTexture(BackgroundIndex);
 
 private:
   ResourceManager();
-  void setPlayerMap();
+  void setStaticMap();
+  void setPlayerAnimation();
 
-  std::string m_backgrounds_name[BACKGROUNDS] =
-  {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
-  sf::Texture m_backgrounds_texture[BACKGROUNDS];
-
-  std::string m_sounds_name[SOUND] = 
-  { "gun_shot.wav", "hit.wav", "dead.wav", "background.wav" };
-  sf::SoundBuffer m_sounds[SOUND];
-
-  std::string m_files_name[FILES] = 
-  { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
-  std::fstream m_files[FILES];
+  std::string m_icon_name = "RedBall.png";
+  sf::Image m_icon;
 
   std::string m_font_name = "balloudefont.otf";
   sf::Font m_font;
 
-  sf::Image m_icon;
+  std::string m_texture_name[size_t(TextureIndex::MAX)] = 
+  { "SpriteSheet.png", "Help.jpeg" };
+  std::unordered_map<TextureIndex, sf::Texture> m_texture_resources;
 
-  std::string m_texture_name = "SpriteSheet.png";
-  sf::Texture m_texture_resources;
+  std::string m_files_name[size_t(TxtIndex::MAX)] =
+  { "Level_1.txt", "Level_2.txt", "Level_3.txt", "Record.txt"};
+  std::unordered_map<TxtIndex, std::fstream> m_files;
+
+  std::string m_sounds_name[size_t(SoundIndex::MAX)] =
+  { "gun_shot.wav", "hit.wav", "dead.wav", "background.wav", "gift.wav" };
+  std::unordered_map<SoundIndex, sf::SoundBuffer> m_sounds;
+
+  std::string m_backgrounds_name[size_t(BackgroundIndex::MAX)] =
+  {"Background_1.jpg","Background_2.jpg","Background_3.jpg"};
+  std::unordered_map<BackgroundIndex, sf::Texture> m_backgrounds_texture;
 
   std::unordered_map<StaticObjIndex, sf::IntRect> m_static_rect;
   std::vector<sf::IntRect> m_player_animation;

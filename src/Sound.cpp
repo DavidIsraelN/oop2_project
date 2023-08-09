@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------
 Sound::Sound()
 {
-  for (auto i = size_t(0); i < SOUND; ++i)
+  for (auto i = size_t(0); i < size_t(SoundIndex::MAX); ++i)
     m_sounds[i].setBuffer(ResourceManager::Resource().getSound(SoundIndex(i)));
 
   m_sounds[size_t(SoundIndex::BACKGROUND)].setLoop(true);
@@ -40,7 +40,7 @@ void Sound::Mute()
 {
   m_muted = !m_muted;
   if (!m_muted) return;
-  for (auto i = size_t(0); i < SOUND; ++i)
+  for (auto i = size_t(0); i < size_t(SoundIndex::MAX); ++i)
     Stop(SoundIndex(i));
 }
 

@@ -5,7 +5,7 @@
 //-------------------------------------------------------------------
 Wall::Wall(const sf::Vector2f& position, float width, float height)
 {
-  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture());
+  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET));
   m_sprite.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::WALL));
   const auto bounds = m_sprite.getLocalBounds();
   m_sprite.setScale(width / bounds.width, height / bounds.height);

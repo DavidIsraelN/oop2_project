@@ -22,8 +22,6 @@ void Board::run(Action& action, sf::RenderWindow& window)
 {
   if(!doAction(action, window)) return; // if level load, doAction == true.
 
-//  window.setFramerateLimit(60);  //--------------- ?? ----------------
-
   while (window.isOpen())
   {
     window.clear();

@@ -4,7 +4,7 @@
 //-------------------------------------------------------------------
 GunWeapon::GunWeapon(const sf::Vector2f& position)
 {
-  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture());
+  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET));
   m_sprite.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::BULLET));
   const auto bounds = m_sprite.getLocalBounds();
   m_sprite.setScale(BULLET_SIZE / bounds.width, BULLET_SIZE / bounds.height);

@@ -1,18 +1,12 @@
 #include "Objects/Player.h"
 #include "Sound.h"
 #include "TimerManager.h"
-#include <iostream>
-
-const int BALL_COLLIDE_SCORE = -15;
-const int LEFT_DIRECTION = -1;
-const int RIGHT_DIRECTION = 1;
-const int STAND = 0;
 
 //-------------------------------------------------------------------
 Player::Player(const sf::Vector2f& position, float width, float height)
   : m_original_position(position)
 {
-  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture());
+  m_sprite = sf::Sprite(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET));
   m_sprite.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::STAND_PLAYER));
   const auto bounds = m_sprite.getLocalBounds();
   m_sprite.setScale(width*2 / bounds.width, height*2 / bounds.height);

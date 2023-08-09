@@ -1,18 +1,12 @@
 #include "Level.h"
 #include "Objects/GunWeapon.h"
+#include "EnumAndMacroes.h"
 #include "Sound.h"
 #include "TimerManager.h"
 #include <algorithm>
 #include <exception>
 #include <memory>
 #include <vector>
-
-//const size_t NEXT_LEVEL_SCORE = 20;
-//const size_t BALLS_KIND = 4;
-
-const int LEFT_DIRECTION = -1;
-const int RIGHT_DIRECTION = 1;
-const int STAND = 0;
 
 //-------------------------------------------------------------------
 Level::Level(float win_width, float win_height)
@@ -144,11 +138,11 @@ void Level::draw(sf::RenderWindow& window)
   window.setView(currentView());
   window.draw(m_background);
 
+  std::for_each(m_bullets.begin(), m_bullets.end(), [&window] (auto &bullet) {bullet->draw(window);});
   m_player->draw(window);
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
-  std::for_each(m_bullets.begin(), m_bullets.end(), [&window] (auto &bullet) {bullet->draw(window);});
 
   window.setView(window.getDefaultView());
 }
@@ -160,11 +154,11 @@ void Level::createBullet()
     return;
 
   m_player->setShut();
-  auto middle_player_position = sf::Vector2f(
+  auto player_rifle_position = sf::Vector2f(
     m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2,
     m_player->getGlobalBounds().top + m_player->getGlobalBounds().height / 2);
 
-  m_bullets.push_back(std::make_unique<GunWeapon>(middle_player_position));
+  m_bullets.push_back(std::make_unique<GunWeapon>(player_rifle_position));
   m_bullet_time = TimerManager::Timer().getElapsedTime();
   Sound::Sounds().Play(SoundIndex::SHUT);
 }

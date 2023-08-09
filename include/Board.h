@@ -3,14 +3,12 @@
 #include "Level.h"
 #include "GameOver.h"
 #include "StatusBar.h"
+#include "EnumAndMacroes.h"
 
 /* ------------------------------------------------------------------
  * This class is responsible for all the gameplay, 
  * receiving the input from the player and display the game to the screen.
  */
-
-enum class Action;
-const float MSG_DELAY = 1.5f;
 
 class Board
 {

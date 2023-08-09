@@ -22,6 +22,6 @@ public:
 private:
   Sound();
 
-  sf::Sound m_sounds[SOUND];
+  sf::Sound m_sounds[size_t(SoundIndex::MAX)];
   bool m_muted = false;
 };
