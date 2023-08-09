@@ -55,8 +55,12 @@ void Player::setAnimation()
     m_shut_timer -= TimerManager::Timer().getDeltaTime();
     if (m_shut_timer <= 0)
       m_is_shut = false;
+    if (m_sprite.getScale().x > 0) m_sprite.scale(-1, 1);
+    fixPosition(old_global_bounds);
+    return;
   }
-  else if (m_x_direction == STAND)
+
+  if (m_x_direction == STAND)
     m_sprite.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::STAND_PLAYER));
   else
   {
@@ -136,7 +140,7 @@ void Player::fixPosition(sf::FloatRect& old_global_bounds)
 {
   if ((old_global_bounds.left + old_global_bounds.width / 2) != m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width / 2)
   {
-    auto d =  (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width / 2) -
+    auto d = (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width / 2) -
              (old_global_bounds.left + old_global_bounds.width / 2);
     m_sprite.setPosition(m_sprite.getPosition().x - d, m_sprite.getPosition().y);
   }

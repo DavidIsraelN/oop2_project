@@ -30,6 +30,6 @@ private:
   sf::RectangleShape m_msg_rec;
   sf::Text m_msg_txt;
   float m_msg_timer = MSG_DELAY;
-  bool m_next_room = false, m_start_level = true, m_new_game = true, 
-    disqualification = false;
+  bool m_next_room = false, m_start_level = true, m_new_game = true,
+       m_disqualification = false;
 };

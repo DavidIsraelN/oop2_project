@@ -33,7 +33,8 @@ void Menu::buildMenu(float width, float height)
     sf::Vector2f(width / 3, height / 7), sf::Vector2f(2 * width / 7, 7 * height / 12)));
 
   m_buttons.emplace_back(std::make_unique<Help>(width, height, 
-    sf::Vector2f(width / 3, height / 7), sf::Vector2f(5 * width / 7, 7 * height / 12)));
+    sf::Vector2f(width / 3, height / 7), sf::Vector2f(5 * width / 7, 7 * height / 12),
+    sf::Vector2f(width, height)));
 
   m_buttons.emplace_back(std::make_unique<Records>(width, height,
     sf::Vector2f(width / 3, height / 7), sf::Vector2f(5 * width / 7, 9.5 * height / 12)));

@@ -31,7 +31,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
     checkMsgs(window);
     window.display();
 
-    if (m_next_room || m_start_level || disqualification) continue;
+    if (m_next_room || m_start_level || m_disqualification) continue;
 
     for (auto event = sf::Event{}; window.pollEvent(event); )
       if (!handleEvent(window, event, action)) return;
@@ -73,7 +73,7 @@ bool Board::doAction(Action& action, sf::RenderWindow& window)
   case Action::LEVEL3:
     m_current_level.loadLevel(action, m_new_game);
     m_status_bar.setStatusBar(m_current_level.getObjHeight(), m_current_level.getLevelNum());
-    disqualification = m_next_room = false;
+    m_disqualification = m_next_room = false;
     m_start_level = m_new_game = true;
     return true;
   }
@@ -124,8 +124,8 @@ void Board::checkMsgs(sf::RenderWindow& window)
 
   if (m_current_level.isDisqualification() || m_status_bar.timeOver())
   {
-    disqualification = true;
-    drawMsg(window, "OUCH", disqualification);
+    m_disqualification = true;
+    drawMsg(window, "OUCH", m_disqualification);
   }
 }
 

@@ -57,9 +57,9 @@ private:
   std::vector<std::unique_ptr<Door>> m_doors;
   std::vector<std::unique_ptr<Weapon>> m_bullets;
   std::vector<std::unique_ptr<Gift>> m_gifts;
-  sf::Sprite m_background;
+  sf::Sprite m_background, m_boom;
 
   float m_win_width, m_win_height, m_old_view_x, m_world_width = 0,
-    m_obj_height = 0, m_obj_width = 0, m_bullet_time = -1.f;
-  bool disqualification = false;
+    m_obj_height = 0, m_obj_width = 0, m_bullet_time = -1.f, m_boom_timer = BOOM_TIMER;
+  bool disqualification = false, m_is_boom = false;
 };

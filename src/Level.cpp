@@ -103,6 +103,7 @@ void Level::addObject(ObjectType type, size_t i, size_t j, bool new_game)
 //-------------------------------------------------------------------
 void Level::resetLevel()
 {
+  m_bullet_time = -1.f;
   m_player->setOriginalState();
   m_bullets.clear();
   m_balls.clear();
@@ -143,7 +144,7 @@ void Level::draw(sf::RenderWindow& window)
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
-
+  if (m_is_boom) window.draw(m_boom);
   window.setView(window.getDefaultView());
 }
 
@@ -158,7 +159,10 @@ void Level::createBullet()
     m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2,
     m_player->getGlobalBounds().top + m_player->getGlobalBounds().height / 2);
 
-  m_bullets.push_back(std::make_unique<GunWeapon>(player_rifle_position));
+  auto position_accuracy = sf::Vector2f(player_rifle_position.x + m_player->getGlobalBounds().width / 9.5f,
+                                        player_rifle_position.y - m_player->getGlobalBounds().height / 2.5f);
+
+  m_bullets.push_back(std::make_unique<GunWeapon>(position_accuracy));
   m_bullet_time = TimerManager::Timer().getElapsedTime();
   Sound::Sounds().Play(SoundIndex::SHUT);
 }
@@ -230,6 +234,24 @@ void Level::openDoor(bool& door_opened)
 //-------------------------------------------------------------------
 void Level::splitBall()
 {
+  // create boom:
+  m_boom_timer -= TimerManager::Timer().getDeltaTime();
+  if (m_boom_timer <= 0) m_is_boom = false;
+
+  for (auto i = size_t(0); i < m_balls.size(); ++i)
+    if (m_balls[i]->isDel())
+    {
+      m_boom = sf::Sprite(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET));
+      m_boom.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::BOOM));
+      m_boom.setPosition(m_balls[i]->getGlobalBounds().left - m_balls[i]->getGlobalBounds().width / 6,
+                         m_balls[i]->getGlobalBounds().top - m_balls[i]->getGlobalBounds().height / 5);
+      m_boom.setScale(m_balls[i]->getGlobalBounds().width / m_boom.getGlobalBounds().width * 1.3f,
+                      m_balls[i]->getGlobalBounds().height / m_boom.getGlobalBounds().height * 1.3f);
+      m_boom_timer = BOOM_TIMER;
+      m_is_boom = true;
+      break;
+    } // end create boom:
+
   for (auto i = size_t(0); i < m_balls.size(); ++i)
     if (m_balls[i]->isDel() && m_balls[i]->getRatio() > 1)
     {

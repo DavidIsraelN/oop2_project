@@ -13,7 +13,7 @@ enum class Action
 };
 
 
-const size_t SCREEN_4K = 1; // Parameter for 4K screen. 1 - no. 2 - yes.
+const size_t SCREEN_4K = 2; // Parameter for 4K screen. 1 - no. 2 - yes.
 const size_t WIN_WIDTH = 900 * SCREEN_4K;
 const size_t WIN_HEIGHT = 600 * SCREEN_4K;
 
@@ -30,6 +30,7 @@ const size_t BULLET_SIZE = 15;
 
 const float ANIMATION_TIMER = 0.05f;
 const float SHUT_TIMER = 0.1f;
+const float BOOM_TIMER = 0.05f;
 const float BULLET_DELAY = 0; // 0.4f
 const float MSG_DELAY = 1.5f;
 
