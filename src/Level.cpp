@@ -30,7 +30,7 @@ void Level::loadLevel(Action level, bool new_game)
 void Level::clearLevel(bool new_game)
 {
   disqualification = false;
-  m_bullet_time = -1.f;
+  m_bullet_timer = BULLET_DELAY;
   m_old_view_x = m_win_width / 2;
   m_balls.clear();
   m_bullets.clear();
@@ -91,7 +91,7 @@ void Level::addObject(ObjectType type, size_t i, size_t j, bool new_game)
   case ObjectType::BALL_3:
   case ObjectType::BALL_4:
     m_balls.emplace_back(std::make_shared<Ball>((size_t(type) - '0'), m_obj_width, position,
-                                              m_win_height - 2 * m_obj_height, 1)); break;
+                                              m_win_height - 2 * m_obj_height, rand() % 2 == 0 ? 1 : -1)); break;
 
   case ObjectType::WALL:
     m_walls.emplace_back(std::make_unique<Wall>(position, m_obj_width, m_obj_height)); break;
@@ -107,7 +107,7 @@ void Level::addObject(ObjectType type, size_t i, size_t j, bool new_game)
 //-------------------------------------------------------------------
 void Level::resetLevel()
 {
-  m_bullet_time = -1.f;
+  m_bullet_timer = BULLET_DELAY;
   m_player->setOriginalState();
   m_bullets.clear();
   m_balls.clear();
@@ -149,19 +149,15 @@ void Level::draw(sf::RenderWindow& window)
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
-
   if (m_is_boom) window.draw(m_boom);
-  m_boom_timer -= TimerManager::Timer().getDeltaTime();
-  if (m_boom_timer <= 0) m_is_boom = false;
   window.setView(window.getDefaultView());
 }
 
 //-------------------------------------------------------------------
 void Level::createBullet()
 {
-  if (TimerManager::Timer().getElapsedTime() - m_bullet_time < BULLET_DELAY)
-    return;
-
+  if (!m_can_shut) return;
+  m_can_shut = false;
   m_player->setShut();
   auto player_rifle_position = sf::Vector2f(
     m_player->getGlobalBounds().left + m_player->getGlobalBounds().width / 2,
@@ -171,7 +167,6 @@ void Level::createBullet()
                                         player_rifle_position.y - m_player->getGlobalBounds().height / 2.5f);
 
   m_bullets.emplace_back(std::make_unique<GunWeapon>(position_accuracy));
-  m_bullet_time = TimerManager::Timer().getElapsedTime();
   Sound::Sounds().Play(SoundIndex::SHUT);
 }
 
@@ -235,7 +230,6 @@ void Level::openDoor(bool& door_opened)
 
   door_opened = m_doors.size() && old_size - m_doors.size();
 }
-
 
 //-------------------------------------------------------------------
 void Level::splitBall(const Ball* ball)
@@ -326,7 +320,6 @@ float Level::getFirstDoor() const
 //-------------------------------------------------------------------
 void Level::updateStatusBar(StatusBar& status_bar)
 {
-  TimerManager::Timer().updateTimer();
   status_bar.setTime();
   status_bar.setScore(m_player->getScore());
   status_bar.setLevel(m_level_num);
@@ -339,6 +332,19 @@ void Level::updateStatusBar(StatusBar& status_bar)
     disqualification = true;
   }
 }
+
+//-------------------------------------------------------------------
+void Level::updateTimers()
+{
+  TimerManager::Timer().updateTimer();
+
+  if (!m_can_shut) m_bullet_timer -= TimerManager::Timer().getDeltaTime();
+  if (m_bullet_timer <= 0) { m_can_shut = true; m_bullet_timer = BULLET_DELAY; }
+
+  m_boom_timer -= TimerManager::Timer().getDeltaTime();
+  if (m_boom_timer <= 0) m_is_boom = false;
+}
+
 
 //-------------------------------------------------------------------
 bool Level::levelOver()

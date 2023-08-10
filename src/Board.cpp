@@ -27,6 +27,7 @@ void Board::run(Action& action, sf::RenderWindow& window)
     window.clear();
     m_current_level.draw(window);
     m_status_bar.draw(window);
+    m_current_level.updateTimers();
     m_current_level.updateStatusBar(m_status_bar);
     checkMsgs(window);
     window.display();

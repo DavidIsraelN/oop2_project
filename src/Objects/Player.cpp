@@ -130,7 +130,7 @@ void Player::decreaseLife()
 void Player::setShut()
 {
   m_is_shut = true;
-  m_shut_timer = SHUT_TIMER;
+  m_shut_timer = SHUT_ANIMATION_TIMER;
 }
 
 //-------------------------------------------------------------------

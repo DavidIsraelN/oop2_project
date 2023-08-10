@@ -29,6 +29,7 @@ public:
   void pause();
   void handleCollision();
   void updateStatusBar(StatusBar&);
+  void updateTimers();
   bool levelOver();
   bool lifeEnd() const;
   size_t getScore() const;
@@ -61,6 +62,7 @@ private:
   sf::Sprite m_background, m_boom;
 
   float m_win_width, m_win_height, m_old_view_x, m_world_width = 0,
-    m_obj_height = 0, m_obj_width = 0, m_bullet_time = -1.f, m_boom_timer = BOOM_TIMER;
-  bool disqualification = false, m_is_boom = false;
+    m_obj_height = 0, m_obj_width = 0,
+      m_bullet_timer = BULLET_DELAY, m_boom_timer = BOOM_TIMER;
+  bool disqualification = false, m_is_boom = false, m_can_shut = true;
 };

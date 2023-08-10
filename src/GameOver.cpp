@@ -135,7 +135,7 @@ void GameOver::setName(sf::Uint32 c, size_t final_score)
   else if (c == 13)                      // if enter is entered 
     saveNewRecord(final_score);
 
-  else if (m_player_name.size() >= MAX_PLAYER_NAME)
+  else if (m_player_name.size() >= MAX_PLAYER_NAME || c > 255)
     return;
 
   else if (std::isalnum(c) || c == '.')  // valid character for player name

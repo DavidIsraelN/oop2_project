@@ -37,10 +37,10 @@ const size_t BULLET_SIZE = 10 * SCREEN_4K;
 const size_t GIFT_SIZE = 30 * SCREEN_4K;
 
 const float ANIMATION_TIMER = 0.05f;
-const float SHUT_TIMER = 0.1f;
+const float SHUT_ANIMATION_TIMER = 0.1f;
 const float BOOM_TIMER = 0.05f;
 const float GIFT_TIMER = 5;
-const float BULLET_DELAY = 0; // 0.4f
+const float BULLET_DELAY = 0.25f;
 const float MSG_DELAY = 1.5f;
 
 const int LEFT_DIRECTION = -1;
@@ -50,4 +50,4 @@ const int STAND = 0;
 const size_t NEXT_LEVEL_SCORE = 20;
 const int BALL_COLLIDE_SCORE = -15;
 
-const float ADDITIONAL_TIME_GIFT = 10;
+const float ADDITIONAL_TIME_GIFT = 20;
