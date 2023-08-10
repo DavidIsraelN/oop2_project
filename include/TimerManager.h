@@ -9,7 +9,6 @@
  * Create the Timer of the program once and get to him from anywhere in the program.
  */
 
-//-------------------------------------------------------------------
 class TimerManager
 {
 public:

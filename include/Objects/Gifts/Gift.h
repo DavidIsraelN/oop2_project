@@ -1,6 +1,11 @@
 #pragma once
 #include "Objects/MovingObject.h"
 
+/* ----------------------------------------------------------
+ * class for gifts object (inherited from MovingObject class).
+ * the game can be expanded to contain more types of gifts (like defense etc..)
+ */
+
 class Gift : public MovingObject
 {
 public:

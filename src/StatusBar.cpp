@@ -1,6 +1,7 @@
 #include "StatusBar.h"
 #include <iostream>
 #include "ResourcesManager.h"
+#include "EnumAndMacros.h"
 #include "TimerManager.h"
 #include "Colors.h"
 
@@ -26,7 +27,7 @@ StatusBar::StatusBar(float bar_width, float win_height)
 //-------------------------------------------------------------------
 void StatusBar::setStatusBar(float obj_height, size_t level_num)
 {
-  m_level_time = float(BASE_TIME * (level_num == 1 ? 1 : level_num == 2 ? 1.5 : 2));
+  m_level_time = float(BASE_LEVEL_TIME * (level_num == 1 ? 1 : level_num == 2 ? 1.5 : 2));
 
   auto bar_height = 2 * obj_height;
 

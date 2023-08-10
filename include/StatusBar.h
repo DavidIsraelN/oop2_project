@@ -6,8 +6,6 @@
  * Presents level number, life, score and the time left to finish.
  */
 
-const size_t BASE_TIME = 120; //seconds
-
 class StatusBar
 {
 public:

@@ -17,7 +17,7 @@ class TimeGift;
 class Object
 {
 public:
-  virtual ~Object() { };
+  virtual ~Object() = 0 { } // to be abstract
   void draw(sf::RenderWindow&) const;
   virtual bool collidesWith(Object&) const;
   virtual void collide(Object&) { }

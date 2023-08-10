@@ -128,7 +128,7 @@ sf::View Level::currentView()
   else if (player_position + m_win_width / 2.f > getFirstDoor())
     viewCenterX = getFirstDoor() - m_win_width / 2.f;
    else if (player_position - m_old_view_x > VIEW_OFFSET)
-    viewCenterX = m_old_view_x + 1.f;
+    viewCenterX = m_old_view_x + OFFSET_SPEED;
   else
     viewCenterX = player_position;
 

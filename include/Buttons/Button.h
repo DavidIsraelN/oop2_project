@@ -7,8 +7,6 @@
  * an abstract class that is responsible for all the buttons.
  */
 
-//enum class Action;
-
 class Button
 {
 public:

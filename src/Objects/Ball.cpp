@@ -93,8 +93,6 @@ size_t Ball::getRatio() const
 bool Ball::collidesWith(Object& other_obj) const
 {
   return collidesWith(other_obj);
-//  if (!other_obj.collidesWith(*this)) return false;
-//  auto distance = sqrt(pow(other_obj - a, 2) + pow(y - b, 2));
 }
 
 //-------------------------------------------------------------------

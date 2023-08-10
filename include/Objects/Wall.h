@@ -12,6 +12,5 @@ public:
   Wall(const sf::Vector2f& position, float width, float height);
   void collide(Ball&) override;
   void collide(Weapon&) override;
-  //void collide(Player&) override;
 
 };

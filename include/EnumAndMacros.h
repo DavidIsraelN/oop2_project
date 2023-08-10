@@ -12,8 +12,10 @@ enum class Action
   HELP, MUTE, RECORDS,*/ NOTHING
 };
 
-
-const size_t SCREEN_4K = 2; // Parameter for 4K screen. 1 - no. 2 - yes.
+/* ----------------------------------------------------------
+ * macros for the game. 
+ */
+const size_t SCREEN_4K = 1; // Parameter for 4K screen. 1 - no. 2 - yes.
 const size_t WIN_WIDTH = 900 * SCREEN_4K;
 const size_t WIN_HEIGHT = 600 * SCREEN_4K;
 
@@ -51,3 +53,4 @@ const size_t NEXT_LEVEL_SCORE = 20;
 const int BALL_COLLIDE_SCORE = -15;
 
 const float ADDITIONAL_TIME_GIFT = 20;
+const size_t BASE_LEVEL_TIME = 120; //seconds for levels
