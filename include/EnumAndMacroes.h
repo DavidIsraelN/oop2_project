@@ -17,13 +17,14 @@ const size_t SCREEN_4K = 1; // Parameter for 4K screen. 1 - no. 2 - yes.
 const size_t WIN_WIDTH = 900 * SCREEN_4K;
 const size_t WIN_HEIGHT = 600 * SCREEN_4K;
 
+const size_t VIEW_OFFSET = WIN_WIDTH / 90 * SCREEN_4K;
+
 const size_t MAX_NUM_OF_RECORDS = 7; // the amount of records that can be saved
 const size_t MAX_PLAYER_NAME = 10;
 const size_t MAX_SCORE_DIGIT = 4;
 
-//const float SPEED_BALL_X = 350.f, SPEED_BALL_Y = -1500.f; // for 4K screen
-const float SPEED_BALL_X = 200.f * SCREEN_4K,
-            SPEED_BALL_Y = -700.f * SCREEN_4K;
+const float SPEED_BALL_X = 200.f * SCREEN_4K;
+const float SPEED_BALL_Y = -700.f * SCREEN_4K;
 const float SPEED_GIFT_Y = 100 * SCREEN_4K;
 const size_t BALLS_KIND = 4;
 
@@ -37,6 +38,7 @@ const size_t GIFT_SIZE = 30 * SCREEN_4K;
 const float ANIMATION_TIMER = 0.05f;
 const float SHUT_TIMER = 0.1f;
 const float BOOM_TIMER = 0.05f;
+const float GIFT_TIMER = 5;
 const float BULLET_DELAY = 0; // 0.4f
 const float MSG_DELAY = 1.5f;
 

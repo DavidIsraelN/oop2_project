@@ -10,7 +10,9 @@ public:
   void setDel();
 
 private:
-  float m_floor, m_speed_y = SPEED_GIFT_Y;
+  bool checkTimer();
+
+  float m_floor, m_speed_y = SPEED_GIFT_Y, m_gift_timer = GIFT_TIMER;
   bool m_deleted = false;
 };
 

@@ -11,11 +11,11 @@
 #include <vector>
 
 //-------------------------------------------------------------------
-Level::Level(float win_width, float win_height)
-  : m_win_width(win_width), m_win_height(win_height),
-   m_old_view_x(win_width / 2)
+Level::Level(float win_width, float win_height) : m_win_width(win_width), m_win_height(win_height),
+  m_old_view_x(win_width / 2), m_boom(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET))
 {
   srand(time(0));
+  m_boom.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::BOOM));
 }
 
 //-------------------------------------------------------------------
@@ -127,7 +127,7 @@ sf::View Level::currentView()
     viewCenterX = m_win_width / 2.f;
   else if (player_position + m_win_width / 2.f > getFirstDoor())
     viewCenterX = getFirstDoor() - m_win_width / 2.f;
-   else if (player_position - m_old_view_x > 20.f)
+   else if (player_position - m_old_view_x > VIEW_OFFSET)
     viewCenterX = m_old_view_x + 1.f;
   else
     viewCenterX = player_position;
@@ -149,6 +149,9 @@ void Level::draw(sf::RenderWindow& window)
   std::for_each(m_walls.begin(), m_walls.end(), [&window] (auto &wall) {wall->draw(window);});
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
+
+  m_boom_timer -= TimerManager::Timer().getDeltaTime();
+  if (m_boom_timer <= 0) m_is_boom = false;
   if (m_is_boom) window.draw(m_boom);
   window.setView(window.getDefaultView());
 }
@@ -171,26 +174,6 @@ void Level::createBullet()
   m_bullet_time = TimerManager::Timer().getElapsedTime();
   Sound::Sounds().Play(SoundIndex::SHUT);
 }
-
-//-------------------------------------------------------------------
-void Level::createGift(sf::Vector2f position)
-{
-  auto gift = rand() % 15;
-  switch (gift)
-  {
-  case 0:
-    m_gifts.emplace_back(std::make_unique<TimeGift>(position, m_win_height - 2 * m_obj_height));
-    break;
-
-  case 1:
-    m_gifts.emplace_back(std::make_unique<LifeGift>(position, m_win_height - 2 * m_obj_height));
-    break;
-
-  default:
-    return;
-  }
-}
-
 
 //-------------------------------------------------------------------
 void Level::movePlayer()
@@ -217,20 +200,10 @@ void Level::movePlayer()
 }
 
 //-------------------------------------------------------------------
-void Level::moveBalls()
+void Level::moveMovingObjects()
 {
   std::for_each(m_balls.begin(), m_balls.end(), [](auto& ball){ball->moveObject();});
-}
-
-//-------------------------------------------------------------------
-void Level::moveBullets()
-{
   std::for_each(m_bullets.begin(), m_bullets.end(), [](auto& bullet) {bullet->moveObject();});
-}
-
-//-------------------------------------------------------------------
-void Level::moveGifts()
-{
   std::for_each(m_gifts.begin(), m_gifts.end(), [](auto& gift) {gift->moveObject();});
 }
 
@@ -263,50 +236,39 @@ void Level::openDoor(bool& door_opened)
   door_opened = m_doors.size() && old_size - m_doors.size();
 }
 
+
 //-------------------------------------------------------------------
-void Level::splitBall()
+void Level::splitBall(const Ball* ball)
 {
-  // create boom:
-  m_boom_timer -= TimerManager::Timer().getDeltaTime();
-  if (m_boom_timer <= 0) m_is_boom = false;
+  if (ball->getRatio() <= 1) return;
+  auto position = sf::Vector2f(ball->getGlobalBounds().left + ball->getGlobalBounds().width / 2,
+                                        ball->getGlobalBounds().top + ball->getGlobalBounds().height / 2);
 
-  for (auto i = size_t(0); i < m_balls.size(); ++i)
-    if (m_balls[i]->isDel())
-    {
-      m_boom = sf::Sprite(ResourceManager::Resource().getTexture(TextureIndex::SPRITE_SEET));
-      m_boom.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::BOOM));
-      m_boom.setPosition(m_balls[i]->getGlobalBounds().left - m_balls[i]->getGlobalBounds().width / 6,
-                         m_balls[i]->getGlobalBounds().top - m_balls[i]->getGlobalBounds().height / 5);
-      m_boom.setScale(m_balls[i]->getGlobalBounds().width / m_boom.getGlobalBounds().width * 1.3f,
-                      m_balls[i]->getGlobalBounds().height / m_boom.getGlobalBounds().height * 1.3f);
-      m_boom_timer = BOOM_TIMER;
-      m_is_boom = true;
-      break;
-    } // end create boom
+  m_balls.emplace_back(std::make_shared<Ball>(ball->getRatio() - 1, m_obj_width, position, m_win_height - 2 * m_obj_height, 1));
+  m_balls.emplace_back(std::make_shared<Ball>(ball->getRatio() - 1, m_obj_width, position, m_win_height - 2 * m_obj_height,-1));
+}
 
-  // create gift
-  for (auto i = size_t(0); i < m_balls.size(); ++i)
-    if (m_balls[i]->isDel())
-    {
-      createGift(sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
-                              m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2));
-      break;
-    } // end create gift
+//-------------------------------------------------------------------
+void Level::createGift(const Ball* ball)
+{
+  auto position = sf::Vector2f(ball->getGlobalBounds().left + ball->getGlobalBounds().width / 2,
+                               ball->getGlobalBounds().top + ball->getGlobalBounds().height / 2);
+  switch (rand() % 15) {
+  case 0: m_gifts.emplace_back(std::make_unique<TimeGift>(position, m_win_height - 2 * m_obj_height)); break;
+  case 1: m_gifts.emplace_back(std::make_unique<LifeGift>(position, m_win_height - 2 * m_obj_height)); break;
+  default: return;
+  }
+}
 
-
-  for (auto i = size_t(0); i < m_balls.size(); ++i)
-    if (m_balls[i]->isDel() && m_balls[i]->getRatio() > 1)
-    {
-      m_balls.emplace_back(std::make_shared<Ball>(m_balls[i]->getRatio() - 1, m_obj_width,
-        sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
-                     m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-        m_win_height - 2 * m_obj_height, 1));
-
-      m_balls.emplace_back(std::make_shared<Ball>(m_balls[i]->getRatio() - 1, m_obj_width,
-        sf::Vector2f(m_balls[i]->getGlobalBounds().left + m_balls[i]->getGlobalBounds().width / 2,
-                     m_balls[i]->getGlobalBounds().top + m_balls[i]->getGlobalBounds().height / 2),
-        m_win_height - 2 * m_obj_height, -1));
-    }
+//-------------------------------------------------------------------
+void Level::createBoom(const Ball* ball)
+{
+  m_boom.setPosition(ball->getGlobalBounds().left - ball->getGlobalBounds().width / 6,
+                     ball->getGlobalBounds().top - ball->getGlobalBounds().height / 5);
+  m_boom.setScale(ball->getGlobalBounds().width / m_boom.getGlobalBounds().width * 1.3f,
+                  ball->getGlobalBounds().height / m_boom.getGlobalBounds().height * 1.3f);
+  m_boom_timer = BOOM_TIMER;
+  m_is_boom = true;
 }
 
 //-------------------------------------------------------------------
@@ -319,11 +281,14 @@ void Level::pause()
 void Level::handleCollision()
 {
   disqualification = false;
-  for (auto &ball : m_balls)
-  {
+
+  for (auto i = size_t(0); i < m_balls.size(); ++i) {
+    auto ball = m_balls[i];
+
     std::for_each(m_bullets.begin(), m_bullets.end(), [&] (const auto& bullet) {
       if (bullet->collidesWith(*ball)) {
-      m_player->incOrDecScore(BALLS_KIND + 1 - ball->getRatio()); bullet->collide(*ball);} });
+      m_player->incOrDecScore(BALLS_KIND + 1 - ball->getRatio());createGift(ball.get());
+      bullet->collide(*ball); splitBall(ball.get()); createBoom(ball.get()); } });
 
     std::for_each(m_walls.begin(), m_walls.end(), [&ball] (const auto& wall) {
       if (wall->collidesWith(*ball)) wall->collide(*ball); });
@@ -331,14 +296,12 @@ void Level::handleCollision()
     std::for_each(m_doors.begin(), m_doors.end(), [&ball] (const auto& door) {
       if (door->collidesWith(*ball)) door->collide(*ball); });
 
-    if (m_player->collidesWith(*ball))
-    {
+    if (m_player->collidesWith(*ball)) {
       m_player->collide(*ball);
       resetLevel();
       disqualification = true;
       return;
-    }
-  }
+    } }
 
   for (auto &bullet : m_bullets)
     std::for_each(m_walls.begin(), m_walls.end(), [&bullet] (const auto& wall) {
@@ -400,7 +363,7 @@ size_t Level::getLevelNum() const
 bool Level::isDisqualification() const
 {
   return disqualification;
-};
+}
 
 //-------------------------------------------------------------------
 size_t Level::getScore() const

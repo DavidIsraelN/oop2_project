@@ -15,7 +15,10 @@ Gift::Gift(const sf::Vector2f& position, float floor) : m_floor(floor)
 //-------------------------------------------------------------------
 void Gift::moveObject()
 {
+  if (!checkTimer()) return;
+
   if (m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height >= m_floor) return;
+
   m_sprite.move(0, m_speed_y * TimerManager::Timer().Timer().getDeltaTime());
 }
 
@@ -29,4 +32,16 @@ bool Gift::isDel() const
 void Gift::setDel()
 {
   m_deleted = true;
+}
+
+//-------------------------------------------------------------------
+bool Gift::checkTimer()
+{
+  m_gift_timer -= TimerManager::Timer().getDeltaTime();
+  if (m_gift_timer <= 0)
+  {
+    setDel();
+    return false;
+  }
+  return true;
 }

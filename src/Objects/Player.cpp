@@ -83,19 +83,18 @@ void Player::collide(Ball&)
   m_is_shut = false;
 }
 
+//-------------------------------------------------------------------
 void Player::collide(LifeGift&)
 {
   Sound::Sounds().Play(SoundIndex::GIFT);
   ++m_life;
-  std::cout << "life gift\n";
-
 }
+
+//-------------------------------------------------------------------
 void Player::collide(TimeGift&)
 {
   Sound::Sounds().Play(SoundIndex::GIFT);
   TimerManager::Timer().addTime(ADDITIONAL_TIME_GIFT);
-  std::cout << "time gift\n";
-
 }
 
 //-------------------------------------------------------------------
@@ -165,17 +164,3 @@ void Player::fixPosition(sf::FloatRect& old_global_bounds)
     m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y - d);
   }
 }
-
-
-
-// ============= don't del yet ====================
-
-//    auto old_global_bounds = m_sprite.getGlobalBounds();
-//    m_sprite.setTextureRect(ResourceManager::Resource().getTextureRect(StaticObjIndex::STAND_PLAYER));
-//    if (m_old_player_state == PlayerState::RIGHT)
-//      m_sprite.setPosition(m_sprite.getPosition().x -
-//                               (old_global_bounds.left - m_sprite.getGlobalBounds().left), m_sprite.getPosition().y);
-//    else if (m_old_player_state == PlayerState::LEFT)
-//      m_sprite.setPosition(m_sprite.getPosition().x +
-//                               (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width -
-//                                (old_global_bounds.left + old_global_bounds.width)) , m_sprite.getPosition().y);

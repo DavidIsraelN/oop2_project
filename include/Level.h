@@ -24,14 +24,10 @@ public:
   void draw(sf::RenderWindow&);
   void movePlayer();
   void createBullet();
-  void createGift(sf::Vector2f);
-  void moveBullets();
-  void moveGifts();
-  void moveBalls();
+  void moveMovingObjects();
   void erase(bool&);
   void pause();
   void handleCollision();
-  void splitBall();
   void updateStatusBar(StatusBar&);
   bool levelOver();
   bool lifeEnd() const;
@@ -41,6 +37,9 @@ public:
   float getObjHeight() const;
 
 private:
+  void splitBall(const Ball*);
+  void createGift(const Ball*);
+  void createBoom(const Ball*);
   float getFirstDoor() const;
   void clearLevel(bool);
   void resetLevel();
