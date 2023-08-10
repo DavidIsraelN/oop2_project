@@ -1,6 +1,6 @@
 #pragma once
+#include "EnumAndMacros.h"
 #include "MovingObject.h"
-#include "EnumAndMacroes.h"
 
 /* ----------------------------------------------------------
  * class for ball object (inherited from MovingObject class).

@@ -1,9 +1,9 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "Level.h"
+#include "EnumAndMacros.h"
 #include "GameOver.h"
+#include "Level.h"
 #include "StatusBar.h"
-#include "EnumAndMacroes.h"
+#include <SFML/Graphics.hpp>
 
 /* ------------------------------------------------------------------
  * This class is responsible for all the gameplay, 

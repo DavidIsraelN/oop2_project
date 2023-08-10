@@ -1,5 +1,5 @@
 #include "Controller.h"
-#include "EnumAndMacroes.h"
+#include "EnumAndMacros.h"
 #include "ResourcesManager.h"
 #include "Sound.h"
 #include <chrono>
@@ -48,7 +48,7 @@ void Controller::runException()
   e_msg.setOrigin({ e_msg.getGlobalBounds().width / 2,
                     e_msg.getGlobalBounds().height / 2 });
 
-  m_window.clear(sf::Color::Cyan);
+  m_window.clear(main_background);
   m_window.draw(e_msg);
   m_window.display();
   std::this_thread::sleep_for(std::chrono::seconds(5));

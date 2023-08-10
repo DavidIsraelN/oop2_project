@@ -1,5 +1,6 @@
 #pragma once
-#include "EnumAndMacroes.h"
+#include "Colors.h"
+#include "EnumAndMacros.h"
 #include <SFML/Graphics.hpp>
 
 /* ----------------------------------------------------------

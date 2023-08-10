@@ -1,10 +1,10 @@
 #include "GameOver.h"
 #include "Buttons/Exit.h"
 #include "Buttons/MenuButton.h"
-#include "EnumAndMacroes.h"
+#include "EnumAndMacros.h"
 #include "ResourcesManager.h"
-#include <sstream>
 #include <cctype>
+#include <sstream>
 
 //-------------------------------------------------------------------
 GameOver::GameOver(float win_width, float win_height) :

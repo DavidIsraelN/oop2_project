@@ -1,79 +1,84 @@
-# oop2_project
+# oop2_project - Bubble Trouble Game
 final project in oop2 course
 
 
 // ------------------------------------------------------
 # Written by: 
-Mordechai Atiya. id - 208484576.
-David Israel Naki. id - 204647168.
+    Mordechai Atiya. id - 208484576.
+    David Israel Naki. id - 204647168.
 
 // ------------------------------------------------------
 # About this program:
 
-
+    "Bubble Trouble" is a fast-paced shooting game.
+    Shoot and split bouncing bubbles without getting hit to score points.
+    Avoid collisions - three strikes and you're out.
+    Power-ups offer extra lives and time.
+    Three levels, increasing difficulty.
+    Aim, shoot, dodge, and have a blast!
 
 // ------------------------------------------------------
 # Files we created:
 
-- ResourceManager.h - Singleton class:
-                      Source class for all program data.
-                      Loading the files of the program once - textures, audio, texts, fonts.
+- ResourcesManager  - Singleton - Source class for all program data.
+                      Loading the files of the program once - textures, audio, texts, font.
                       and receiving the data from anywhere in the program.
 
-- Sound.h           - Singleton - Sound class for all program sounds.
+- TimerManager      - Singleton - Timer class for all program timers.
+                      Create the Timer of the program once and get to him from anywhere in the program.
+
+- Sound             - Singleton - Sound class for all program sounds.
                       Create the Sounds of the program once and play from anywhere in the program.
 
-- Colors.h          - Some custom colors for the program.
+- Colors            - Some custom colors for the game.
 
-- Menu.h/cpp        - show the main menu before the game starts, and in the game when you press ESC.
+- Menu              - Responsible for menu screen and all its operation.
+
+- EnumAndMacros     - Enum class for the game operation. The order of the firsts elements
+                      (levels and game over) is very important for the operation of the game!
+
+- Button            - An abstract class that is responsible for all the buttons.
+                        - NewGame       - Inherit class for New Game button.
+                        - ChooseLevel   - Inherit class for Level Choose button.
+                        - Help          - Inherit class for Help button.
+                        - Records       - Inherit class for Records button.
+                        - Exit          - Inherit class for Exit Game button.
+                        - MenuButton    - Inherit class for Menu button.
+                        - Back          - Inherit class for Back button.
+                        - Mute          - Inheritance class for the Mute button.
+
+- Object            - An abstract class that is responsible for all the object of the game.
                       The subclasses of this class are:
-                        - Button.h/cpp      - Abstract class for all button types.
-                        - NewGame.h/cpp     - Inherit class for New Game button.
-                        - ChooseLevel.h     - Inherit class for Level Choose button.
-                        - help.h/cpp        - Inherit class for Help button.
-                        - ExitGame.h        - Inherit class for Exit Game button.
-                        - Back.h            - Inherit class for Back button.
-                        - Mute.h            - Inheritance class for the Mute button.
+                      * StaticObject    - An empty abstract class for all static objects of the game.
+                          Its inheritance: Door, Wall.
 
-- Object.h/cpp      - Abstract class for all game Objects.
-                      The subclasses of this class are:
-                      * StaticObj.h  - Abstract class for Non-moving game objects.
-                        it includes two kinds:
-                        - Erasable.h  - Abstract class for Erasable game objects.
-                          His inheritance: Cookie.h, Door.h, Key.h,
-                          Gift.h {include: FreezeGift.h, LifeGift.h, SuperPGift.h, TimeGift.h}.
-                        - Wall.h - Inheritance class for the game object of Non-moving type.
+                       * MovingObject   - An abstract class for all moving objects of the game.
+                         its inheritance: Player, Ball, Weapon (include: GunWeapon),
+                                          Gift (include: LifeGift, TimeGift, DefenseGift).
 
-                       * MovingObj.h  - Abstract class for game objects that can move on the board (Moving).
-                         His inheritance: Pacman.h/cpp, Demon.h/cpp.
+- Controller          - Main class that responsible for starting and ending the game.
 
-- Controller.h/cpp   - Main class that run the game and the menu when needed.
+- Board               - Responsible for all the gameplay, receiving the input from the player
+                        and display the game to the screen.
 
-- LevelManager.h/cpp - This class is responsible for selecting and running the levels, running the status bar,
-                       moving the Objects, checking for collisions, changing level when the previous one is over,
-                       and running the game over.
+- Level               - Responsible for the levels. Loads the desired level, contains in vectors all the level objects,
+                        Responsible for performing the actions required in the current level
+                        according to the existing situation.
 
-- InfoBar.h/cpp      - Class for the game information bar.
-                       Display the level number, life left, score, timer.
+- LevelReader         - Responsible for reading the correct file of the level, and extracting the data from it.
 
-- Timer.h/cpp        - Class that is responsible for the time of the game.
 
-- LevelReader.h      - Class that is responsible for reading the correct file of the level,
-                       and extracting the data from it.
+- StatusBar           - Responsible for the status bar of the game.
+                        Presents level number, life, score and the time left to finish.
 
-- Level.h/cpp        - This class is responsible for the current level, displaying the level,
-                       checking for collisions and responding, deleting eaten objects, etc..
-
-- GameOver.h         - Class for displaying the game over screen, receives the score from the user,
-                       and displays GameOver.
-
-- Movement.h/cpp      - Abstract class with 2 inheriting classes that are responsible for the legality of Movement in game.
-                        * Regular Movement - does not go through walls and doors.
-                        * Super Pacman Movement - goes through doors, besides walls.
+- GameOver            - Responsible for game over screen, and set the score to Record file if needed.
 
 // ------------------------------------------------------
 # Main data structure:
 
+    The Controller store: Menu and Board.
+    The Board store: Level, StatusBar, and GameOver.
+    The Level store all the objects that are in the current level.
 
 // ------------------------------------------------------
 # Noteworthy algorithm:
@@ -85,5 +90,8 @@ David Israel Naki. id - 204647168.
 
 
 // ------------------------------------------------------
-# Notes -
+# Notes:
 
+    We wanted to make two or three different types of weapons,
+    as well as a gift that would give the player protection,
+    but we didn't have time to do that.

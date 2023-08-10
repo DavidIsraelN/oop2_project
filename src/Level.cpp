@@ -1,5 +1,5 @@
 #include "Level.h"
-#include "EnumAndMacroes.h"
+#include "EnumAndMacros.h"
 #include "Objects/Gifts/LifeGift.h"
 #include "Objects/Gifts/TimeGift.h"
 #include "Objects/GunWeapon.h"
@@ -150,9 +150,9 @@ void Level::draw(sf::RenderWindow& window)
   std::for_each(m_doors.begin(), m_doors.end(), [&window] (auto &door) {door->draw(window);});
   std::for_each(m_balls.begin(), m_balls.end(), [&window] (auto &ball) {ball->draw(window);});
 
+  if (m_is_boom) window.draw(m_boom);
   m_boom_timer -= TimerManager::Timer().getDeltaTime();
   if (m_boom_timer <= 0) m_is_boom = false;
-  if (m_is_boom) window.draw(m_boom);
   window.setView(window.getDefaultView());
 }
 
@@ -265,6 +265,7 @@ void Level::createBoom(const Ball* ball)
 {
   m_boom.setPosition(ball->getGlobalBounds().left - ball->getGlobalBounds().width / 6,
                      ball->getGlobalBounds().top - ball->getGlobalBounds().height / 5);
+  m_boom.setScale(1, 1);
   m_boom.setScale(ball->getGlobalBounds().width / m_boom.getGlobalBounds().width * 1.3f,
                   ball->getGlobalBounds().height / m_boom.getGlobalBounds().height * 1.3f);
   m_boom_timer = BOOM_TIMER;
@@ -287,7 +288,7 @@ void Level::handleCollision()
 
     std::for_each(m_bullets.begin(), m_bullets.end(), [&] (const auto& bullet) {
       if (bullet->collidesWith(*ball)) {
-      m_player->incOrDecScore(BALLS_KIND + 1 - ball->getRatio());createGift(ball.get());
+      m_player->incOrDecScore(BALLS_KIND + 1 - ball->getRatio()); createGift(ball.get());
       bullet->collide(*ball); splitBall(ball.get()); createBoom(ball.get()); } });
 
     std::for_each(m_walls.begin(), m_walls.end(), [&ball] (const auto& wall) {

@@ -29,7 +29,7 @@ Action Records::action(sf::RenderWindow& window)
 {
   loadRecords(window);
 
-  window.clear(main_beckground);
+  window.clear(main_background);
   drawRecords(window);
   window.display();
 
