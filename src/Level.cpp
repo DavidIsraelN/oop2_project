@@ -236,7 +236,7 @@ void Level::splitBall(const Ball* ball)
 {
   if (ball->getRatio() <= 1) return;
   auto position = sf::Vector2f(ball->getGlobalBounds().left + ball->getGlobalBounds().width / 2,
-                                        ball->getGlobalBounds().top + ball->getGlobalBounds().height / 2);
+                               ball->getGlobalBounds().top + ball->getGlobalBounds().height / 2);
 
   m_balls.emplace_back(std::make_shared<Ball>(ball->getRatio() - 1, m_obj_width, position, m_win_height - 2 * m_obj_height, 1));
   m_balls.emplace_back(std::make_shared<Ball>(ball->getRatio() - 1, m_obj_width, position, m_win_height - 2 * m_obj_height,-1));
@@ -247,7 +247,7 @@ void Level::createGift(const Ball* ball)
 {
   auto position = sf::Vector2f(ball->getGlobalBounds().left + ball->getGlobalBounds().width / 2,
                                ball->getGlobalBounds().top + ball->getGlobalBounds().height / 2);
-  switch (rand() % 15) {
+  switch (rand() % 10) {
   case 0: m_gifts.emplace_back(std::make_unique<TimeGift>(position, m_win_height - 2 * m_obj_height)); break;
   case 1: m_gifts.emplace_back(std::make_unique<LifeGift>(position, m_win_height - 2 * m_obj_height)); break;
   default: return;
